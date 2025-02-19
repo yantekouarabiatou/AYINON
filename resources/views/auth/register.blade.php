@@ -43,6 +43,21 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
+
+                            <!-- Role -->
+                            <div class="col-xl-6">
+                                <label class="form-label fw-bolder text-dark fs-6">Role</label>
+                                <select class="form-control form-control-lg form-control-solid" name="role_id" required>
+                                    <option value="">-- Sélectionnez un rôle --</option>
+                                    @foreach($roles as $role)
+                                        <option value="{{ $role->id }}">{{ ucfirst($role->name) }}</option>
+                                    @endforeach
+                                </select>
+                                @error('role_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
                         </div>
 
                         <!-- Mot de passe -->
