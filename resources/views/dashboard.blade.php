@@ -1,9 +1,7 @@
 @extends('layout')
 @section('content')
 
-<div>
-	<!--begin::Root-->
-	<div class="d-flex flex-column flex-root">
+	
 			<!--begin::Page-->
 			<div class="page d-flex flex-row flex-column-fluid">
 				
@@ -266,4 +264,6 @@
 			</div>
 			<!--end::Page-->
 		</div>
-</div>
+
+
+	</div>

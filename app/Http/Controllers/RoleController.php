@@ -10,8 +10,9 @@ class RoleController extends Controller
 {
     $roles = Role::all(); 
     
-    \Log::info('Les roles:', ['role' => $roles]);
-    return view('auth.register', compact('roles'));
+    // \Log::info('Les roles:', ['role' => $roles]);
+    // return view('auth.register', compact('roles'));
+    return view('users.index', compact('roles'));
     dd($roles);
 }
 }

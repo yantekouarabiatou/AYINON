@@ -64,17 +64,109 @@
 							<!--begin::Menu-->
 							<div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500" id="#kt_aside_menu" data-kt-menu="true" data-kt-menu-expand="false">
     <!-- Vérifier si l'utilisateur est un administrateur -->
+	 
     @if($user->role->name == 'admin')
-        <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">
-            <a class="menu-link" href="/dashboard">
-                <span class="menu-icon">
-                    <span class="svg-icon svg-icon-2">
-                        <!-- Svg Icon -->
-                    </span>
-                </span>
-                <span class="menu-title">Dashboards</span>
+        <ddata-kt-menu-trigger="click" class="menu-item here show menu-accordion">
+		<div class="menu-item">
+									<a class="menu-link" href="dashboard">
+										<span class="menu-icon">
+											<!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
+											<span class="svg-icon svg-icon-2">
+												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+													<rect x="2" y="2" width="9" height="9" rx="2" fill="black" />
+													<rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2" fill="black" />
+													<rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2" fill="black" />
+													<rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="black" />
+												</svg>
+											</span>
+											<!--end::Svg Icon-->
+										</span>
+                <span class="menu-title">Tableau de Bord</span>
             </a>
         </div>
+		
+		<div data-kt-menu-trigger="click" class="menu-item here show menu-accordion mb-1">
+									<span class="menu-link">
+										<span class="menu-icon">
+											<!--begin::Svg Icon | path: icons/duotune/general/gen051.svg-->
+											<span class="svg-icon svg-icon-2">
+												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+													<path opacity="0.3" d="M20.5543 4.37824L12.1798 2.02473C12.0626 1.99176 11.9376 1.99176 11.8203 2.02473L3.44572 4.37824C3.18118 4.45258 3 4.6807 3 4.93945V13.569C3 14.6914 3.48509 15.8404 4.4417 16.984C5.17231 17.8575 6.18314 18.7345 7.446 19.5909C9.56752 21.0295 11.6566 21.912 11.7445 21.9488C11.8258 21.9829 11.9129 22 12.0001 22C12.0872 22 12.1744 21.983 12.2557 21.9488C12.3435 21.912 14.4326 21.0295 16.5541 19.5909C17.8169 18.7345 18.8277 17.8575 19.5584 16.984C20.515 15.8404 21 14.6914 21 13.569V4.93945C21 4.6807 20.8189 4.45258 20.5543 4.37824Z" fill="black" />
+													<path d="M14.854 11.321C14.7568 11.2282 14.6388 11.1818 14.4998 11.1818H14.3333V10.2272C14.3333 9.61741 14.1041 9.09378 13.6458 8.65628C13.1875 8.21876 12.639 8 12 8C11.361 8 10.8124 8.21876 10.3541 8.65626C9.89574 9.09378 9.66663 9.61739 9.66663 10.2272V11.1818H9.49999C9.36115 11.1818 9.24306 11.2282 9.14583 11.321C9.0486 11.4138 9 11.5265 9 11.6591V14.5227C9 14.6553 9.04862 14.768 9.14583 14.8609C9.24306 14.9536 9.36115 15 9.49999 15H14.5C14.6389 15 14.7569 14.9536 14.8542 14.8609C14.9513 14.768 15 14.6553 15 14.5227V11.6591C15.0001 11.5265 14.9513 11.4138 14.854 11.321ZM13.3333 11.1818H10.6666V10.2272C10.6666 9.87594 10.7969 9.57597 11.0573 9.32743C11.3177 9.07886 11.6319 8.9546 12 8.9546C12.3681 8.9546 12.6823 9.07884 12.9427 9.32743C13.2031 9.57595 13.3333 9.87594 13.3333 10.2272V11.1818Z" fill="black" />
+												</svg>
+											</span>
+											<!--end::Svg Icon-->
+										</span>
+										<span class="menu-title">Gestion des Utilisateurs</span>
+										<span class="menu-arrow"></span>
+									</span>
+									<div class="menu-sub menu-sub-accordion">
+										<div data-kt-menu-trigger="click" class="menu-item here show menu-accordion mb-1">
+											<span class="menu-link">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+												<span class="menu-title">Utilisateurs</span>
+												<span class="menu-arrow"></span>
+											</span>
+											<div class="menu-sub menu-sub-accordion">
+												<div class="menu-item">
+													<a class="menu-link active" href="{{ route('users.index') }}">
+														<span class="menu-bullet">
+															<span class="bullet bullet-dot"></span>
+														</span>
+														<span class="menu-title">Listes Utilisateurs</span>
+													</a>
+												</div>
+												<div class="menu-item">
+													<a class="menu-link" href="{{ route('users.edit', $user->id) }}">
+														<span class="menu-bullet">
+															<span class="bullet bullet-dot"></span>
+														</span>
+														<span class="menu-title">Détail Utilisateurs</span>
+													</a>
+												</div>
+											</div>
+										</div>
+										<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+											<span class="menu-link">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+												<span class="menu-title">Roles</span>
+												<span class="menu-arrow"></span>
+											</span>
+											<div class="menu-sub menu-sub-accordion">
+												<div class="menu-item">
+													<a class="menu-link" href="../../demo1/dist/apps/user-management/roles/list.html">
+														<span class="menu-bullet">
+															<span class="bullet bullet-dot"></span>
+														</span>
+														<span class="menu-title">Roles List</span>
+													</a>
+												</div>
+												<div class="menu-item">
+													<a class="menu-link" href="../../demo1/dist/apps/user-management/roles/view.html">
+														<span class="menu-bullet">
+															<span class="bullet bullet-dot"></span>
+														</span>
+														<span class="menu-title">View Role</span>
+													</a>
+												</div>
+											</div>
+										</div>
+										<div class="menu-item">
+											<a class="menu-link" href="../../demo1/dist/apps/user-management/permissions.html">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+												<span class="menu-title">Permissions</span>
+											</a>
+										</div>
+									</div>
+								</div>
+		
+							
 		<div class="menu-item">
             <div class="menu-content pt-8 pb-2">
                 <span class="menu-section text-muted text-uppercase fs-8 ls-1">Crafted</span>
@@ -224,7 +316,7 @@
 								</div>
         
     @endif
-</div>
+</di>
 
 							<!--end::Menu-->
 						</div>
@@ -283,63 +375,7 @@
 								<!--begin::Navbar-->
 								<div class="d-flex align-items-stretch" id="kt_header_nav">
 									<!--begin::Menu wrapper-->
-									<div class="header-menu align-items-stretch" data-kt-drawer="true" data-kt-drawer-name="header-menu" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_header_menu_mobile_toggle" data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_body', lg: '#kt_header_nav'}">
-										<!--begin::Menu-->
-										<div class="menu menu-lg-rounded menu-column menu-lg-row menu-state-bg menu-title-gray-700 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-400 fw-bold my-5 my-lg-0 align-items-stretch" id="#kt_header_menu" data-kt-menu="true">
-											<div data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start" class="menu-item here show menu-lg-down-accordion me-lg-1">
-												      <span class="menu-link py-3">
-													<span class="menu-title">Dashboards</span>
-													<span class="menu-arrow d-lg-none"></span>
-												</span>                        
-												<div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown menu-rounded-0 py-lg-4 w-lg-225px">
-													<div class="menu-item">
-														<a class="menu-link py-3" href="../../demo1/dist/index.html">
-															<span class="menu-bullet">
-																<span class="bullet bullet-dot"></span>
-															</span>
-															<span class="menu-title">Multipurpose</span>
-														</a>
-													</div>
-													<div class="menu-item">
-														<a class="menu-link active py-3" href="../../demo1/dist/dashboards/ecommerce.html">
-															<span class="menu-bullet">
-																<span class="bullet bullet-dot"></span>
-															</span>
-															<span class="menu-title">eCommerce</span>
-														</a>
-													</div>
-													
-													<div class="menu-item">
-														<a class="menu-link py-3" href="../../demo1/dist/dashboards/marketing.html">
-															<span class="menu-bullet">
-																<span class="bullet bullet-dot"></span>
-															</span>
-															<span class="menu-title">Marketing</span>
-														</a>
-													</div>
-													<div class="menu-item">
-														<a class="menu-link py-3" href="../../demo1/dist/dashboards/online-courses.html">
-															<span class="menu-bullet">
-																<span class="bullet bullet-dot"></span>
-															</span>
-															<span class="menu-title">Online Courses</span>
-														</a>
-													</div>
-													<div class="menu-item">
-														<a class="menu-link py-3" href="../../demo1/dist/landing.html">
-															<span class="menu-bullet">
-																<span class="bullet bullet-dot"></span>
-															</span>
-															<span class="menu-title">Landing</span>
-														</a>
-													</div>
-												</div>
-											</div>
-											
-											
-										</div>
-										<!--end::Menu-->
-									</div>
+									
 									<!--end::Menu wrapper-->
 								</div>
 								<!--end::Navbar-->
@@ -1472,9 +1508,63 @@
 							<div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
 								<!--begin::Page title-->
 								<div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+								<div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+								@php
+									$routeName = Route::currentRouteName(); // Nom de la route actuelle
+									$breadcrumbs = [
+										'tableau de bord' => ['title' => 'Tableau de Bord', 'parent' => null],
+										'users.index' => ['title' => 'Liste Utilisateurs', 'parent' => 'Gestion Utilisateurs'],
+										'users.create' => ['title' => 'Ajouter Utilisateur', 'parent' => 'Utilisateurs'],
+										'users.edit' => ['title' => 'Modifier Utilisateur', 'parent' => 'Utilisateurs'],
+									];
+									
+									$pageTitle = $breadcrumbs[$routeName]['title'] ?? 'Tableau de Bord';
+									$parentTitle = $breadcrumbs[$routeName]['parent'] ?? null;
+								@endphp
+
+								<div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
 									<!--begin::Title-->
-									<h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">eCommerce Dashboard</h1>
+									<h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">{{ $pageTitle }}</h1>
 									<!--end::Title-->
+									
+									<!--begin::Separator-->
+									<span class="h-20px border-gray-300 border-start mx-4"></span>
+									<!--end::Separator-->
+
+									<!--begin::Breadcrumb-->
+									<ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+										<!--begin::Item-->
+										<li class="breadcrumb-item text-muted">
+											<a href="{{ route('dashboard') }}" class="text-muted text-hover-primary">Accueil</a>
+										</li>
+										<!--end::Item-->
+
+										@if($parentTitle)
+										<!--begin::Item-->
+										<li class="breadcrumb-item">
+											<span class="bullet bg-gray-300 w-5px h-2px"></span>
+										</li>
+										<!--end::Item-->
+
+										<!--begin::Item-->
+										<li class="breadcrumb-item text-muted">{{ $parentTitle }}</li>
+										<!--end::Item-->
+										@endif
+
+										<!--begin::Item-->
+										<li class="breadcrumb-item">
+											<span class="bullet bg-gray-300 w-5px h-2px"></span>
+										</li>
+										<!--end::Item-->
+
+										<!--begin::Item-->
+										<li class="breadcrumb-item text-dark">{{ $pageTitle }}</li>
+										<!--end::Item-->
+									</ul>
+									<!--end::Breadcrumb-->
+								</div>
+
+								</div>
 								</div>
 								<!--end::Page title-->
 								<!--begin::Actions-->
@@ -4170,9 +4260,35 @@
 					<!--end::Modal body-->
 				</div>
 				<!--end::Modal content-->
+				
 			</div>
 			<!--end::Modal dialog-->
 		</div>
+		<div class="footer py-4 d-flex flex-lg-column" id="kt_footer">
+						<!--begin::Container-->
+						<div class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between">
+							<!--begin::Copyright-->
+							<div class="text-dark order-2 order-md-1">
+								<span class="text-muted fw-bold me-1">2022©</span>
+								<a href="https://keenthemes.com" target="_blank" class="text-gray-800 text-hover-primary">Keenthemes</a>
+							</div>
+							<!--end::Copyright-->
+							<!--begin::Menu-->
+							<ul class="menu menu-gray-600 menu-hover-primary fw-bold order-1">
+								<li class="menu-item">
+									<a href="https://keenthemes.com" target="_blank" class="menu-link px-2">About</a>
+								</li>
+								<li class="menu-item">
+									<a href="https://devs.keenthemes.com" target="_blank" class="menu-link px-2">Support</a>
+								</li>
+								<li class="menu-item">
+									<a href="https://1.envato.market/EA4JP" target="_blank" class="menu-link px-2">Purchase</a>
+								</li>
+							</ul>
+							<!--end::Menu-->
+						</div>
+						<!--end::Container-->
+					</div>
 		<!--end::Modal - Invite Friend-->
 		<!--end::Modals-->
 		<!--begin::Javascript-->
@@ -4193,6 +4309,35 @@
 		<script src="assets/js/custom/utilities/modals/users-search.js"></script>
 		<!--end::Page Custom Javascript-->
 		<!--end::Javascript-->
+				<!--begin::Page Vendors Javascript(used by this page)-->
+				<script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
+		<!--end::Page Vendors Javascript-->
+		<!--begin::Page Custom Javascript(used by this page)-->
+		<script src="assets/js/custom/apps/user-management/users/list/table.js"></script>
+		<script src="assets/js/custom/apps/user-management/users/list/export-users.js"></script>
+		<script src="assets/js/custom/apps/user-management/users/list/add.js"></script>
+		<script src="assets/js/widgets.bundle.js"></script>
+		<script src="assets/js/custom/widgets.js"></script>
+		<script src="assets/js/custom/apps/chat/chat.js"></script>
+		<script src="assets/js/custom/utilities/modals/upgrade-plan.js"></script>
+		<script src="assets/js/custom/utilities/modals/create-app.js"></script>
+		<script src="assets/js/custom/utilities/modals/users-search.js"></script>
+
+		<script src="assets/js/custom/apps/user-management/users/view/view.js"></script>
+		<script src="assets/js/custom/apps/user-management/users/view/update-details.js"></script>
+		<script src="assets/js/custom/apps/user-management/users/view/add-schedule.js"></script>
+		<script src="assets/js/custom/apps/user-management/users/view/add-task.js"></script>
+		<script src="assets/js/custom/apps/user-management/users/view/update-email.js"></script>
+		<script src="assets/js/custom/apps/user-management/users/view/update-password.js"></script>
+		<script src="assets/js/custom/apps/user-management/users/view/update-role.js"></script>
+		<script src="assets/js/custom/apps/user-management/users/view/add-auth-app.js"></script>
+		<script src="assets/js/custom/apps/user-management/users/view/add-one-time-password.js"></script>
+		<script src="assets/js/widgets.bundle.js"></script>
+		<script src="assets/js/custom/widgets.js"></script>
+		<script src="assets/js/custom/apps/chat/chat.js"></script>
+		<script src="assets/js/custom/utilities/modals/upgrade-plan.js"></script>
+		<script src="assets/js/custom/utilities/modals/create-app.js"></script>
+		<script src="assets/js/custom/utilities/modals/users-search.js"></script>
 	</body>
 	<!--end::Body-->
 </html>
