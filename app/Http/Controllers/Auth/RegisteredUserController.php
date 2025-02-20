@@ -22,7 +22,6 @@ class RegisteredUserController extends Controller
     {
         $roles = Role::all();
         return view('auth.register', compact('roles'));
-        // return view('auth.register');
     }
 
     /**
@@ -34,16 +33,28 @@ class RegisteredUserController extends Controller
     {  
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'photo' => ['required', 'image', 'mimes:jpg,png,jpeg', 'max:2048'],
+            'telephone' => ['required', 'numeric', 'digits_between:8,15'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role_id' => 'required|exists:roles,id',
         ]);
 
+         // Stockage de la photo
+         $photoPath = $request->file('photo')->storeAs(
+            'photos', // Dossier dans storage/app/public/photos/
+            time() . '_' . $request->file('photo')->getClientOriginalName(), // Nom unique avec timestamp
+            'public' // Sauvegarde dans storage/app/public
+        );
+
+        // Création de l'utilisateur
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'telephone' => $request->telephone,
             'password' => Hash::make($request->password),
             'role_id' => $request->role_id,
+            'photo' => 'storage/' . $photoPath, // Stocke le chemin public
         ]);
 
         event(new Registered($user));
@@ -51,6 +62,5 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return redirect(route('login', absolute: false));
-
     }
 }
