@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -22,4 +23,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+Route::get('/categories/create', [CategorieController::class, 'create'])->name('categories.create'); // Formulaire de création
+Route::post('/categorie', [CategorieController::class, 'store'])->name('categories.store');        // Enregistrer une catégorie
+Route::get('/categorie/{id}/edit', [CategorieController::class, 'edit'])->name('categories.edit'); // Formulaire d'édition
+Route::put('/categorie/{id}', [CategorieController::class, 'update'])->name('categories.update');  // Mettre à jour une catégorie
+Route::delete('/categorie/{id}', [CategorieController::class, 'destroy'])->name('categories.destroy'); // Supprimer une catégorie
+Route::get('/categories/success', [CategorieController::class, 'success'])->name('categories.success');
+Route::get('/categorie/create', [CategorieController::class, 'index'])->name('categorie.create');
 require __DIR__.'/auth.php';
