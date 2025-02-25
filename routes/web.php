@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
+
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -31,4 +33,10 @@ Route::put('/categorie/{id}', [CategorieController::class, 'update'])->name('cat
 Route::delete('/categorie/{id}', [CategorieController::class, 'destroy'])->name('categories.destroy'); // Supprimer une catégorie
 Route::get('/categories/success', [CategorieController::class, 'success'])->name('categories.success');
 Route::get('/categorie/create', [CategorieController::class, 'index'])->name('categorie.create');
+// Route::middleware(['auth', AdminMiddleware::class])->group(function () {
+//     Route::resource('users', UserController::class);
+// });
+Route::middleware(['auth'])->group(function () {
+    Route::resource('users', UserController::class);
+});
 require __DIR__.'/auth.php';
