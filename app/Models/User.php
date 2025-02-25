@@ -28,6 +28,7 @@ class User extends Authenticatable
         'telephone',
         'photo',
         'role_id',
+        'last_login_at', 
     ];
 
     /**
@@ -38,6 +39,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'last_login_at' => 'datetime'
     ];
 
     /**

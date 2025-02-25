@@ -1,53 +1,84 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Log;
+
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
-
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Affiche la liste des utilisateurs.
      */
-    
     public function index()
     {
         $users = User::all();
         $roles = Role::all();
-        // Log::info('Message de log avec une donnée', ['users' => $users]);
-        // dd($users);
         return view('users.index', compact('users', 'roles'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Affiche le formulaire de création d'un utilisateur.
      */
     public function create()
     {
-        //
+        $roles = Role::all(); 
+        return view('users.create', compact('roles'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Stocke un nouvel utilisateur en base de données.
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+            'telephone' => 'nullable|string|max:20',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'role_id' => 'required|exists:roles,id',
+        ]);
+
+        $user = new User();
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = Hash::make($request->input('password'));
+        $user->telephone = $request->input('telephone');
+        $user->role_id = $request->input('role_id');
+
+        // Gestion de l'upload de l'image
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->storeAs(
+                'photos', // Dossier dans storage/app/public/photos/
+                time() . '_' . $request->file('photo')->getClientOriginalName(), // Nom unique avec timestamp
+                'public' // Sauvegarde dans storage/app/public
+            );
+            $user->photo = $photoPath;
+        }
+
+        $user->save();
+
+        return Redirect::route('users.index')->with('success', 'Utilisateur ajouté avec succès.');
     }
 
+
     /**
-     * Display the specified resource.
+     * Affiche les détails d'un utilisateur.
      */
     public function show(string $id)
     {
-        //
+        $roles = Role::all();
+        $selectedUser = User::findOrFail($id);
+        // dd($selectedUser);
+        return view('users.show', compact('selectedUser', 'roles'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Affiche le formulaire de modification d'un utilisateur.
      */
     public function edit(string $id)
     {
@@ -56,10 +87,13 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Met à jour les informations d'un utilisateur.
      */
     public function update(Request $request, string $id)
     {
+        // Trouver l'utilisateur avant d'utiliser `$user->id`
+        $user = User::findOrFail($id);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
@@ -79,12 +113,14 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Supprime un utilisateur.
      */
     public function destroy(string $id)
     {
+        // Trouver l'utilisateur avant de l'utiliser
+        $user = User::findOrFail($id);
         $user->delete();
+
         return Redirect::route('users.index')->with('success', 'Utilisateur supprimé avec succès.');
     }
-    
 }

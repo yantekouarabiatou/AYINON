@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Middleware\AdminMiddleware;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -23,10 +24,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-// Route::middleware(['auth', AdminMiddleware::class])->group(function () {
-//     Route::resource('users', UserController::class);
-// });
-Route::middleware(['auth'])->group(function () {
+
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('users', UserController::class);
 });
 require __DIR__.'/auth.php';

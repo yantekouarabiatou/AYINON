@@ -1,6 +1,5 @@
 @extends('layout')
 @section('content')
-
 <div>
 
 			<div class="page d-flex flex-row flex-column-fluid">
@@ -28,7 +27,7 @@
 													</svg>
 												</span>
 												<!--end::Svg Icon-->
-												<input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Search user" />
+												<input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Rechercher un utilisateur" />
 											</div>
 											<!--end::Search-->
 										</div>
@@ -68,19 +67,6 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-														<!--end::Input group-->
-														<!--begin::Input group-->
-
-														<!-- <div class="mb-10">
-															<label class="form-label fs-6 fw-bold">Two Step Verification:</label>
-															<select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-user-table-filter="two-step" data-hide-search="true">
-																<option></option>
-																<option value="Enabled">Enabled</option>
-															</select>
-														</div> -->
-                                                        
-														<!--end::Input group-->
-														<!--begin::Actions-->
 														<div class="d-flex justify-content-end">
 															<button type="reset" class="btn btn-light btn-active-light-primary fw-bold me-2 px-6" data-kt-menu-dismiss="true" data-kt-user-table-filter="reset">Reset</button>
 															<button type="submit" class="btn btn-primary fw-bold px-6" data-kt-menu-dismiss="true" data-kt-user-table-filter="filter">Apply</button>
@@ -104,7 +90,7 @@
 												<!--end::Svg Icon-->Export</button>
 												<!--end::Export-->
 												<!--begin::Add user-->
-												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user">
+												<a type="button" class="btn btn-primary" href="{{ route('users.create') }}">
 												<!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
 												<span class="svg-icon svg-icon-2">
 													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -112,7 +98,7 @@
 														<rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="black" />
 													</svg>
 												</span>
-												<!--end::Svg Icon-->Ajouter Utilisateur</button>
+												<!--end::Svg Icon-->Ajouter Utilisateur</a>
 												<!--end::Add user-->
 											</div>
 											<!--end::Toolbar-->
@@ -204,203 +190,7 @@
 											</div>
 											<!--end::Modal - New Card-->
 											<!--begin::Modal - Add task-->
-											<div class="modal fade" id="kt_modal_add_user" tabindex="-1" aria-hidden="true">
-												<!--begin::Modal dialog-->
-												<div class="modal-dialog modal-dialog-centered mw-650px">
-													<!--begin::Modal content-->
-													<div class="modal-content">
-														<!--begin::Modal header-->
-														<div class="modal-header" id="kt_modal_add_user_header">
-															<!--begin::Modal title-->
-															<h2 class="fw-bolder">Ajouter Utilisateur</h2>
-															<!--end::Modal title-->
-															<!--begin::Close-->
-															<div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
-																<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
-																<span class="svg-icon svg-icon-1">
-																	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-																		<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
-																		<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
-																	</svg>
-																</span>
-																<!--end::Svg Icon-->
-															</div>
-															<!--end::Close-->
-														</div>
-														<!--end::Modal header-->
-														<!--begin::Modal body-->
-														<div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
-															<!--begin::Form-->
-															<form id="kt_modal_add_user_form" class="form" action="#">
-																<!--begin::Scroll-->
-																<div class="d-flex flex-column scroll-y me-n7 pe-7" id="kt_modal_add_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_user_header" data-kt-scroll-wrappers="#kt_modal_add_user_scroll" data-kt-scroll-offset="300px">
-																	<!--begin::Input group-->
-																	<div class="fv-row mb-7">
-																		<!--begin::Label-->
-																		<label class="d-block fw-bold fs-6 mb-5">Avatar</label>
-																		<!--end::Label-->
-																		<!--begin::Image input-->
-																		<div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url('assets/media/svg/avatars/blank.svg')">
-																			<!--begin::Preview existing avatar-->
-																			<div class="image-input-wrapper w-125px h-125px" style="background-image: url(assets/media/avatars/300-6.jpg);"></div>
-																			<!--end::Preview existing avatar-->
-																			<!--begin::Label-->
-																			<label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
-																				<i class="bi bi-pencil-fill fs-7"></i>
-																				<!--begin::Inputs-->
-																				<input type="file" name="photo" accept=".png, .jpg, .jpeg" />
-																				<input type="hidden" name="avatar_remove" />
-																				<!--end::Inputs-->
-																			</label>
-																			<!--end::Label-->
-																			<!--begin::Cancel-->
-																			<span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
-																				<i class="bi bi-x fs-2"></i>
-																			</span>
-																			<!--end::Cancel-->
-																			<!--begin::Remove-->
-																			<span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
-																				<i class="bi bi-x fs-2"></i>
-																			</span>
-																			<!--end::Remove-->
-																		</div>
-																		<!--end::Image input-->
-																		<!--begin::Hint-->
-																		<div class="form-text">Allowed file types: png, jpg, jpeg.</div>
-																		<!--end::Hint-->
-																	</div>
-																	<!--end::Input group-->
-																	<!--begin::Input group-->
-																	<div class="fv-row mb-7">
-																		<!--begin::Label-->
-																		<label class="required fw-bold fs-6 mb-2">Nom Prénoms</label>
-																		<!--end::Label-->
-																		<!--begin::Input-->
-																		<input type="text" name="name" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="nom et prénoms" value="" />
-																		<!--end::Input-->
-																	</div>
-																	<!--end::Input group-->
-																	<!--begin::Input group-->
-																	<div class="fv-row mb-7">
-																		<!--begin::Label-->
-																		<label class="required fw-bold fs-6 mb-2">Email</label>
-																		<!--end::Label-->
-																		<!--begin::Input-->
-																		<input type="email" name="email" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="example@domain.com" value="" />
-																		<!--end::Input-->
-																	</div>
-                                                                    <div class="fv-row mb-7">
-																		<!--begin::Label-->
-																		<label class="required fw-bold fs-6 mb-2">Telephone</label>
-																		<!--end::Label-->
-																		<!--begin::Input-->
-																		<input type="texte" name="telephone" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="+229 XX XX XX XX XX" value="" />
-																		<!--end::Input-->
-																	</div>
-																	<!--end::Input group-->
-																	<!--begin::Input group-->
-																	<div class="mb-7">
-																		<!--begin::Label-->
-																		<label class="required fw-bold fs-6 mb-5">Role</label>
-																		<!--end::Label-->
-																		<!--begin::Roles-->
-																		<!--begin::Input row-->
-																		<div class="d-flex fv-row">
-																			<!--begin::Radio-->
-																			<div class="form-check form-check-custom form-check-solid">
-																				<!--begin::Input-->
-																				<input class="form-check-input me-3" name="user_role" type="radio" value="0" id="kt_modal_update_role_option_0" checked='checked' />
-																				<!--end::Input-->
-																				<!--begin::Label-->
-																				<label class="form-check-label" for="kt_modal_update_role_option_0">
-																					<div class="fw-bolder text-gray-800">Administrateur</div>
-																					<!-- <div class="text-gray-600">Best for business owners and company administrators</div> -->
-																				</label>
-																				<!--end::Label-->
-																			</div>
-																			<!--end::Radio-->
-																		</div>
-																		<!--end::Input row-->
-																		<div class='separator separator-dashed my-5'></div>
-																		<!--begin::Input row-->
-																		<div class="d-flex fv-row">
-																			<!--begin::Radio-->
-																			<div class="form-check form-check-custom form-check-solid">
-																				<!--begin::Input-->
-																				<input class="form-check-input me-3" name="user_role" type="radio" value="1" id="kt_modal_update_role_option_1" />
-																				<!--end::Input-->
-																				<!--begin::Label-->
-																				<label class="form-check-label" for="kt_modal_update_role_option_1">
-																					<div class="fw-bolder text-gray-800">Controlleur</div>
-																					<!-- <div class="text-gray-600">Best for developers or people primarily using the API</div> -->
-																				</label>
-																				<!--end::Label-->
-																			</div>
-																			<!--end::Radio-->
-																		</div>
-																		<!--end::Input row-->
-																		<div class='separator separator-dashed my-5'></div>
-																		<!--begin::Input row-->
-																		<div class="d-flex fv-row">
-																			<!--begin::Radio-->
-																			<div class="form-check form-check-custom form-check-solid">
-																				<!--begin::Input-->
-																				<input class="form-check-input me-3" name="user_role" type="radio" value="2" id="kt_modal_update_role_option_2" />
-																				<!--end::Input-->
-																				<!--begin::Label-->
-																				<label class="form-check-label" for="kt_modal_update_role_option_2">
-																					<div class="fw-bolder text-gray-800">Gérant</div>
-																					<!-- <div class="text-gray-600">Best for people who need full access to analytics data, but don't need to update business settings</div> -->
-																				</label>
-																				<!--end::Label-->
-																			</div>
-																			<!--end::Radio-->
-																		</div>
-																		<!--end::Input row-->
-																		<div class='separator separator-dashed my-5'></div>
-																		<!--begin::Input row-->
-																		<div class="d-flex fv-row">
-																			<!--begin::Radio-->
-																			<div class="form-check form-check-custom form-check-solid">
-																				<!--begin::Input-->
-																				<input class="form-check-input me-3" name="user_role" type="radio" value="3" id="kt_modal_update_role_option_3" />
-																				<!--end::Input-->
-																				<!--begin::Label-->
-																				<label class="form-check-label" for="kt_modal_update_role_option_3">
-																					<div class="fw-bolder text-gray-800">Caissier(e)</div>
-																					<!-- <div class="text-gray-600">Best for employees who regularly refund payments and respond to disputes</div> -->
-																				</label>
-																				<!--end::Label-->
-																			</div>
-																			<!--end::Radio-->
-																		</div>
-																		<!--end::Input row-->
-																		<div class='separator separator-dashed my-5'></div>
-																		
-																		<!--end::Roles-->
-																	</div>
-																	<!--end::Input group-->
-																</div>
-																<!--end::Scroll-->
-																<!--begin::Actions-->
-																<div class="text-center pt-15">
-																	<button type="reset" class="btn btn-light me-3" data-kt-users-modal-action="cancel">Discard</button>
-																	<button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
-																		<span class="indicator-label">Submit</span>
-																		<span class="indicator-progress">Please wait...
-																		<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-																	</button>
-																</div>
-																<!--end::Actions-->
-															</form>
-															<!--end::Form-->
-														</div>
-														<!--end::Modal body-->
-													</div>
-													<!--end::Modal content-->
-												</div>
-												<!--end::Modal dialog-->
-											</div>
+
 											<!--end::Modal - Add task-->
 										</div>
 										<!--end::Card toolbar-->
@@ -445,7 +235,7 @@
 													<td class="d-flex align-items-center">
 														<!--begin:: Avatar -->
 														<div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-															<a href="../../demo1/dist/apps/user-management/users/view.html">
+															<a href="{{ route('users.show', $user->id) }}">
 																<div class="symbol-label">
                                                         
                                                                     @if($user->photo)
@@ -459,7 +249,7 @@
 														<!--end::Avatar-->
 														<!--begin::User details-->
 														<div class="d-flex flex-column">
-															<a href="../../demo1/dist/apps/user-management/users/view.html" class="text-gray-800 text-hover-primary mb-1">{{ $user->name }}</a>
+															<a href="{{ route('users.show', $user->id) }}" class="text-gray-800 text-hover-primary mb-1">{{ $user->name }}</a>
 															<span>{{ $user->email }}</span>
 														</div>
 														<!--begin::User details-->
@@ -470,7 +260,7 @@
 													<!--end::Role=-->
 													<!--begin::Last login=-->
 													<td>
-														<div class="badge badge-light fw-bolder">Yesterday</div>
+														<div class="badge badge-light fw-bolder">{{ $user->last_login_at ? \Carbon\Carbon::parse($user->last_login_at)->locale('fr')->diffForHumans() : 'Jamais connecté' }}</div>
 													</td>
 													<!--end::Last login=-->
 													<!--begin::Two step=-->
@@ -494,13 +284,45 @@
 															<!--begin::Menu item-->
 															<div class="menu-item px-3">
 																<!-- <a href="#" class="menu-link px-3">Edit</a> -->
-                                                                <a href="{{ route('users.edit', $user->id) }}" class="menu-link px-3">Modifier</a>
+                                                                <!-- <a href="{{ route('users.edit', $user->id) }}" class="menu-link px-3">Modifier</a> -->
+																<a href="{{ route('users.show', $user->id) }}" class="menu-link px-3">Modifier</a>
 															</div>
 															<!--end::Menu item-->
 															<!--begin::Menu item-->
 															<div class="menu-item px-3">
-																<a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Supprimer</a>
+																<form id="delete-form-{{ $user->id }}" action="{{ route('users.destroy', $user->id) }}" method="POST">
+																	@csrf
+																	@method('DELETE')
+																	<button type="button" class="menu-link px-3 text-danger border-0 bg-transparent"  
+																		onclick="deleteUser({{ $user->id }}, '{{ $user->name }}')">
+																		Supprimer
+																	</button>
+																</form>
 															</div>
+
+															<script>
+																function deleteUser(userId, userName) { // 🔹 Ajout du paramètre userName
+																	Swal.fire({
+																		text: "Voulez-vous vraiment supprimer l'utilisateur '" + userName + "' ?",
+																		icon: "warning",
+																		showCancelButton: true,
+																		confirmButtonText: "Oui, supprimer",
+																		cancelButtonText: "Annuler",
+																		customClass: {
+																			confirmButton: "btn btn-danger",
+																			cancelButton: "btn btn-secondary"
+																		}
+																	}).then((result) => {
+																		if (result.isConfirmed) {
+																			document.getElementById('delete-form-' + userId).submit();
+																		}
+																	});
+																}
+															</script>
+
+
+															</div>
+
 															<!--end::Menu item-->
 														</div>
 														<!--end::Menu-->

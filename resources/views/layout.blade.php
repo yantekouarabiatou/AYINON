@@ -2,7 +2,7 @@
 <html lang="en">
 	<!--begin::Head-->
 	<head><base href="../">
-		<title>Ayinon Fish &amp;</title>
+		<title>Ayinon Fish</title>
 		<meta charset="utf-8" />
 		<meta name="description" content="The most advanced Bootstrap Admin Theme on Themeforest trusted by 94,000 beginners and professionals. Multi-demo, Dark Mode, RTL support and complete React, Angular, Vue &amp; Laravel versions. Grab your copy now and get life-time updates for free." />
 		<meta name="keywords" content="Metronic, bootstrap, bootstrap 5, Angular, VueJs, React, Laravel, admin themes, web design, figma, web development, free templates, free admin themes, bootstrap theme, bootstrap template, bootstrap dashboard, bootstrap dak mode, bootstrap button, bootstrap datepicker, bootstrap timepicker, fullcalendar, datatables, flaticon" />
@@ -119,7 +119,7 @@
 													</a>
 												</div>
 												<div class="menu-item">
-													<a class="menu-link" href="{{ route('users.edit', $user->id) }}">
+													<a class="menu-link" href="{{ route('users.show', $user->id) }}">
 														<span class="menu-bullet">
 															<span class="bullet bullet-dot"></span>
 														</span>
@@ -1462,8 +1462,13 @@
 													<!--end::Username-->
 												</div>
 											</div>
-				
 											
+											<div class="separator my-2"></div>
+											<!--end::Menu separator-->
+											<!--begin::Menu item-->
+											<div class="menu-item px-5">
+												<a href="../../demo1/dist/account/overview.html" class="menu-link px-5">Mon Profile</a>
+											</div>
 											<!--end::Menu item-->
 											<!--begin::Menu item-->
 											<form action="{{route('logout')}}" method="post">
@@ -1516,6 +1521,7 @@
 										'users.index' => ['title' => 'Liste Utilisateurs', 'parent' => 'Gestion Utilisateurs'],
 										'users.create' => ['title' => 'Ajouter Utilisateur', 'parent' => 'Utilisateurs'],
 										'users.edit' => ['title' => 'Modifier Utilisateur', 'parent' => 'Utilisateurs'],
+										'users.show' => ['title' => 'Détails Utilisateur', 'parent' => 'Utilisateurs'],
 									];
 									
 									$pageTitle = $breadcrumbs[$routeName]['title'] ?? 'Tableau de Bord';
@@ -4322,7 +4328,7 @@
 		<script src="assets/js/custom/utilities/modals/upgrade-plan.js"></script>
 		<script src="assets/js/custom/utilities/modals/create-app.js"></script>
 		<script src="assets/js/custom/utilities/modals/users-search.js"></script>
-
+		
 		<script src="assets/js/custom/apps/user-management/users/view/view.js"></script>
 		<script src="assets/js/custom/apps/user-management/users/view/update-details.js"></script>
 		<script src="assets/js/custom/apps/user-management/users/view/add-schedule.js"></script>
@@ -4338,6 +4344,7 @@
 		<script src="assets/js/custom/utilities/modals/upgrade-plan.js"></script>
 		<script src="assets/js/custom/utilities/modals/create-app.js"></script>
 		<script src="assets/js/custom/utilities/modals/users-search.js"></script>
+		
 	</body>
 	<!--end::Body-->
 </html>
