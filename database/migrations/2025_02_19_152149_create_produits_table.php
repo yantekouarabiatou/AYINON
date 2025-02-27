@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('categorie_id')->nullable()->constrained('categories')->onDelete('set null');
             $table->string('name');
+            $table->string('photo');
             $table->longText('description');
             $table->decimal('prix',10,2);
             $table->integer('quantite');

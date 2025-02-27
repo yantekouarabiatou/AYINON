@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Produit extends Model
 {
@@ -16,6 +17,7 @@ class Produit extends Model
      */
     protected $fillable = [
         'name',
+        'photo',
         'description',
         'categorie_id',
         'prix',

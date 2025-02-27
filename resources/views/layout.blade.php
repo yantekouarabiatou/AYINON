@@ -18,7 +18,8 @@
 		<link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 		<link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
 		<link href="{{ asset('assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
-	
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 		<!--begin::Fonts-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
 		<!---begin::Page Vendor Stylesheets(used by this page)-->
@@ -4316,10 +4317,11 @@
 		<script src="assets/js/custom/apps/chat/chat.js"></script>
 		<script src="assets/js/custom/utilities/modals/upgrade-plan.js"></script>
 		<script src="assets/js/custom/utilities/modals/users-search.js"></script>
-		<!--end::Page Custom Javascript-->
-		<!--end::Javascript-->
-				<!--begin::Page Vendors Javascript(used by this page)-->
-				<script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
+		<script src="assets/plugins/global/plugins.bundle.js"></script>
+		<script src="assets/js/scripts.bundle.js"></script>
+		<!--end::Global Javascript Bundle-->
+		<!--begin::Page Vendors Javascript(used by this page)-->
+		<script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
 		<!--end::Page Vendors Javascript-->
 		<!--begin::Page Custom Javascript(used by this page)-->
 		<script src="assets/js/custom/apps/user-management/users/list/table.js"></script>
@@ -4331,7 +4333,121 @@
 		<script src="assets/js/custom/utilities/modals/upgrade-plan.js"></script>
 		<script src="assets/js/custom/utilities/modals/create-app.js"></script>
 		<script src="assets/js/custom/utilities/modals/users-search.js"></script>
+		<!--begin::Page Vendors Javascript(used by this page)-->
+		<script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
+		<!--end::Page Vendors Javascript-->
+		<!--begin::Page Custom Javascript(used by this page)-->
+		<script>
 
+			$(document).ready(function() {
+			// Vérifier si DataTable existe déjà et le détruire
+			if ($.fn.dataTable.isDataTable('#kt_table_produits')) {
+				$('#kt_table_produits').DataTable().clear().destroy();
+			}
+		
+			// Initialisation du DataTable
+			$('#kt_table_produits').DataTable({
+				// Votre configuration ici
+			});
+		});
+		
+		</script>
+		<script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
+		<script src="assets/js/custom/apps/user-management/users/list/table.js"></script>
+		<script src="assets/js/custom/apps/user-management/users/list/export-users.js"></script>
+		<script src="assets/js/custom/apps/user-management/users/list/add.js"></script>
+		<script src="assets/js/widgets.bundle.js"></script>
+		<script src="assets/js/custom/widgets.js"></script>
+		<script src="assets/js/custom/apps/chat/chat.js"></script>
+		<script src="assets/js/custom/utilities/modals/upgrade-plan.js"></script>
+		<script src="assets/js/custom/utilities/modals/create-app.js"></script>
+		<script src="assets/js/custom/utilities/modals/users-search.js"></script>
+       <script>
+		$(document).ready(function() {
+    // Pour le formulaire de mise à jour
+    $('form#updateCategoryForm').on('submit', function(e) {
+        e.preventDefault(); // Empêcher la soumission normale
+
+        let formData = new FormData(this);
+        
+        $.ajax({
+            url: $(this).attr('action'), // URL du formulaire (route de mise à jour)
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                // Fermeture du modal après la soumission
+                $('#updateCategoryModal').modal('hide');
+                // Mise à jour du DOM avec les nouvelles informations
+                $('#category-' + response.id).replaceWith(response.updatedCategoryHTML);
+                alert(response.message); // Afficher un message de succès
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+                alert("Erreur lors de la mise à jour.");
+            }
+        });
+    });
+
+    // Pour le formulaire de suppression
+    $('form#deleteCategoryForm').on('submit', function(e) {
+        e.preventDefault(); // Empêcher la soumission normale
+
+        let formData = new FormData(this);
+        
+        $.ajax({
+            url: $(this).attr('action'), // URL du formulaire (route de suppression)
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                // Fermeture du modal après la soumission
+                $('#deleteCategoryModal').modal('hide');
+                // Retirer la catégorie supprimée du DOM
+                $('#category-' + response.id).remove();
+                alert(response.message); // Afficher un message de succès
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+                alert("Erreur lors de la suppression.");
+            }
+        });
+    });
+});
+
+	   </script>
+	   <script nonce="<random_value>">
+		// ton code JavaScript ici
+		<script>
+    function confirmDelete(produitId) {
+        Swal.fire({
+            title: 'Êtes-vous sûr ?',
+            text: "Cette action est irréversible.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Oui, supprimer',
+            cancelButtonText: 'Annuler',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Créez un formulaire de suppression et soumettez-le
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/produit/' + produitId;
+                form.innerHTML = `
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                `;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    }
+  </script>
+
+	   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="assets/js/custom/apps/user-management/users/view/view.js"></script>
 		<script src="assets/js/custom/apps/user-management/users/view/update-details.js"></script>
 		<script src="assets/js/custom/apps/user-management/users/view/add-schedule.js"></script>
@@ -4347,6 +4463,9 @@
 		<script src="assets/js/custom/utilities/modals/upgrade-plan.js"></script>
 		<script src="assets/js/custom/utilities/modals/create-app.js"></script>
 		<script src="assets/js/custom/utilities/modals/users-search.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+         @include('sweetalert::alert')
+
 	</body>
 	<!--end::Body-->
 </html>

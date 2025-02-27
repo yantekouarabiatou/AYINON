@@ -1,17 +1,26 @@
-
 @extends('layout')
+
+<style>
+    .menu {
+        display: none; /* Cacher le menu par défaut */
+    }
+
+    .menu.show {
+        display: block; /* Afficher le menu lorsqu'il a la classe 'show' */
+    }
+</style>
+
 @section('content')
 
-		<!--begin::Root-->
-		<div class="d-flex flex-column flex-root">
-			<!--begin::Page-->
+<div>
+
 			<div class="page d-flex flex-row flex-column-fluid">
-				<!--begin::Wrapper-->
+				
 				<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
-					<!--begin::Content-->
-					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">	
-						<!--begin::Post-->
-						<div class="post d-flex flex-column-fluid" id="kt_post">
+					
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						
+                      <div class="post d-flex flex-column-fluid" id="kt_post">
 							<!--begin::Container-->
 							<div id="kt_content_container" class="container-xxl">
 								<!--begin::Card-->
@@ -30,7 +39,7 @@
 													</svg>
 												</span>
 												<!--end::Svg Icon-->
-												<input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Rechercher une catégorie " />
+												<input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Search user" />
 											</div>
 											<!--end::Search-->
 										</div>
@@ -52,7 +61,7 @@
 												<div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true">
 													<!--begin::Header-->
 													<div class="px-7 py-5">
-														<div class="fs-5 text-dark fw-bolder">Les Options du Filtre</div>
+														<div class="fs-5 text-dark fw-bolder">Option du Filtre</div>
 													</div>
 													<!--end::Header-->
 													<!--begin::Separator-->
@@ -61,13 +70,30 @@
 													<!--begin::Content-->
 													<div class="px-7 py-5" data-kt-user-table-filter="form">
 														<!--begin::Input group-->
-														
+														<div class="mb-10">
+                                                            <label class="form-label fs-6 fw-bold">Catégorie:</label>
+                                                            <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Selectionnez une option" data-allow-clear="true" data-kt-user-table-filter="categorie" data-hide-search="true">
+                                                                <option value="">Selectionnez une catégorie </option>
+                                                                @foreach($categories as $categorie)
+                                                                    <option value="{{ $categorie->name }}">{{ $categorie->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
 														<!--end::Input group-->
+														<!--begin::Input group-->
+                                                        
+														<!--end::Input group-->
+														<!--begin::Actions-->
+														<div class="d-flex justify-content-end">
+															<button type="reset" class="btn btn-light btn-active-light-primary fw-bold me-2 px-6" data-kt-menu-dismiss="true" data-kt-user-table-filter="reset">Reset</button>
+															<button type="submit" class="btn btn-primary fw-bold px-6" data-kt-menu-dismiss="true" data-kt-user-table-filter="filter">Apply</button>
+														</div>
+														<!--end::Actions-->
 													</div>
 													<!--end::Content-->
 												</div>
 												<!--end::Menu 1-->
-												
+												<!--end::Filter-->
 												<!--begin::Export-->
 												<button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal" data-bs-target="#kt_modal_export_users">
 												<!--begin::Svg Icon | path: icons/duotune/arrows/arr078.svg-->
@@ -78,7 +104,7 @@
 														<path d="M18.75 8.25H17.75C17.1977 8.25 16.75 8.69772 16.75 9.25C16.75 9.80228 17.1977 10.25 17.75 10.25C18.3023 10.25 18.75 10.6977 18.75 11.25V18.25C18.75 18.8023 18.3023 19.25 17.75 19.25H5.75C5.19772 19.25 4.75 18.8023 4.75 18.25V11.25C4.75 10.6977 5.19771 10.25 5.75 10.25C6.30229 10.25 6.75 9.80228 6.75 9.25C6.75 8.69772 6.30229 8.25 5.75 8.25H4.75C3.64543 8.25 2.75 9.14543 2.75 10.25V19.25C2.75 20.3546 3.64543 21.25 4.75 21.25H18.75C19.8546 21.25 20.75 20.3546 20.75 19.25V10.25C20.75 9.14543 19.8546 8.25 18.75 8.25Z" fill="#C4C4C4" />
 													</svg>
 												</span>
-												<!--end::Svg Icon-->Exporter</button>
+												<!--end::Svg Icon-->Export</button>
 												<!--end::Export-->
 												<!--begin::Add user-->
 												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user">
@@ -89,7 +115,7 @@
 														<rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="black" />
 													</svg>
 												</span>
-												<!--end::Svg Icon-->Ajouter Catégorie</button>
+												<!--end::Svg Icon-->Ajouter une catégorie</button>
 												<!--end::Add user-->
 											</div>
 											<!--end::Toolbar-->
@@ -109,7 +135,7 @@
 														<!--begin::Modal header-->
 														<div class="modal-header">
 															<!--begin::Modal title-->
-															<h2 class="fw-bolder">Exporter Catégorie</h2>
+															<h2 class="fw-bolder">Export Users</h2>
 															<!--end::Modal title-->
 															<!--begin::Close-->
 															<div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
@@ -125,168 +151,212 @@
 															<!--end::Close-->
 														</div>
 														<!--end::Modal header-->
+														<!--begin::Modal body-->
+														<div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+															<!--begin::Form-->
+															<form id="kt_modal_export_users_form" class="form" action="#">
+																<!--begin::Input group-->
+																<div class="fv-row mb-10">
+																	<!--begin::Label-->
+																	<label class="fs-6 fw-bold form-label mb-2">Selectionnez une catégorie:</label>
+																	<!--end::Label-->
+																	<!--begin::Input-->
+																	<select name="categorie" data-control="select2" data-placeholder="Selectionnez une catégorie " data-hide-search="true" class="form-select form-select-solid fw-bolder">
+																		<option></option>
+																		@foreach($categories as $categorie)
+                                                                            <option value="{{ $categorie->name }}">{{ $categorie->name }}</option>
+                                                                        @endforeach
+																	</select>
+																	<!--end::Input-->
+																</div>
+																<!--end::Input group-->
+																<!--begin::Input group-->
+																<div class="fv-row mb-10">
+																	<!--begin::Label-->
+																	<label class="required fs-6 fw-bold form-label mb-2">Select Export Format:</label>
+																	<!--end::Label-->
+																	<!--begin::Input-->
+																	<select name="format" data-control="select2" data-placeholder="Select a format" data-hide-search="true" class="form-select form-select-solid fw-bolder">
+																		<option></option>
+																		<option value="excel">Excel</option>
+																		<option value="pdf">PDF</option>
+																		<option value="cvs">CVS</option>
+																		<option value="zip">ZIP</option>
+																	</select>
+																	<!--end::Input-->
+																</div>
+																<!--end::Input group-->
+																<!--begin::Actions-->
+																<div class="text-center">
+																	<button type="reset" class="btn btn-light me-3" data-kt-users-modal-action="cancel">Annuler</button>
+																	<button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
+																		<span class="indicator-label">Soumettre</span>
+																		<span class="indicator-progress">Un instant ...
+																		<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+																	</button>
+																</div>
+																<!--end::Actions-->
+															</form>
+															<!--end::Form-->
+														</div>
+														<!--end::Modal body-->
 													</div>
 													<!--end::Modal content-->
 												</div>
 												<!--end::Modal dialog-->
 											</div>
 											<!--end::Modal - New Card-->
-											<!--begin::Modal - Add Category-->
-
-<div class="modal fade" id="kt_modal_add_user" tabindex="-1" aria-hidden="true">
-    <!--begin::Modal dialog-->
-    <div class="modal-dialog modal-dialog-centered mw-650px">
-        <!--begin::Modal content-->
-        <div class="modal-content">
-            <!--begin::Modal header-->
-            <div class="modal-header" id="kt_modal_add_user_header">
-                <h2 class="fw-bolder">Ajouter une Catégorie</h2>
-                <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
-                    <span class="svg-icon svg-icon-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
-                            <rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
-                        </svg>
-                    </span>
-                </div>
-            </div>
-            <!--end::Modal header-->
-
-            <!--begin::Modal body-->
-            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
-                <!--begin::Form-->
-                <form id="kt_modal_add_user_form" class="form" action="{{ route('categories.store') }}" method="POST">
-                    @csrf
-
-                    <div class="d-flex flex-column scroll-y me-n7 pe-7" id="kt_modal_add_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_user_header" data-kt-scroll-wrappers="#kt_modal_add_user_scroll" data-kt-scroll-offset="300px">
-                        
-                        <!--begin::Input group - Nom-->
-                        <div class="fv-row mb-7">
-                            <label class="required fw-bold fs-6 mb-2">Entrez le nom de la catégorie</label>
-                            <input type="text" name="name" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Le nom de la catégorie" value="{{ old('name') }}" required />
-                        </div>
-                        <!--end::Input group-->
-
-                        <!--begin::Input group - Description-->
-                        <div class="fv-row mb-7">
-                            <label class="required fw-bold fs-6 mb-2">Entrez la description de la catégorie</label>
-                            <textarea name="description" class="form-control form-control-solid" placeholder="Description de la catégorie" rows="5" required>{{ old('description') }}</textarea>
-                        </div>
-                        <!--end::Input group-->
-
-                        <!--begin::Actions-->
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary">
-                                <span class="indicator-label">Enregistrer</span>
-                            </button>
-                        </div>
-                        <!--end::Actions-->
-
-                    </div>
-                </form>
-                <!--end::Form-->
-            </div>
-            <!--end::Modal body-->
-        </div>
-        <!--end::Modal content-->
-    </div>
-    <!--end::Modal dialog-->
-</div>
-<!--end::Modal - Add Category-->
-</div><!--end::Card toolbar-->
-</div>
-									
-<div class="card-body py-4">
-    <!--begin::Table-->
-    <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
-        <!--begin::Table head-->
-        <thead>
-            <tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
-                <th class="w-10px pe-2">
-                    <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-                        <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_table_users .form-check-input" value="1" />
-                    </div>
-                </th>
-                <th class="min-w-125px">Nom de la catégorie</th>
-                <th class="min-w-125px">Description de la catégorie</th>
-                <th class="text-end min-w-100px">Actions</th>
-            </tr>
-        </thead>
-        <!--end::Table head-->
-
-        <!--begin::Table body-->
-        <tbody class="text-gray-600 fw-bold">
-            @foreach($categories as $categorie)
-            <tr>
-                <!--begin::Checkbox-->
-                <td>
-                    <div class="form-check form-check-sm form-check-custom form-check-solid">
-                        <input class="form-check-input" type="checkbox" value="{{ $categorie->id }}" />
-                    </div>
-                </td>
-                <!--end::Checkbox-->
-
-                <!--begin::Category Name-->
-                <td>{{ $categorie->name }}</td>
-                <!--end::Category Name-->
-
-                <!--begin::Category Description-->
-                <td>{{ $categorie->description }}</td>
-                <!--end::Category Description-->
-
-                <!--begin::Actions-->
-               <!--begin::Actions-->
+											<!--begin::Modal - Add task-->
+											<div class="modal fade" id="kt_modal_add_user" tabindex="-1" aria-hidden="true">
+												<!--begin::Modal dialog-->
+												<div class="modal-dialog modal-dialog-centered mw-650px">
+													<!--begin::Modal content-->
+													<div class="modal-content">
+														<!--begin::Modal header-->
+														<div class="modal-header" id="kt_modal_add_user_header">
+															<!--begin::Modal title-->
+															<h2 class="fw-bolder">Ajouter une catégorie</h2>
+															<!--end::Modal title-->
+															<!--begin::Close-->
+															<div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
+																<!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
+																<span class="svg-icon svg-icon-1">
+																	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+																		<rect opacity="0.5" x="6" y="17.3137" width="16" height="2" rx="1" transform="rotate(-45 6 17.3137)" fill="black" />
+																		<rect x="7.41422" y="6" width="16" height="2" rx="1" transform="rotate(45 7.41422 6)" fill="black" />
+																	</svg>
+																</span>
+																<!--end::Svg Icon-->
+															</div>
+															<!--end::Close-->
+														</div>
+														<!--end::Modal header-->
+														<!--begin::Modal body-->
+														<div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+															 <!--begin::Form-->
+                                                             <form id="kt_modal_add_user_form" class="form" action="{{ route('categories.store') }}" method="POST">
+                                                                @csrf
+                                            
+                                                                <div class="d-flex flex-column scroll-y me-n7 pe-7" id="kt_modal_add_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_user_header" data-kt-scroll-wrappers="#kt_modal_add_user_scroll" data-kt-scroll-offset="300px">
+                                                                    
+                                                                    <!--begin::Input group - Nom-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <label class="required fw-bold fs-6 mb-2">Entrez le nom de la catégorie</label>
+                                                                        <input type="text" name="name" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Le nom de la catégorie" value="{{ old('name') }}" required />
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                            
+                                                                    <!--begin::Input group - Description-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <label class="required fw-bold fs-6 mb-2">Entrez la description de la catégorie</label>
+                                                                        <textarea name="description" class="form-control form-control-solid" placeholder="Description de la catégorie" rows="5" required>{{ old('description') }}</textarea>
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                    <button class="btn btn-primary" type="submit">Enregistrer</button>
+                                                                    
+                                                                    <!--end::Actions-->
+                                            
+                                                                </div>
+                                                            </form>
+                                                            <!--end::Form-->
+														</div>
+														<!--end::Modal body-->
+													</div>
+													<!--end::Modal content-->
+												</div>
+												<!--end::Modal dialog-->
+											</div>
+											<!--end::Modal - Add task-->
+										</div>
+										<!--end::Card toolbar-->
+									</div>
+									<!--end::Card header-->
+									<!--begin::Card body-->
+									<div class="card-body py-4">
+										<!--begin::Table-->
+										<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
+											<!--begin::Table head-->
+											<thead>
+												<!--begin::Table row-->
+												<tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
+													<th class="w-10px pe-2">
+														<div class="form-check form-check-sm form-check-custom form-check-solid me-3">
+															<input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_table_users .form-check-input" value="1" />
+														</div>
+													</th>
+                                                    <th class="min-w-125px">Nom de la catégorie</th>
+                                                    <th class="min-w-125px">Description de la catégorie</th>
+                                                    <th class="text-end min-w-100px">Actions</th>
+												</tr>
+												<!--end::Table row-->
+											</thead>
+											<!--end::Table head-->
+											<!--begin::Table body-->
+											<tbody class="text-gray-600 fw-bold">
+												<!--begin::Table row-->
+                                                @foreach($categories as $categorie)
+												<tr>
+													
+														<!--end::Avatar-->
+														<!--begin::User details-->
+                                                         <!--begin::Category Name-->
+                                                     <td>{{ $categorie->id }}</td>
+                                                     <td>{{ $categorie->name }}</td>
+                                                         <!--end::Category Name-->
+													<!--end::User=-->
+													<!--begin::Category Description-->
+                                                    <td>{{ $categorie->description }}</td>
+                                                    <!--end::Category Description-->
+													<!--begin::Last login=-->
+													
+													<!--begin::Action=-->
+													<!--begin::Action=-->
 <td class="text-end">
-    <div class="dropdown">
-        <button class="btn btn-light btn-active-light-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton{{ $categorie->id }}" data-bs-toggle="dropdown" aria-expanded="false">
-            Actions
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $categorie->id }}">
-            <li>
-                <a class="dropdown-item" href="{{ route('categories.edit', $categorie->id) }}">Modifier</a>
-            </li>
-            <li>
-                <form action="{{ route('categories.destroy', $categorie->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?');">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="dropdown-item text-danger">Supprimer</button>
-                </form>
-            </li>
-        </ul>
+    <div class="menu-item px-3">
+        <a href="{{ route('categories.show', $categorie->id) }}" class="menu-link px-3">
+            <!-- Icône SVG -->
+            <span class="svg-icon svg-icon-5 m-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M11 3V21C11 21.55 10.55 22 10 22C9.45 22 9 21.55 9 21V3C9 2.45 9.45 2 10 2C10.55 2 11 2.45 11 3ZM4.71 6.29C4.32 5.9 4.32 5.26 4.71 4.87L10.29 10.29C10.68 10.68 11.31 10.68 11.7 10.29L17.29 4.87C17.68 4.48 18.31 4.48 18.7 4.87C19.09 5.26 19.09 5.9 18.7 6.29L13.12 11.71C12.73 12.1 12.1 12.1 11.7 11.71L6.71 6.29C6.32 5.9 6.32 5.26 6.71 4.87C7.1 4.48 7.73 4.48 8.12 4.87L11 7.76L13.88 4.87C14.27 4.48 14.9 4.48 15.29 4.87C15.68 5.26 15.68 5.9 15.29 6.29L11 9.68L6.71 6.29C6.32 5.9 6.32 5.26 6.71 4.87C7.1 4.48 7.73 4.48 8.12 4.87L11 7.76L13.88 4.87C14.27 4.48 14.9 4.48 15.29 4.87C15.68 5.26 15.68 5.9 15.29 6.29L11 9.68L6.71 6.29C6.32 5.9 6.32 5.26 6.71 4.87" fill="black"/>
+                </svg>
+            </span>
+            Voir Plus
+        </a>
     </div>
 </td>
-<!--end::Actions-->
+<!--end::Action=-->
 
-                <!--end::Actions-->
-            </tr>
-            @endforeach
-        </tbody>
-        <!--end::Table body-->
-    </table>
-    <!--end::Table-->
-
-    <!--begin::Pagination-->
-    <div class="d-flex justify-content-center mt-4">
-        {{ $categories->links('pagination::bootstrap-5') }}
-    </div>
-    <!--end::Pagination-->
-</div>
-
-
-<!--end::Card body-->
-</div>
+													<!--end::Action=-->
+												</tr>
+												@endforeach
+												
+											</tbody>
+											<!--end::Table body-->
+										</table>
+										<!--end::Table-->
+									</div>
+									<!--end::Card body-->
+								</div>
 								<!--end::Card-->
-</div>
+							</div>
 							<!--end::Container-->
+						</div>
+                      </div>
+                    </div>
+                    </div>
 </div>
-						<!--end::Post-->
-</div>
-					<!--end::Content-->
-                </div>
-				<!--end::Wrapper-->
-			</div>
-			<!--end::Page-->
-		</div>
-	
-	
-	
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Initialisation des menus Metronic
+        const menuTriggers = document.querySelectorAll('[data-kt-menu-trigger="click"]');
+        
+        menuTriggers.forEach(trigger => {
+            trigger.addEventListener("click", function(e) {
+                e.preventDefault(); // Empêcher l'action par défaut du lien
+                const menu = this.nextElementSibling; // Trouver le menu suivant cet élément
+                menu.classList.toggle('show'); // Basculer la classe 'show' pour afficher/masquer le menu
+            });
+        });
+    });
+</script>

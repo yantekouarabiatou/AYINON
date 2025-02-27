@@ -1,24 +1,23 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
-
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    
     public function index()
     {
-        $users = User::all();
+        $users = User::paginate(10); // Pagination ajoutée
         $roles = Role::all();
-        // Log::info('Message de log avec une donnée', ['users' => $users]);
-        // dd($users);
         return view('users.index', compact('users', 'roles'));
     }
 
@@ -60,6 +59,8 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $user = User::findOrFail($id);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
@@ -83,8 +84,9 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
+        $user = User::findOrFail($id); // Correction ajoutée
         $user->delete();
+
         return Redirect::route('users.index')->with('success', 'Utilisateur supprimé avec succès.');
     }
-    
 }
