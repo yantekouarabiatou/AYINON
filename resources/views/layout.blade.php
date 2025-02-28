@@ -4446,6 +4446,23 @@
         });
     }
   </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    // Obtenir la date actuelle
+    const today = new Date();
+    const months = ["jan", "fev", "mar", "avr", "mai", "jun", "jul", "aou", "sep", "oct", "nov", "dec"];
+    const formattedDate = `${today.getDate()}-${months[today.getMonth()]}-${today.getFullYear()}`;
+
+    // Générer un ID aléatoire ou utilise un compteur si besoin
+    const uniqueId = Math.floor(Math.random() * 1000);
+
+    // Construire la référence
+    const reference = `${formattedDate}-${uniqueId}`;
+
+    // Injecter la référence dans le champ input
+    document.getElementById("reference").value = reference;
+  });
+ </script>
 
 	   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="assets/js/custom/apps/user-management/users/view/view.js"></script>

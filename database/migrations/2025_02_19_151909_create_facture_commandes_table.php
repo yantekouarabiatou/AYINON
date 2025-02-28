@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('facture_commandes', function (Blueprint $table) {
             $table->id();
-            $table->string('recu');
             $table->timestamps();
         });
     }

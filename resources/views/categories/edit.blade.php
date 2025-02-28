@@ -1,27 +1,63 @@
 @extends('layout')
 @section('content')
 
-<div class="container mt-5">
-    <h2 class="mb-4">Mettre à jour une Catégorie</h2>
+<div class="page d-flex flex-row flex-column-fluid">
+	<div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+		<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+			<div class="post d-flex flex-column-fluid" id="kt_post">
+				<div id="kt_content_container" class="container-xxl">
+					<div class="card">
+						<div class="card shadow-sm">
+							<div class="card-header pt-7">
+								<h5 class="card-title">Modifier la categorie</h5>
+							</div>
+							<div class="card-body">
+								<!-- Formulaire pour mettre à jour le categorie -->
+								<form action="{{ route('categories.update', $categorie->id) }}" method="POST" enctype="multipart/form-data">
+                                   @csrf
+									@method('PUT') <!-- Méthode pour la mise à jour -->
 
-    <form action="{{ route('categories.update', $categorie->id) }}" method="POST" class="row g-3">
-        @csrf
-        @method('PUT')
+									<div class="row g-2">
+										<!-- Nom du categorie -->
+										<div class="mb-3 fv-row fv-plugins-icon-container col-12">
+											<label for="name" class="form-label">Nom de la categorie</label>
+											<input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $categorie->name) }}">
+											@error('name')
+												<div class="invalid-feedback">{{ $message }}</div>
+											@enderror
+										</div>
+									</div>
 
-        <div class="col-md-12">
-            <label for="nameInput" class="form-label">Nom de la catégorie</label>
-            <input type="text" class="form-control" id="nameInput" name="name" placeholder="Entrez le nom de la catégorie" value="{{ $categorie->name }}" required>
-        </div>
+									<div class="row g-2">
+										<!-- Description -->
+										<div class="mb-3 fv-row fv-plugins-icon-container col-6">
+											<label for="description" class="form-label">Description</label>
+											<textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description">{{ old('description', $categorie->description) }}</textarea>
+											@error('description')
+												<div class="invalid-feedback">{{ $message }}</div>
+											@enderror
+										</div>
+									</div>
 
-        <div class="col-md-12">
-            <label for="descriptionInput" class="form-label">Description</label>
-            <textarea class="form-control" id="descriptionInput" name="description" placeholder="Entrez la description de la catégorie" rows="5" required>{{ $categorie->description }}</textarea>
-        </div>
+									<div class="card-footer">
+										<!-- Annuler -->
+										<a href="{{ route('categories.index') }}" class="btn btn-danger">
+											<i class="fa fa-times-circle"></i> Annuler
+										</a>
 
-        <div class="col-12 text-end">
-            <button type="submit" class="btn btn-primary">Mettre à jour</button>
-        </div>
-    </form>
+										<!-- Mettre à jour le categorie -->
+										<button type="submit" class="btn btn-primary">
+											<i class="fa fa-save"></i> Mettre à jour le categorie
+										</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
-@endsection
+

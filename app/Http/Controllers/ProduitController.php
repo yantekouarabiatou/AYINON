@@ -4,34 +4,47 @@ namespace App\Http\Controllers;
 
 use App\Models\Produit;
 use App\Models\Categorie;
-use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use RealRashid\SweetAlert\Facades\Alert as FacadesAlert;
+use Illuminate\Support\Facades\Log;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ProduitController extends Controller
 {
     /**
-     * Afficher la liste des produits.
+     * Display a listing of the produits.
      */
     public function index()
-    {
-        // Récupérer les produits avec leurs catégories
-        $produits = Produit::with('categories')->get();
-    
-        // Récupérer les produits dont la quantité est inférieure ou égale au seuil d'alerte
-        $alertProduits = $produits->filter(function ($produit) {
-            return $produit->quantite <= $produit->stock_alert;
-        });
-    
-        // Passer les produits et les produits avec alerte à la vue
-        return view('produits.index', compact('produits', 'alertProduits'));
-    }
+{
+    // Fetch all products with their categories
+    $produits = Produit::with('categories')->get();
 
+    // Transform the products collection to include media URLs
+        $produits = $produits->map(function ($produit) {
+        $mediaUrl = $produit->getFirstMediaUrl('produits'); // Use 'produits' collection name
 
+        // Return transformed product data
+        return [
+            'id' => $produit->id,
+            'name' => $produit->name,
+            'prix' => $produit->prix,
+            'description' => $produit->description,
+            'quantite' => $produit->quantite,
+            'stock_alert' => $produit->stock_alert,
+            'photo' => $mediaUrl // Ensure this is the correct URL
+        ];
+    });
+
+    // Filter products with quantity less than or equal to stock alert
+    $alertProduits = $produits->filter(function ($produit) {
+        return $produit['quantite'] <= $produit['stock_alert'];
+    });
+
+    // Pass the products and alert products to the view
+    return view('produits.index', compact('produits', 'alertProduits'));
+}
 
     /**
-     * Afficher le formulaire de création d'un produit.
+     * Show the form for creating a new produit.
      */
     public function create()
     {
@@ -40,46 +53,36 @@ class ProduitController extends Controller
     }
 
     /**
-     * Enregistrer un nouveau produit.
+     * Store a newly created produit in storage.
      */
     public function store(Request $request)
     {
-        // Validation des données
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'categorie_id' => 'required|exists:categories,id',
+            'name' => 'required',
+            'description' => 'required',
+            'categorie_id' => 'required',
             'prix' => 'required|numeric',
-            'quantite' => 'required|integer',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validation de l'image
-            'stock_alert' => 'nullable|integer',
+            'quantite' => 'required|numeric',
+            'stock_alert'=>'required|numeric',
+            'photo' => 'nullable|image|mimes:jpg,png,jpeg,gif|max:2048',
         ]);
-    
-        // Upload de la photo
-        $photoPath = null;
+
+        // Create the produit
+        $produit = Produit::create($request->except('photo'));
+
+        // Add the image if it exists
         if ($request->hasFile('photo')) {
-            // Stocke l'image dans storage/app/public/produits et enregistre le chemin sans "public/"
-            $photoPath = $request->file('photo')->store('produits', 'public');
+            $produit->addMediaFromRequest('photo')
+                ->usingFileName($produit->id . '-' . $request->file('photo')->getClientOriginalName()) // Unique name based on produit ID
+                ->toMediaCollection('produits', 'public');
         }
-    
-        // Création du produit
-        Produit::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'categorie_id' => $request->categorie_id,
-            'prix' => $request->prix,
-            'quantite' => $request->quantite,
-            'photo' => $photoPath, // Chemin corrigé
-            'stock_alert' => $request->stock_alert,
-        ]);
-    
-        return redirect()->route('produits.index')->with('success', 'Produit créé avec succès.');
+
+        Alert::success('Succès', 'Produit ajouté avec succès.');
+        return redirect()->route('produits.index')->with('success', 'Produit ajouté avec succès.');
     }
-    
-    
 
     /**
-     * Afficher un produit spécifique.
+     * Display the specified produit.
      */
     public function show(Produit $produit)
     {
@@ -87,94 +90,100 @@ class ProduitController extends Controller
     }
 
     /**
-     * Afficher le formulaire d'édition d'un produit.
+     * Show the form for editing the specified produit.
      */
     public function edit(Produit $produit)
-{
-    // Récupérer toutes les catégories
-    $categories = Categorie::all();
-
-    // Retourner la vue avec le produit et les catégories
-    return view('produits.update', compact('produit', 'categories'));
-}
-
+    {
+        $categories = Categorie::all();
+        return view('produits.update', compact('produit', 'categories'));
+    }
 
     /**
-     * Mettre à jour un produit.
+     * Update the specified produit in storage.
      */
     public function update(Request $request, Produit $produit)
     {
-        // Validation des données
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'categorie_id' => 'required|exists:categories,id',
             'prix' => 'required|numeric',
             'quantite' => 'required|integer',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validation de l'image
+            'stock_alert' => 'required|integer',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
     
-        // Mettre à jour les champs qui ne sont pas liés à l'image
-        $produit->name = $request->name;
-        $produit->description = $request->description;
-        $produit->categorie_id = $request->categorie_id;
-        $produit->prix = $request->prix;
-        $produit->quantite = $request->quantite;
-        $produit->stock_alert = $request->stock_alert;
+        // Update the produit
+        $produit->update($request->except('photo'));
     
-        // Vérifier si une nouvelle photo est uploadée
+        // Add or update the image if it exists
         if ($request->hasFile('photo')) {
-            // Supprimer l'ancienne photo si elle existe
-            if ($produit->photo && file_exists(storage_path('app/' . $produit->photo))) {
-                unlink(storage_path('app/' . $produit->photo));
-            }
+            // Log the photo file details for debugging
+            Log::info('Photo file received:', [
+                'file_name' => $request->file('photo')->getClientOriginalName(),
+                'file_size' => $request->file('photo')->getSize(),
+            ]);
     
-            // Enregistrer la nouvelle photo
-            $photoPath = $request->file('photo')->store('public/photos');
-            $produit->photo = $photoPath;
+            // Delete the old image if it exists
+            $produit->clearMediaCollection('produits');
+    
+            // Add the new image
+            $produit->addMedia($request->file('photo'))
+                ->usingFileName($produit->id . '-' . $request->file('photo')->getClientOriginalName()) // Unique name based on produit ID
+                ->toMediaCollection('produits', 'public');
+    
+            // Log the media details for debugging
+            Log::info('Media details for product', [
+                'produit_id' => $produit->id,
+                'media_url' => $produit->getFirstMediaUrl('produits'),
+                'file_exists' => file_exists(storage_path('app/public/' . $produit->getFirstMedia('produits')?->id . '/' . $produit->getFirstMedia('produits')?->file_name))
+            ]);
         }
     
-        // Sauvegarder le produit mis à jour
-        $produit->save();
-         // Si une erreur se produit
+        // Log success message
+        Log::info('Produit updated successfully:', ['produit_id' => $produit->id]);
+    
+        // Show success alert and redirect
         Alert::success('Succès', 'Produit mis à jour avec succès.');
         return redirect()->route('produits.index')->with('success', 'Produit mis à jour avec succès.');
     }
-    
-
 
     /**
-     * Supprimer un produit.
+     * Remove the specified produit from storage.
      */
     public function destroy(Produit $produit)
     {
-        // Suppression du produit
+        // Delete the associated image
+        $produit->clearMediaCollection('produits');
+
+        // Delete the produit
         $produit->delete();
-    
-        // Redirection ou autre action
+
+        Alert::success('Succès', 'Produit supprimé avec succès.');
         return redirect()->route('produits.index');
     }
-    
 
-    public function filterProducts(Request $request)
-{
-    $query = Produit::query();
+    /**
+     * Filter produits based on search and category.
+     */
+    public function filterproduits(Request $request)
+    {
+        $query = Produit::query();
 
-    // Apply search filter
-    if ($request->has('search') && !empty($request->search)) {
-        $query->where('name', 'like', '%' . $request->search . '%');
+        // Apply search filter
+        if ($request->has('search') && !empty($request->search)) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        // Apply category filter
+        if ($request->has('category') && !empty($request->category)) {
+            $query->where('categorie_id', $request->category);
+        }
+
+        // Get the filtered produits
+        $produits = $query->get();
+
+        // Return the data as JSON
+        return response()->json($produits);
     }
-
-    // Apply category filter
-    if ($request->has('category') && !empty($request->category)) {
-        $query->where('category_id', $request->category);
-    }
-
-    // Get the filtered products
-    $products = $query->get();
-
-    // Return the data as JSON
-    return response()->json($products);
-}
-
 }

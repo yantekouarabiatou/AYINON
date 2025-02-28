@@ -1,9 +1,14 @@
 <?php
 
 use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\CommandeController;
+use App\Http\Controllers\FactureCommandeController;
+use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TypeFournisseurController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VenteController;
 use App\Models\Produit;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +41,7 @@ Route::get('/categories/success', [CategorieController::class, 'success'])->name
 Route::get('/categories', [CategorieController::class, 'index'])->name('categories.index');
 Route::get('/categories/{id}', [CategorieController::class, 'show'])->name('categories.show');
 
+
 Route::get('/produits/index', [ProduitController::class, 'index'])->name('produits.index'); // Formulaire de création
 Route::get('/produit/create', [ProduitController::class, 'create'])->name('produits.create'); // Formulaire de création
 Route::post('/produits', [ProduitController::class, 'store'])->name('produits.store');        // Enregistrer une catégorie
@@ -44,6 +50,55 @@ Route::put('/produit/{produit}', [ProduitController::class, 'update'])->name('pr
 Route::post('/produits/filter', [ProduitController::class, 'filterProduits']);
 Route::delete('/produit/{produit}', [ProduitController::class, 'destroy'])->name('produits.destroy');
 Route::get('/produit/{produit}', [ProduitController::class, 'show'])->name('produits.show');
+
+
+Route::get('/Tfournisseurs/create', [TypeFournisseurController::class, 'create'])->name('Tfournisseurs.create'); // Formulaire de création
+Route::post('/Tfournisseurs', [TypeFournisseurController::class, 'store'])->name('Tfournisseurs.store');        // Enregistrer une catégorie
+Route::get('/Tfournisseurs/{id}/edit', [TypeFournisseurController::class, 'edit'])->name('Tfournisseurs.edit'); // Formulaire d'édition
+Route::put('/Tfournisseurs/{id}', [TypeFournisseurController::class, 'update'])->name('Tfournisseurs.update');  // Mettre à jour une catégorie
+Route::delete('/Tfournisseurs/{id}', [TypeFournisseurController::class, 'destroy'])->name('Tfournisseurs.destroy'); // Supprimer une catégorie
+Route::get('/Tfournisseurs/success', [TypeFournisseurController::class, 'success'])->name('Tfournisseurs.success');
+Route::get('/Tfournisseurs', [TypeFournisseurController::class, 'index'])->name('Tfournisseurs.index');
+Route::get('/Tfournisseurs/{id}', [TypeFournisseurController::class, 'show'])->name('Tfournisseurs.show');
+
+
+Route::get('/fournisseurs/index', [FournisseurController::class, 'index'])->name('fournisseurs.index'); // Formulaire de création
+Route::get('/fournisseurs/create', [FournisseurController::class, 'create'])->name('fournisseurs.create'); // Formulaire de création
+Route::post('/fournisseurs', [FournisseurController::class, 'store'])->name('fournisseurs.store');        // Enregistrer une catégorie
+Route::get('/fournisseurs/{fournisseur}/edit', [FournisseurController::class, 'edit'])->name('fournisseurs.edit');
+Route::put('/fournisseurs/{fournisseur}', [FournisseurController::class, 'update'])->name('fournisseurs.update');
+Route::post('/fournisseurs/filter', [FournisseurController::class, 'filterFournisseurs']);
+Route::delete('/fournisseurs/{fournisseur}', [FournisseurController::class, 'destroy'])->name('fournisseurs.destroy');
+Route::get('/fournisseurs/{fournisseur}', [FournisseurController::class, 'show'])->name('fournisseurs.show');
+
+
+Route::get('/commandes/index', [CommandeController::class, 'index'])->name('commandes.index'); // Formulaire de création
+Route::get('/commandes/create', [CommandeController::class, 'create'])->name('commandes.create'); // Formulaire de création
+Route::post('/commandes', [CommandeController::class, 'store'])->name('commandes.store');        // Enregistrer une catégorie
+Route::get('commandes/{commande}/edit', [CommandeController::class, 'edit'])->name('commandes.edit');
+Route::put('/commandes/{commande}', [CommandeController::class, 'update'])->name('commandes.update');
+Route::post('/commandes/filter', [CommandeController::class, 'filterCommandes']);
+Route::delete('/commandes/{commande}', [CommandeController::class, 'destroy'])->name('commandes.destroy');
+Route::get('/commandes/{commande}', [CommandeController::class, 'show'])->name('commandes.show');
+
+
+Route::get('/factureCommandes/index', [FactureCommandeController::class, 'index'])->name('factureCommandes.index'); // Formulaire de création
+Route::get('/factureCommandes/create', [FactureCommandeController::class, 'create'])->name('factureCommandes.create'); // Formulaire de création
+Route::post('/factureCommandes', [FactureCommandeController::class, 'store'])->name('factureCommandes.store');        // Enregistrer une catégorie
+Route::get('/factureCommandes/{factureCommande}/edit', [FactureCommandeController::class, 'edit'])->name('factureCommandes.edit');
+Route::put('/factureCommandes/{factureCommande}', [FactureCommandeController::class, 'update'])->name('factureCommandes.update');
+Route::post('/factureCommandes/filter', [FactureCommandeController::class, 'filterProduits']);
+Route::delete('/factureCommandes/{factureCommande}', [FactureCommandeController::class, 'destroy'])->name('factureCommandes.destroy');
+Route::get('/factureCommandes/{factureCommande}', [FactureCommandeController::class, 'show'])->name('factureCommandes.show');
+
+Route::get('/ventes/index', [VenteController::class, 'index'])->name('ventes.index'); // Formulaire de création
+Route::get('/ventes/create', [VenteController::class, 'create'])->name('ventes.create'); // Formulaire de création
+Route::post('/ventes', [VenteController::class, 'store'])->name('ventes.store');        // Enregistrer une catégorie
+Route::get('/ventes/{ventes}/edit', [VenteController::class, 'edit'])->name('ventes.edit');
+Route::put('/ventes/{ventes}', [VenteController::class, 'update'])->name('ventes.update');
+Route::post('/ventes/filter', [VenteController::class, 'filterProduits']);
+Route::delete('/ventes/{ventes}', [VenteController::class, 'destroy'])->name('ventes.destroy');
+Route::get('/ventes/{ventes}', [VenteController::class, 'show'])->name('ventes.show');
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('users', UserController::class);

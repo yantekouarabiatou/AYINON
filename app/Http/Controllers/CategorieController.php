@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categorie;
 use App\Models\User;
+use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Container\Attributes\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log as FacadesLog;
@@ -17,7 +18,7 @@ class CategorieController extends Controller
     {
          $categories = Categorie::paginate(10);
          $user=User::all();
-        return view('categories.create', compact('categories','user'));
+         return view('categories.index', compact('categories','user'));
     }
 
     /**
@@ -29,14 +30,6 @@ class CategorieController extends Controller
         $user=User::all();
         return view('categories.create', compact('categories','user'));
     }
-
-    public function success()
-    {
-        $user=User::all();
-        $categories=Categorie::all();
-        return view('categories.success', compact('categories','user'));
-    }
-
 
     /**
      * Enregistre une nouvelle catégorie.
@@ -50,7 +43,7 @@ class CategorieController extends Controller
 
         Categorie::create($validated);
 
-        return redirect()->route('categories.success')->with('success', 'Catégorie ajoutée avec succès !');
+        return redirect()->route('categories.index')->with('success', 'Catégorie ajoutée avec succès !');
     }
 
     /**
@@ -68,36 +61,41 @@ class CategorieController extends Controller
      * Affiche le formulaire d'édition d'une catégorie.
      */
     public function edit($id)
-    {   $categories = Categorie::all();
-        $categorie = Categorie::findOrFail($id); // Récupère la catégorie ou échoue
-        return view('categories.create', compact('categorie','categories'));
-    }
+{
+    $categorie = Categorie::findOrFail($id);
+    return view('categories.edit', compact('categorie'));
+}
+
     
 
     /**
      * Met à jour une catégorie existante.
      */
-    public function update(Request $request, Categorie $categorie)
-{
-    FacadesLog::info('Update method called for category: ' . $categorie->id); // Log pour confirmer que la méthode est appelée
-
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'description' => 'nullable|string',
-    ]);
-
-    $categorie->update($validated);
-
-    return redirect()->route('categories.create')->with('success', 'Catégorie mise à jour avec succès !');
-}
+    public function update(Request $request, $id)
+    {
+        $categorie = Categorie::findOrFail($id);
+  
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+  
+        $categorie->update($validated);
+  
+        return redirect()->route('categories.index')->with('success', 'Catégorie mise à jour avec succès !');
+    }
+  
 
     
     /**
      * Supprime une catégorie.
      */
-    public function destroy(Categorie $categorie)
-    {
-        $categorie->delete();
-        return redirect()->route('categories.create')->with('success', 'Catégorie supprimée avec succès !');
-    }
+    public function destroy($id)
+{
+    $categorie = Categorie::findOrFail($id);
+    $categorie->delete();
+    Alert::success('Succès', 'categorie supprimée avec succès.');
+    return redirect()->route('categories.index')->with('success', 'Catégorie supprimée avec succès !');
+}
+
 }

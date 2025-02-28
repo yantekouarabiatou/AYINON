@@ -14,7 +14,7 @@
 							<div class="card-body">
 								<!-- Formulaire pour mettre à jour le produit -->
 								<form action="{{ route('produits.update', $produit->id) }}" method="POST" enctype="multipart/form-data">
-    @csrf
+                                   @csrf
 									@method('PUT') <!-- Méthode pour la mise à jour -->
 
 									<div class="row g-2">
@@ -78,15 +78,21 @@
 										<div class="mb-3 fv-row fv-plugins-icon-container col-6">
 											<label for="photo" class="form-label">Image du produit</label>
 											<input type="file" class="form-control @error('photo') is-invalid @enderror" id="photo" name="photo">
-											@if($produit->photo)
-												<p class="mt-2">Image actuelle :</p>
-												<img src="{{ Storage::url($produit->photo) }}" alt="{{ $produit->name }}" width="120">
+									
+											<!-- Affichage de l'image existante (si elle existe) -->
+											@if($produit->getFirstMedia('produits')) <!-- Vérifie si une image existe dans la collection 'produits' -->
+											
+												<img src="{{ $produit->getFirstMedia('produits')->getUrl() }}" alt="{{ $produit->name }}" width="100">
+												
+											@else
+												<span>Aucune image</span>
 											@endif
+									
 											@error('photo')
 												<div class="invalid-feedback">{{ $message }}</div>
 											@enderror
 										</div>
-
+									
 										<!-- Description -->
 										<div class="mb-3 fv-row fv-plugins-icon-container col-6">
 											<label for="description" class="form-label">Description</label>
@@ -96,6 +102,7 @@
 											@enderror
 										</div>
 									</div>
+									
 
 									<div class="card-footer">
 										<!-- Annuler -->

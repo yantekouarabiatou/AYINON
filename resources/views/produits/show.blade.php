@@ -13,10 +13,16 @@
                             <div class="card-title">
                                 <h2>Détails du produit {{ $produit->name }}</h2>
                             </div>
-                            <!--begin::Card image-->
-                            <div class="card-image">
-                                <img src="{{ Storage::url($produit->photo) }}" alt="{{ $produit->name }}" width="100" class="img-fluid" style="max-height: 200px; object-fit: cover;" />
-                            </div>
+                           <!--begin::Card image-->
+<!--begin::Card image-->
+<div class="card-image" style="box-shadow: 0 4px 8px rgba(13, 12, 12, 0.591); border-radius: 15px;">
+    <!-- Vérifie si une photo est définie, sinon affiche une image par défaut -->
+    <img src="{{ $produit->getFirstMediaUrl('produits') ?: asset('storage/photos/default.jpg') }}" 
+         alt="{{ $produit->name }}" 
+         width="100" class="img-fluid" 
+         style="max-height: 200px; object-fit: cover;" />
+</div>
+
                             <!--end::Card image-->
                         </div>
                         <!--end::Card header-->
