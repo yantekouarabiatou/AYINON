@@ -8,10 +8,13 @@
     "require": {
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^3.1",
+        "composer/pcre": "^3.3",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
+        "masterminds/html5": "^2.9",
         "nesbot/carbon": "^3.8",
         "realrashid/sweet-alert": "^7.2",
+        "sabberworm/php-css-parser": "^8.7",
         "spatie/laravel-medialibrary": "^11.12"
     },
     "require-dev": {
@@ -71,6 +74,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }
