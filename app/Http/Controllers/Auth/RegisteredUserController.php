@@ -30,7 +30,8 @@ class RegisteredUserController extends Controller
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse
-    {  
+    {
+        // Validate the request
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'photo' => ['required', 'image', 'mimes:jpg,png,jpeg', 'max:2048'],
@@ -39,28 +40,21 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role_id' => 'required|exists:roles,id',
         ]);
+        $user = User::create($request->except('photo'));
+        // Add the photo if it exists
+        if ($request->hasFile('photo')) {
+            $user->addMediaFromRequest('photo')
+                ->usingFileName($user->id . '-' . $request->file('photo')->getClientOriginalName()) // Unique name based on user ID
+                ->toMediaCollection('photos', 'public');
+        }
 
-         // Stockage de la photo
-         $photoPath = $request->file('photo')->storeAs(
-            'photos', // Dossier dans storage/app/public/photos/
-            time() . '_' . $request->file('photo')->getClientOriginalName(), // Nom unique avec timestamp
-            'public' // Sauvegarde dans storage/app/public
-        );
-
-        // Création de l'utilisateur
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'telephone' => $request->telephone,
-            'password' => Hash::make($request->password),
-            'role_id' => $request->role_id,
-            'photo' => 'storage/' . $photoPath, // Stocke le chemin public
-        ]);
-
+        // Trigger the Registered event
         event(new Registered($user));
 
+        // Log in the user
         Auth::login($user);
 
+        // Redirect to the dashboard or another appropriate route
         return redirect(route('login', absolute: false));
     }
 }
