@@ -31,36 +31,36 @@ class DatabaseSeeder extends Seeder
 
         ]);
 
-        User::factory()->create([
-            'name' => 'Contrôleur User',
-            'email' => 'controleur@example.com',
-            'photo' => 'profil.jpg',
-            'telephone' => '+229 96 12 34 56', 
-            'role_id' => $controleurRole->id,
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Contrôleur User',
+        //     'email' => 'controleur@example.com',
+        //     'photo' => 'profil.jpg',
+        //     'telephone' => '+229 96 12 34 56', 
+        //     'role_id' => $controleurRole->id,
+        // ]);
 
-        User::factory()->create([
-            'name' => 'Gérant User',
-            'email' => 'gerant@example.com',
-            'photo' => 'profil.jpg',
-            'telephone' => '+229 94 12 34 56', 
-            'role_id' => $gerantRole->id,
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Gérant User',
+        //     'email' => 'gerant@example.com',
+        //     'photo' => 'profil.jpg',
+        //     'telephone' => '+229 94 12 34 56', 
+        //     'role_id' => $gerantRole->id,
+        // ]);
 
-        User::factory()->create([
-            'name' => 'Caissier User',
-            'email' => 'caissier@example.com',
-            'photo' => 'profil.jpg',
-            'telephone' => '+229 99 12 34 56', 
-            'role_id' => $caissierRole->id,
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Caissier User',
+        //     'email' => 'caissier@example.com',
+        //     'photo' => 'profil.jpg',
+        //     'telephone' => '+229 99 12 34 56', 
+        //     'role_id' => $caissierRole->id,
+        // ]);
 
-        User::factory(5)->create([
-            'role_id' => $caissierRole->id,
-        ]);
+        // User::factory(5)->create([
+        //     'role_id' => $caissierRole->id,
+        // ]);
 
-        User::factory(5)->create([
-            'role_id' => $gerantRole->id,
-        ]);
+        // User::factory(5)->create([
+        //     'role_id' => $gerantRole->id,
+        // ]);
     }
 }

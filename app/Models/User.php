@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User extends Authenticatable
 {
@@ -17,10 +18,15 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    public function role()
-          {
-            return $this->belongsTo(Role::class);
-           }
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
+    }
+    public function hasPermission($permission)
+    {
+        return $this->role && $this->role->permissions->contains('name', $permission);
+    }
+
     protected $fillable = [
         'name',
         'email',
@@ -29,6 +35,7 @@ class User extends Authenticatable
         'photo',
         'role_id',
         'last_login_at', 
+        'is_active',
     ];
 
     /**

@@ -23,7 +23,7 @@ class AdminMiddleware
             'has_role_relation' => isset($user->role)
         ]);
 
-        if (!$user || !$user->role || $user->role->name !== 'admin') {
+        if (!$user || !$user->role || $user->role->name !== 'Administrateur') {
             abort(403, 'Accès interdit');
         }
         return $next($request);

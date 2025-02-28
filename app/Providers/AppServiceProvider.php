@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 
 
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
