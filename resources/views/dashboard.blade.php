@@ -264,6 +264,4 @@
 			</div>
 			<!--end::Page-->
 		</div>
-
-
-	</div>
+</div>

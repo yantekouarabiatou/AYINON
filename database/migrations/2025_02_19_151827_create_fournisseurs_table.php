@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('type_id')->nullable()->constrained('type_fournisseurs')->onDelete('set null');
             $table->string('nom');
-            $table->string('logo');
             $table->string('reseau');
             $table->timestamps();
         });

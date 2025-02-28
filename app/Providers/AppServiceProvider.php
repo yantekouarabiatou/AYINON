@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
-
+use Illuminate\Support\Facades\Auth;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -22,10 +22,13 @@ class AppServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      */
     public function boot(): void
-    {
+    {   
         View::composer('*', function ($view) {
-            $view->with('user', auth()->user());
-        });
-        Schema::defaultStringLength(191);
+        $view->with('user', Auth::user());
+    });
+
+       Schema::defaultStringLength(191);
+    
+      
     }
 }

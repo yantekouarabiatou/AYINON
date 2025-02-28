@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -23,9 +23,9 @@ class Vente extends Model
         return $this->hasMany(Payement::class);
     }
 
-    public function produits()
+    public function produit()
     {
-        return $this->belongsTo(Produit::class);
+        return $this->belongsTo(Produit::class,'produit_id');
     }
 
     public function vente_details()
@@ -33,8 +33,8 @@ class Vente extends Model
         return $this->belongsTo(Vente_detail::class);
     }
 
-    public function users()
+    public function user()
     {
-        return $this->belongsTo(Users::class);
+        return $this->belongsTo(User::class);
     }
 }

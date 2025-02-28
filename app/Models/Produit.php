@@ -1,30 +1,37 @@
 <?php
 
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Produit extends Model
+class Produit extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
-    /**
-     * Les attributs pouvant être assignés en masse.
-     *
-     * @var array
-     */
+
     protected $fillable = [
         'name',
         'description',
         'categorie_id',
         'prix',
+        'stock_alert',
         'quantite',
     ];
 
-    /**
-     * Relation avec la catégorie.
-     */
+    // Ajoute cette fonction pour enregistrer les collections de médias
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('photo') // Nom de la conversion
+            ->width(100) // Largeur de l'image
+            ->height(100) // Hauteur de l'image
+            ->nonQueued(); // Exécuter la conversion immédiatement (optionnel)
+    }
+
+
     public function categories()
     {
         return $this->belongsTo(Categorie::class);
@@ -37,6 +44,6 @@ class Produit extends Model
 
     public function commandes(): HasMany
     {
-        return $this->hasMany(commande::class);
+        return $this->hasMany(Commande::class);
     }
 }

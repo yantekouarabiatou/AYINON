@@ -1,59 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
-<!--begin::Head-->
-
-<head>
-    <base href="../">
-    <title>Ayinon Fish</title>
-    <meta charset="utf-8" />
-    <meta name="description"
-        content="The most advanced Bootstrap Admin Theme on Themeforest trusted by 94,000 beginners and professionals. Multi-demo, Dark Mode, RTL support and complete React, Angular, Vue &amp; Laravel versions. Grab your copy now and get life-time updates for free." />
-    <meta name="keywords"
-        content="Metronic, bootstrap, bootstrap 5, Angular, VueJs, React, Laravel, admin themes, web design, figma, web development, free templates, free admin themes, bootstrap theme, bootstrap template, bootstrap dashboard, bootstrap dak mode, bootstrap button, bootstrap datepicker, bootstrap timepicker, fullcalendar, datatables, flaticon" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:type" content="article" />
-    <meta property="og:title"
-        content="Metronic - Bootstrap 5 HTML, VueJS, React, Angular &amp; Laravel Admin Dashboard Theme" />
-    <meta property="og:url" content="https://keenthemes.com/metronic" />
-    <meta property="og:site_name" content="Keenthemes | Metronic" />
-    <link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
-    <link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
-    <!--begin::Fonts-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
-    <!--end::Fonts-->
-    <!--begin::Page Vendor Stylesheets(used by this page)-->
-    <link href="assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
-    <link href="assets/plugins/custom/vis-timeline/vis-timeline.bundle.css" rel="stylesheet" type="text/css" />
-    <!--end::Page Vendor Stylesheets-->
-    <!--begin::Global Stylesheets Bundle(used by all pages)-->
-    <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-    <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-    <!--end::Global Stylesheets Bundle-->
-</head>
-<!--end::Head-->
-<!--begin::Body-->
-
-<body id="kt_body"
-    class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed aside-enabled aside-fixed"
-    style="--kt-toolbar-height:55px;--kt-toolbar-height-tablet-and-mobile:55px">
-    <!--begin::Main-->
-    <!--begin::Root-->
-    <div class="d-flex flex-column flex-root">
-        <!--begin::Page-->
-        <div class="page d-flex flex-row flex-column-fluid">
-            <!--begin::Aside-->
-            <div id="kt_aside" class="aside aside-dark aside-hoverable" data-kt-drawer="true"
-                data-kt-drawer-name="aside" data-kt-drawer-activate="{default: true, lg: false}"
-                data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}"
-                data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_aside_mobile_toggle">
-                <!--begin::Brand-->
-                <div class="aside-logo flex-column-auto" id="kt_aside_logo">
-                    <!--begin::Logo-->
-                    <a href="../../demo1/dist/index.html">
-                        <img alt="Logo" src="assets/media/logos/logo-1-dark.svg" class="h-25px logo" />
-=======
 	<!--begin::Head-->
 	<head><base href="../">
 		<title>Ayinon Fish</title>
@@ -72,7 +18,8 @@
 		<link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 		<link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
 		<link href="{{ asset('assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
-	
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 		<!--begin::Fonts-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
 		<!---begin::Page Vendor Stylesheets(used by this page)-->
@@ -252,7 +199,6 @@
                             <span class="bullet bullet-dot"></span>
                         </span>
                         <span class="menu-title">Overview</span>
->>>>>>> origin/dev_hermione
                     </a>
                     <!--end::Logo-->
                     <!--begin::Aside toggler-->
@@ -5706,11 +5652,10 @@ $subParentTitle = $breadcrumbs[$routeName]['subparent'] ?? null;
 		<script src="assets/js/custom/apps/chat/chat.js"></script>
 		<script src="assets/js/custom/utilities/modals/upgrade-plan.js"></script>
 		<script src="assets/js/custom/utilities/modals/users-search.js"></script>
-		<!--end::Page Custom Javascript-->
-		<!--end::Javascript-->
-				<!--begin::Page Vendors Javascript(used by this page)-->
-				<script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
-
+		<script src="assets/plugins/global/plugins.bundle.js"></script>
+		<script src="assets/js/scripts.bundle.js"></script>
+		<!--end::Global Javascript Bundle-->
+		<!--begin::Page Vendors Javascript(used by this page)-->
 		<script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
 		<!--end::Page Vendors Javascript-->
 		<!--begin::Page Custom Javascript(used by this page)-->
@@ -5723,7 +5668,138 @@ $subParentTitle = $breadcrumbs[$routeName]['subparent'] ?? null;
 		<script src="assets/js/custom/utilities/modals/upgrade-plan.js"></script>
 		<script src="assets/js/custom/utilities/modals/create-app.js"></script>
 		<script src="assets/js/custom/utilities/modals/users-search.js"></script>
+		<!--begin::Page Vendors Javascript(used by this page)-->
+		<script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
+		<!--end::Page Vendors Javascript-->
+		<!--begin::Page Custom Javascript(used by this page)-->
+		<script>
+
+			$(document).ready(function() {
+			// Vérifier si DataTable existe déjà et le détruire
+			if ($.fn.dataTable.isDataTable('#kt_table_produits')) {
+				$('#kt_table_produits').DataTable().clear().destroy();
+			}
 		
+			// Initialisation du DataTable
+			$('#kt_table_produits').DataTable({
+				// Votre configuration ici
+			});
+		});
+		
+		</script>
+		<script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
+		<script src="assets/js/custom/apps/user-management/users/list/table.js"></script>
+		<script src="assets/js/custom/apps/user-management/users/list/export-users.js"></script>
+		<script src="assets/js/custom/apps/user-management/users/list/add.js"></script>
+		<script src="assets/js/widgets.bundle.js"></script>
+		<script src="assets/js/custom/widgets.js"></script>
+		<script src="assets/js/custom/apps/chat/chat.js"></script>
+		<script src="assets/js/custom/utilities/modals/upgrade-plan.js"></script>
+		<script src="assets/js/custom/utilities/modals/create-app.js"></script>
+		<script src="assets/js/custom/utilities/modals/users-search.js"></script>
+       <script>
+		$(document).ready(function() {
+    // Pour le formulaire de mise à jour
+    $('form#updateCategoryForm').on('submit', function(e) {
+        e.preventDefault(); // Empêcher la soumission normale
+
+        let formData = new FormData(this);
+        
+        $.ajax({
+            url: $(this).attr('action'), // URL du formulaire (route de mise à jour)
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                // Fermeture du modal après la soumission
+                $('#updateCategoryModal').modal('hide');
+                // Mise à jour du DOM avec les nouvelles informations
+                $('#category-' + response.id).replaceWith(response.updatedCategoryHTML);
+                alert(response.message); // Afficher un message de succès
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+                alert("Erreur lors de la mise à jour.");
+            }
+        });
+    });
+
+    // Pour le formulaire de suppression
+    $('form#deleteCategoryForm').on('submit', function(e) {
+        e.preventDefault(); // Empêcher la soumission normale
+
+        let formData = new FormData(this);
+        
+        $.ajax({
+            url: $(this).attr('action'), // URL du formulaire (route de suppression)
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                // Fermeture du modal après la soumission
+                $('#deleteCategoryModal').modal('hide');
+                // Retirer la catégorie supprimée du DOM
+                $('#category-' + response.id).remove();
+                alert(response.message); // Afficher un message de succès
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+                alert("Erreur lors de la suppression.");
+            }
+        });
+    });
+});
+
+	   </script>
+	   <script nonce="<random_value>">
+		// ton code JavaScript ici
+		<script>
+    function confirmDelete(produitId) {
+        Swal.fire({
+            title: 'Êtes-vous sûr ?',
+            text: "Cette action est irréversible.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Oui, supprimer',
+            cancelButtonText: 'Annuler',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Créez un formulaire de suppression et soumettez-le
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/produit/' + produitId;
+                form.innerHTML = `
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                `;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    }
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    // Obtenir la date actuelle
+    const today = new Date();
+    const months = ["jan", "fev", "mar", "avr", "mai", "jun", "jul", "aou", "sep", "oct", "nov", "dec"];
+    const formattedDate = `${today.getDate()}-${months[today.getMonth()]}-${today.getFullYear()}`;
+
+    // Générer un ID aléatoire ou utilise un compteur si besoin
+    const uniqueId = Math.floor(Math.random() * 1000);
+
+    // Construire la référence
+    const reference = `${formattedDate}-${uniqueId}`;
+
+    // Injecter la référence dans le champ input
+    document.getElementById("reference").value = reference;
+  });
+ </script>
+
+	   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="assets/js/custom/apps/user-management/users/view/view.js"></script>
 		<script src="assets/js/custom/apps/user-management/users/view/update-details.js"></script>
 		<script src="assets/js/custom/apps/user-management/users/view/add-schedule.js"></script>
@@ -5739,25 +5815,9 @@ $subParentTitle = $breadcrumbs[$routeName]['subparent'] ?? null;
 		<script src="assets/js/custom/utilities/modals/upgrade-plan.js"></script>
 		<script src="assets/js/custom/utilities/modals/create-app.js"></script>
 		<script src="assets/js/custom/utilities/modals/users-search.js"></script>
-		
-		<script>var hostUrl = "assets/";</script>
-		<!--begin::Global Javascript Bundle(used by all pages)-->
-		<script src="assets/plugins/global/plugins.bundle.js"></script>
-		<script src="assets/js/scripts.bundle.js"></script>
-		<!--end::Global Javascript Bundle-->
-		<!--begin::Page Vendors Javascript(used by this page)-->
-		<script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
-		<!--end::Page Vendors Javascript-->
-		<!--begin::Page Custom Javascript(used by this page)-->
-		<!-- Scripts JavaScript -->
-		<script src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-		<script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
-		<script src="{{ asset('assets/libs/node-waves/waves.min.js') }}"></script>
-		<script src="{{ asset('assets/libs/feather-icons/feather.min.js') }}"></script>
-		<script src="{{ asset('assets/js/plugins.js') }}"></script>
-	<!-- Bootstrap JS -->
-       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-       
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+         @include('sweetalert::alert')
+
 	</body>
 	<!--end::Body-->
 </html>

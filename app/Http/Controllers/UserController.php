@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Storage;
 
-
 class UserController extends Controller
 {
     
