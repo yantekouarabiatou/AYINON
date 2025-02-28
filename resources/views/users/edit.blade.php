@@ -1,6 +1,5 @@
-@extends('layout') 
+@extends('layout')
 @section('content')
-
     <h1>Edit User</h1>
     <form action="{{ route('users.update', $user->id) }}" method="POST">
         @csrf
@@ -9,8 +8,3 @@
         <button type="submit">Update</button>
     </form>
 @endsection
-
-
-
-
-

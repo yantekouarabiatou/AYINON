@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User extends Authenticatable implements HasMedia
 {
@@ -21,16 +22,23 @@ class User extends Authenticatable implements HasMedia
      *
      * @var list<string>
      */
-    public function role()
-          {
-            return $this->belongsTo(Role::class);
-           }
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
+    }
+    public function hasPermission($permission)
+    {
+        return $this->role && $this->role->permissions->contains('name', $permission);
+    }
+
     protected $fillable = [
         'name',
         'email',
         'password',
         'telephone',
         'role_id',
+        'last_login_at', 
+        'is_active',
     ];
 
     /**
@@ -41,6 +49,7 @@ class User extends Authenticatable implements HasMedia
     protected $hidden = [
         'password',
         'remember_token',
+        'last_login_at' => 'datetime'
     ];
 
     /**
