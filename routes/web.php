@@ -17,6 +17,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Controllers\EmballageController;
 
 Route::get('/', function () {
     return view('auth.login');
@@ -127,6 +128,11 @@ Route::delete('/detailsVentes/{detailsVente}', [VenteDetailController::class, 'd
 Route::get('/detailsVentes/{detailsVente}', [VenteDetailController::class, 'show'])->name('detailsVentes.show');
 Route::get('/ventes/{vente_id}/details', [VenteDetailController::class, 'detailsParVente'])
     ->name('ventes.details');
+
+    
+
+// Routes pour EmballageController
+Route::resource('emballages', EmballageController::class);
 
 
 Route::middleware(['auth'])->group(function () {

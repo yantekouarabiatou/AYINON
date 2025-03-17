@@ -65,7 +65,7 @@
                                     <div class="row g-3">
                                         <!-- Date d'entrée -->
                                         <div class="mb-3 col-4">
-                                            <label for="date_entree" class="form-label">Date d'entrée du produit</label>
+                                            <label for="date_entree" class="form-label">Date d'entrée du produit(Provisoire)</label>
                                             <input type="date" class="form-control @error('date_entree') is-invalid @enderror" id="date_entree" name="date_entree" value="{{ old('date_entree') }}">
                                             @error('date_entree')
                                                 <div class="invalid-feedback">{{ $message }}</div>
