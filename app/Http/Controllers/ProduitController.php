@@ -5,75 +5,60 @@ namespace App\Http\Controllers;
 use App\Models\Produit;
 use App\Models\Categorie;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Log;
 
 class ProduitController extends Controller
 {
     /**
-     * Display a listing of the produits.
+     * Constructeur pour partager les produits en alerte avec toutes les vues.
      */
-
     public function __construct()
     {
-        // Partager les produits en alerte avec toutes les vues
         View::share('alertProduits', $this->getProduitsEnAlerte());
     }
 
+    /**
+     * Récupérer les produits en alerte (quantité <= stock_alert).
+     */
     private function getProduitsEnAlerte()
     {
         return Produit::whereColumn('quantite', '<=', 'stock_alert')->get();
     }
 
+    /**
+     * Afficher la liste des produits.
+     */
     public function index()
     {
-        // Fetch all products with their categories
         $produits = Produit::with('categories')->get();
 
-        // Add the media URL to each product
         $produits->each(function ($produit) {
             $produit->photo = $produit->getFirstMediaUrl('produits');
         });
 
-        // Filter products with quantity less than or equal to stock alert
-        $alertProduits = $produits->filter(function ($produit) {
-            return $produit->quantite <= $produit->stock_alert;
-        });
-
-        // Pass the products and alert products to the view
-        return view('produits.index', compact('produits', 'alertProduits'));
+        return view('produits.index', compact('produits'));
     }
 
+    /**
+     * Afficher le formulaire de création d'un produit.
+     */
     public function create()
     {
         $categories = Categorie::all();
         return view('produits.create', compact('categories'));
     }
 
-    public function layout()
-    {
-        $produits = Produit::with('categories')->get();
-
-        $produits->each(function ($produit) {
-            $produit->photo = $produit->getFirstMediaUrl('produits');
-        });
-
-        $alertProduits = $produits->filter(function ($produit) {
-            return $produit->quantite <= $produit->stock_alert;
-        });
-
-        $categories = Categorie::all();
-
-        return view('layout', compact('categories', 'produits', 'alertProduits'));
-    }
-
+    /**
+     * Enregistrer un nouveau produit.
+     */
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'categorie_id' => 'required',
+            'categorie_id' => 'required|exists:categories,id',
             'prix' => 'required|numeric',
             'quantite' => 'required|numeric',
             'stock_alert' => 'required|numeric',
@@ -89,20 +74,29 @@ class ProduitController extends Controller
         }
 
         Alert::success('Succès', 'Produit ajouté avec succès.');
-        return redirect()->route('produits.index')->with('success', 'Produit ajouté avec succès.');
+        return redirect()->route('produits.index');
     }
 
+    /**
+     * Afficher un produit spécifique.
+     */
     public function show(Produit $produit)
     {
         return view('produits.show', compact('produit'));
     }
 
+    /**
+     * Afficher le formulaire d'édition d'un produit.
+     */
     public function edit(Produit $produit)
     {
         $categories = Categorie::all();
         return view('produits.update', compact('produit', 'categories'));
     }
 
+    /**
+     * Mettre à jour un produit.
+     */
     public function update(Request $request, Produit $produit)
     {
         $request->validate([
@@ -118,30 +112,22 @@ class ProduitController extends Controller
         $produit->update($request->except('photo'));
 
         if ($request->hasFile('photo')) {
-            Log::info('Photo file received:', [
-                'file_name' => $request->file('photo')->getClientOriginalName(),
-                'file_size' => $request->file('photo')->getSize(),
-            ]);
-
+            // Supprimer l'ancienne image
             $produit->clearMediaCollection('produits');
 
-            $produit->addMedia($request->file('photo'))
+            // Ajouter la nouvelle image
+            $produit->addMediaFromRequest('photo')
                 ->usingFileName($produit->id . '-' . $request->file('photo')->getClientOriginalName())
                 ->toMediaCollection('produits', 'public');
-
-            Log::info('Media details for product', [
-                'produit_id' => $produit->id,
-                'media_url' => $produit->getFirstMediaUrl('produits'),
-                'file_exists' => file_exists(storage_path('app/public/' . $produit->getFirstMedia('produits')?->id . '/' . $produit->getFirstMedia('produits')?->file_name))
-            ]);
         }
 
-        Log::info('Produit updated successfully:', ['produit_id' => $produit->id]);
-
         Alert::success('Succès', 'Produit mis à jour avec succès.');
-        return redirect()->route('produits.index')->with('success', 'Produit mis à jour avec succès.');
+        return redirect()->route('produits.index');
     }
 
+    /**
+     * Supprimer un produit.
+     */
     public function destroy(Produit $produit)
     {
         $produit->clearMediaCollection('produits');
@@ -151,6 +137,9 @@ class ProduitController extends Controller
         return redirect()->route('produits.index');
     }
 
+    /**
+     * Filtrer les produits par nom ou catégorie.
+     */
     public function filterproduits(Request $request)
     {
         $query = Produit::query();
