@@ -64,34 +64,14 @@
 
                                     <div class="row g-3">
                                         <!-- Date d'entrée -->
-                                        <div class="mb-3 col-4">
-                                            <label for="date_entree" class="form-label">Date d'entrée du produit(Provisoire)</label>
+                                        <div class="mb-3 col-12">
+                                            <label for="date_entree" class="form-label">Date de livraison</label>
                                             <input type="date" class="form-control @error('date_entree') is-invalid @enderror" id="date_entree" name="date_entree" value="{{ old('date_entree') }}">
                                             @error('date_entree')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
 
-                                        <!-- Date de péremption -->
-                                        <div class="mb-3 col-4">
-                                            <label for="peremption_date" class="form-label">Date de péremption</label>
-                                            <input type="date" class="form-control @error('peremption_date') is-invalid @enderror" id="peremption_date" name="peremption_date" value="{{ old('peremption_date') }}">
-                                            @error('peremption_date')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        <!-- Statut -->
-                                        <div class="mb-3 col-4">
-                                            <label for="statut" class="form-label">Statut</label>
-                                            <select class="form-select @error('statut') is-invalid @enderror" id="statut" name="statut">
-                                                <option value="Validée" {{ old('statut') == 'Validée' ? 'selected' : '' }}>Validée</option>
-                                                <option value="Non validée" {{ old('statut') == 'Non validée' ? 'selected' : '' }}>Non validée</option>
-                                            </select>
-                                            @error('statut')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
                                     </div>
 
                                     <div class="card-footer d-flex justify-content-end">

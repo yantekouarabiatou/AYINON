@@ -41,13 +41,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('users', UserController::class);
     // Route::post('/export-users', UserController::class, 'exportUsers')->name('export.users');
     Route::post('/export-users', [UserController::class, 'exportUsers'])->name('export.users');
+    Route::resource('roles', RoleController::class);
+    Route::resource('permissions', PermissionController::class);
 
-});
-Route::middleware(['auth', 'admin'])->group(function () {
-Route::resource('roles', RoleController::class);
-});
-Route::middleware(['auth', 'admin'])->group(function () {
-Route::resource('permissions', PermissionController::class);
 });
 
 Route::get('/categories/create', [CategorieController::class, 'create'])->name('categories.create'); // Formulaire de création
