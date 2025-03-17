@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('ventes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('produit_id')->nullable()->constrained('produits')->nullOnDelete();
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->decimal('montant_total',10,2);
             $table->timestamps();

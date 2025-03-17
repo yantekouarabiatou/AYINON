@@ -7,18 +7,30 @@ use App\Models\Categorie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\View;
 
 class ProduitController extends Controller
 {
     /**
      * Display a listing of the produits.
      */
-    public function index()
-{
-    // Fetch all products with their categories
-    $produits = Produit::with('categories')->get();
 
-    // Transform the products collection to include media URLs
+     public function __construct()
+    {
+        // Partager les produits en alerte avec toutes les vues
+        View::share('alertProduits', $this->getProduitsEnAlerte());
+    }
+
+    private function getProduitsEnAlerte()
+    {
+        return Produit::whereColumn('quantite', '<=', 'stock_alert')->get();
+    }
+    public function index()
+      {
+       // Fetch all products with their categories
+       $produits = Produit::with('categories')->get();
+
+       // Transform the products collection to include media URLs
         $produits = $produits->map(function ($produit) {
         $mediaUrl = $produit->getFirstMediaUrl('produits'); // Use 'produits' collection name
 
@@ -34,8 +46,8 @@ class ProduitController extends Controller
         ];
     });
 
-    // Filter products with quantity less than or equal to stock alert
-    $alertProduits = $produits->filter(function ($produit) {
+         // Filter products with quantity less than or equal to stock alert
+        $alertProduits = $produits->filter(function ($produit) {
         return $produit['quantite'] <= $produit['stock_alert'];
     });
 
@@ -50,6 +62,37 @@ class ProduitController extends Controller
     {
         $categories = Categorie::all();
         return view('produits.create', compact('categories'));
+    }
+
+    public function layout()
+    {
+        // Récupérer tous les produits avec leurs catégories
+        $produits = Produit::with('categories')->get();
+    
+        // Transformer les produits pour inclure les URLs des médias
+        $produits = $produits->map(function ($produit) {
+            $mediaUrl = $produit->getFirstMediaUrl('produits'); // Utiliser la collection 'produits'
+    
+            return [
+                'id' => $produit->id,
+                'name' => $produit->name,
+                'prix' => $produit->prix,
+                'description' => $produit->description,
+                'quantite' => $produit->quantite,
+                'stock_alert' => $produit->stock_alert,
+                'photo' => $mediaUrl // URL de l'image
+            ];
+        });
+    
+        // Filtrer les produits en alerte
+        $alertProduits = $produits->filter(function ($produit) {
+            return $produit['quantite'] <= $produit['stock_alert'];
+        });
+    
+        // Récupérer toutes les catégories
+        $categories = Categorie::all();
+        // Passer les variables à la vue
+        return view('layout', compact('categories', 'produits', 'alertProduits'));
     }
 
     /**

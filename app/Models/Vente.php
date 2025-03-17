@@ -1,21 +1,18 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Vente extends Model
 {
-    /**
-     * Les attributs pouvant être assignés en masse.
-     *
-     * @var array
-     */
+    use HasFactory;
+
     protected $fillable = [
-        'produit_id',
-        'montant_total',
-        'user_id',  
+        'user_id','montant_total' // L'utilisateur qui effectue la vente
     ];
 
     public function payements(): HasMany
@@ -23,18 +20,13 @@ class Vente extends Model
         return $this->hasMany(Payement::class);
     }
 
-    public function produit()
+    public function vente_details(): HasMany
     {
-        return $this->belongsTo(Produit::class,'produit_id');
+        return $this->hasMany(Vente_detail::class); // Relation avec les détails de vente
     }
 
-    public function vente_details()
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Vente_detail::class);
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class); // Relation avec l'utilisateur
     }
 }

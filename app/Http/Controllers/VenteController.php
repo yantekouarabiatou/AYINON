@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Vente;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VenteController extends Controller
 {
@@ -15,9 +16,9 @@ class VenteController extends Controller
      */
     public function index()
     {
-        // Récupérer les ventes avec leurs commandes
-        $ventes = Vente::with('user', 'produit')->get();
-        // Passer les ventes à la vue
+        // Récupérer uniquement les ventes de l'utilisateur connecté
+       // Dans le contrôleur
+        $ventes = Vente::where('user_id', Auth::id())->with('vente_details')->get(); // Utiliser 'vente_details' ici
         return view('ventes.index', compact('ventes'));
     }
 
@@ -25,18 +26,13 @@ class VenteController extends Controller
      * Afficher le formulaire de création d'une vente.
      */
     public function create()
-{
-    // Récupérer tous les utilisateurs et produits
-    $users = User::all();
-    $produits = Produit::all();
-    
-    // Vérifier si des utilisateurs ou des produits existent
-    if ($users->isEmpty() || $produits->isEmpty()) {
-        return redirect()->route('ventes.index')->with('error', 'Aucun utilisateur ou produit trouvé.');
+    {
+        // Pas besoin de récupérer une vente existante ici
+        $produits = Produit::all();  // Récupérer tous les produits
+        
+        return view('ventes.create', compact('produits'));  // Passer les produits à la vue
     }
-
-    return view('ventes.create', compact('users', 'produits'));
-}
+    
 
 
     /**
@@ -44,43 +40,58 @@ class VenteController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::check()) {
+            Alert::error('Error', 'Veuillez vous connecter avant de créer une vente.');
+            return redirect()->route('login');
+        }
+    
         // Validation des données
         $request->validate([
-            'user_id' => 'required|exists:users,id',
             'produit_id' => 'required|exists:produits,id',
-            'montant_total' => 'required|numeric',
+            'quantite' => 'required|numeric|min:1',
         ]);
     
-        // Création de la vente
-        Vente::create([
-            'user_id' => $request->user_id,
+        // Créer la vente initiale
+        $vente = Vente::create([
+            'user_id' => Auth::id(),
+            'montant_total' => 0, // Le total sera mis à jour après l'ajout des détails
+        ]);
+    
+        // Ajouter le premier détail de la vente
+        $produit = Produit::find($request->produit_id);
+        $montant_total = $produit->prix * $request->quantite;
+    
+        $vente_detail = $vente->vente_details()->create([
             'produit_id' => $request->produit_id,
-            'montant_total' => $request->montant_total, 
+            'quantite' => $request->quantite,
+            'prix_unitaire' => $produit->prix,
+            'montant_total' => $montant_total,
         ]);
     
-        return redirect()->route('ventes.index')->with('success', 'Vente créée avec succès.');
+        // Mettre à jour le montant total de la vente
+        $vente->update([
+            'montant_total' => $vente->vente_details->sum('montant_total'),
+        ]);
+    
+        return redirect()->route('ventes.show', $vente)->with('success', 'Vente créée. Ajoutez d\'autres produits.');
     }
     
+
     /**
      * Afficher une vente spécifique.
      */
     public function show(Vente $vente)
     {
-        $vente->load('user', 'produit'); // Charge les relations avant d'envoyer à la vue
+        $vente->load('user', 'details.produit');
         return view('ventes.show', compact('vente'));
     }
-    
 
     /**
      * Afficher le formulaire d'édition d'une vente.
      */
     public function edit(Vente $vente)
     {
-        // Récupérer tous les utilisateurs et produits
-        $user = User::all();
-        $produit = Produit::all();
-        // Retourner la vue avec la vente, les utilisateurs, et les produits
-        return view('ventes.update', compact('vente', 'user', 'produit'));
+        return view('ventes.edit', compact('vente'));
     }
 
     /**
@@ -88,35 +99,30 @@ class VenteController extends Controller
      */
     public function update(Request $request, Vente $vente)
     {
-        // Validation des données
         $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'produit_id' => 'required|exists:produits,id',
             'montant_total' => 'required|numeric',
         ]);
-    
-        // Mise à jour de la vente
-        $vente->user_id = $request->user_id;
-        $vente->produit_id = $request->produit_id;
-        $vente->montant_total = $request->montant_total;
-    
-        // Sauvegarder la vente mise à jour
-        $vente->save();
-        
-        // Alerte de succès
+
+        $vente->update([
+            'montant_total' => $request->montant_total,
+        ]);
+
         Alert::success('Succès', 'Vente mise à jour avec succès.');
-        return redirect()->route('ventes.index')->with('success', 'Vente mise à jour avec succès.');
+        return redirect()->route('ventes.index');
     }
-    
+
     /**
      * Supprimer une vente.
      */
     public function destroy(Vente $vente)
     {
-        // Suppression de la vente
+        if ($vente->user_id !== Auth::id()) {
+            Alert::error('Erreur', 'Vous ne pouvez pas supprimer cette vente.');
+            return redirect()->route('ventes.index');
+        }
+
         $vente->delete();
         Alert::success('Succès', 'Vente supprimée avec succès.');
-        // Redirection ou autre action
         return redirect()->route('ventes.index');
     }
 
@@ -125,22 +131,13 @@ class VenteController extends Controller
      */
     public function filterventes(Request $request)
     {
-        $query = Vente::query();
+        $query = Vente::where('user_id', Auth::id()); // Sécurisation de l'accès
 
-        // Appliquer le filtre de recherche par commande_id
         if ($request->has('search') && !empty($request->search)) {
-            $query->where('commande_id', 'like', '%' . $request->search . '%');
+            $query->where('id', 'like', '%' . $request->search . '%');
         }
 
-        // Appliquer un autre filtre, par exemple pour le reçu
-        if ($request->has('recu') && !empty($request->recu)) {
-            $query->where('recu', 'like', '%' . $request->recu . '%');
-        }
-
-        // Obtenez les résultats filtrés
-        $ventes = $query->get();
-
-        // Retourner les résultats sous forme de JSON
+        $ventes = $query->with('user')->get();
         return response()->json($ventes);
     }
 }

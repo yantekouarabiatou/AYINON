@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,11 +43,9 @@ class RegisteredUserController extends Controller
         ]);
         $user = User::create($request->except('photo'));
         // Add the photo if it exists
-        if ($request->hasFile('photo')) {
-            $user->addMediaFromRequest('photo')
-                ->usingFileName($user->id . '-' . $request->file('photo')->getClientOriginalName()) // Unique name based on user ID
-                ->toMediaCollection('photos', 'public');
-        }
+        $user->addMediaFromRequest('photo')
+             ->usingFileName($user->id . '-' . $request->file('photo')->getClientOriginalName())
+             ->toMediaCollection('photos', 'public'); // Assurez-vous que 'photos' est correct
 
         // Trigger the Registered event
         event(new Registered($user));

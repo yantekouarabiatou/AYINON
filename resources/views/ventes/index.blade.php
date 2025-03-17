@@ -34,26 +34,33 @@
                                                         <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_table_users .form-check-input" value="1" />
                                                     </div>
                                                 </th>
-                                                <th class="min-w-175px"> Image vente</th>
-                                                <th class="min-w-175px"> Date d'entrée de la commande</th>
+                                                <th class="min-w-175px">ID de la vente</th>
+                                                <th class="min-w-175px">Image du vendeur</th>
+                                                <th class="min-w-175px">Nom du vendeur</th>
+                                                <th class="min-w-175px"> Montant Total de la vente</th>
                                                 <th class="min-w-100px text-end">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody class="text-gray-600 fw-bold">
                                             @foreach($ventes as $vente)
                                             <tr>
+
                                                 <td>
                                                     <div class="form-check form-check-sm form-check-custom form-check-solid">
                                                         <input class="form-check-input" type="checkbox" value="{{ $vente->id }}" />
                                                     </div>
                                                 </td>
-                                                
+                                                <td>{{ $vente->id }}</td>
+
+                                                <td>
+                                                    <img src="{{ Auth::user()->getFirstMediaUrl('photos', 'photo') }}" 
+                                                         alt="Photo de l'utilisateur" width="50">
+                                                </td>                                                
                                                 <td>{{ $vente->user->name }}</td>
-                                                <td>{{ $vente->produit->name }}</td>
                                                 <td>{{ $vente->montant_total }}</td>
                                              <!--begin::Action=-->
 <td class="text-end">
-	<div class="btn-group">
+	<div class="btn-group"
 	  <button type="button" class="btn btn-light btn-sm" data-bs-toggle="dropdown" aria-expanded="false">
 		Actions
 	  </button>
@@ -72,7 +79,7 @@
   </td>
   <!--end::Action=-->
   
-									<!-- Modal de confirmation de suppression -->
+<!-- Modal de confirmation de suppression -->
 <div class="modal fade" id="deleteModal{{ $vente->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $vente->id }}" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -94,7 +101,6 @@
         </div>
     </div>
 </div>
-
 			                             </tr>
                                             @endforeach
                                         </tbody>

@@ -17,7 +17,6 @@ class commande extends Model
     protected $fillable = [
         'quantite',
         'date_entree',
-        'produit_id',
         'fournisseur_id',
         'peremption_date',
         'reference',
@@ -27,10 +26,11 @@ class commande extends Model
     /**
      * Relation avec la produits.
      */
-    public function produit()
-    {
-        return $this->belongsTo(Produit::class,'produit_id');
-    }
+    public function produits()
+     {
+          return $this->belongsToMany(Produit::class, 'produit_commande', 'commande_id', 'produit_id')->withTimestamps();
+     }
+
     public function categories()
     {
         return $this->belongsTo(Categorie::class);

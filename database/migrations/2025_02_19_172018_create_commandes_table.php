@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('commandes', function (Blueprint $table) {
             $table->id();
+
             $table->foreignId('produit_id')->nullable()->constrained('produits')->nullOnDelete();
+            
             $table->foreignId('fournisseur_id')->nullable()->constrained('fournisseurs')->nullOnDelete();
             $table->integer('quantite'); 
             $table->dateTime('date_entree'); 

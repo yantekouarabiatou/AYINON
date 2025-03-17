@@ -28,6 +28,10 @@
                                                 </option>
                                             @endforeach
                                         </select>
+
+                                        <img src="{{ auth()->user()->getFirstMediaUrl('photos')}}" alt="logo"
+                                        width="100">
+                                        
                                         @error('user_id')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror

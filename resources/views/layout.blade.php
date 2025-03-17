@@ -28,7 +28,10 @@
     <!--end::Page Vendor Stylesheets-->
     <!--begin::Global Stylesheets Bundle(used by all pages)-->
     <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    
     <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/app.css" rel="stylesheet" type="text/css" />
+
     <!--end::Global Stylesheets Bundle-->
 </head>
 <!--end::Head-->
@@ -199,6 +202,57 @@
                                             </a>
                                         </div>
                                     </div>
+
+                                    <span class="menu-title">Gestion des Produits </span>
+                                        <span class="menu-arrow"></span>
+                                    </span>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div data-kt-menu-trigger="click"
+                                            class="menu-item here show menu-accordion mb-1">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                               
+                                        </div>
+                                        <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">Roles</span>
+                                                <span class="menu-arrow"></span>
+                                            </span>
+                                            <div class="menu-sub menu-sub-accordion">
+                                                <div class="menu-item">
+                                                    <a class="menu-link" href="{{ route('roles.index') }}">
+                                                        <span class="menu-bullet">
+                                                            <span class="bullet bullet-dot"></span>
+                                                        </span>
+                                                        <span class="menu-title">Liste Roles</span>
+                                                    </a>
+                                                </div>
+                                                <div class="menu-item">
+                                                    @isset($role)
+                                                        <a class="menu-link" href="{{ route('roles.show', $role->id) }}">
+                                                            <span class="menu-bullet">
+                                                                <span class="bullet bullet-dot"></span>
+                                                            </span>
+                                                            <span class="menu-title">Détails roles</span>
+                                                        </a>
+                                                    @endisset
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="menu-item">
+                                            <a class="menu-link" href="{{ route('permissions.index') }}">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">Permissions</span>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
 
 
@@ -284,8 +338,7 @@
                                         <span class="menu-icon">
                                             <!--begin::Svg Icon | path: icons/duotune/general/gen019.svg-->
                                             <span class="svg-icon svg-icon-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                     <path
                                                         d="M17.5 11H6.5C4 11 2 9 2 6.5C2 4 4 2 6.5 2H17.5C20 2 22 4 22 6.5C22 9 20 11 17.5 11ZM15 6.5C15 7.9 16.1 9 17.5 9C18.9 9 20 7.9 20 6.5C20 5.1 18.9 4 17.5 4C16.1 4 15 5.1 15 6.5Z"
                                                         fill="black" />
@@ -296,8 +349,27 @@
                                             </span>
                                             <!--end::Svg Icon-->
                                         </span>
-                                        <span class="menu-title"> Menu caissier</span>
+                                        <span class="menu-title">Menu Caissier</span>
+                                        <span class="menu-arrow"></span>
                                     </a>
+                                    <div class="menu-sub menu-sub-accordion">
+                                        <div class="menu-item">
+                                            <a class="menu-link active" href="{{ route('produits.index') }}">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">Liste des Produits</span>
+                                            </a>
+                                        </div>
+                                        <div class="menu-item">
+                                            <a class="menu-link" href="{{ route('categories.index') }}">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">Liste des Catégories</span>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             @endif
 
@@ -1863,7 +1935,7 @@
                                         <div class="cursor-pointer symbol symbol-30px symbol-md-40px"
                                             data-kt-menu-trigger="click" data-kt-menu-attach="parent"
                                             data-kt-menu-placement="bottom-end">
-                                            <img src="{{ asset(auth()->user()->photo) }}" alt="logo"
+                                            <img src="{{ auth()->user()->getFirstMediaUrl('produits')}}" alt="logo"
                                                 width="100">
                                         </div>
                                         <!--begin::User account menu-->
@@ -1873,10 +1945,7 @@
                                             <div class="menu-item px-3">
                                                 <div class="menu-content d-flex align-items-center px-3">
                                                     <!--begin::Avatar-->
-                                                    <div class="symbol symbol-30px me-5">
-
-                                                        <img src="{{ asset(auth()->user()->photo) }}" alt="logo"
-                                                            width="100">
+                                                    <div class="symbol symbol-30px me-5">                                  
 
                                                     </div>
                                                     <!--end::Avatar-->
@@ -1894,8 +1963,6 @@
                                                     <!--end::Username-->
                                                 </div>
                                             </div>
-
-
                                             <div class="separator my-2"></div>
                                             <!--end::Menu separator-->
                                             <!--begin::Menu item-->
@@ -5178,6 +5245,16 @@ $subParentTitle = $breadcrumbs[$routeName]['subparent'] ?? null;
                                     <!--begin::Container-->
                                     <div id="kt_content_container" class="container-xxl">
                                         <!--begin::Row-->
+                                        @if($alertProduits->count() > 0)
+                                        <div class="stock-alert">
+                                            <marquee behavior="scroll" direction="left" class="text-danger font-weight-bold">
+                                                ⚠️ Attention : Certains produits sont en stock critique !
+                                                @foreach($alertProduits as $produit)
+                                                    {{ $produit['name'] }} ({{ $produit['quantite'] }} unités) |
+                                                @endforeach
+                                            </marquee>
+                                        </div>
+                                    @endif
                                         @yield('content')
 
                                     </div>
@@ -5363,6 +5440,7 @@ $subParentTitle = $breadcrumbs[$routeName]['subparent'] ?? null;
         <script src="assets/js/custom/apps/user-management/permissions/list.js"></script>
         <script src="assets/js/custom/apps/user-management/permissions/add-permission.js"></script>
         <script src="assets/js/custom/apps/user-management/permissions/update-permission.js"></script>
+        @include('sweetalert::alert')
 
 </body>
 <!--end::Body-->

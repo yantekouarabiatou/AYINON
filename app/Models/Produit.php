@@ -42,8 +42,9 @@ class Produit extends Model implements HasMedia
         return $this->belongsTo(Vente_detail::class);
     }
 
-    public function commandes(): HasMany
-    {
-        return $this->hasMany(Commande::class);
-    }
+    public function commandes()
+      {
+         return $this->belongsToMany(Commande::class, 'produit_commande', 'produit_id', 'commande_id')->withTimestamps();
+     }
+
 }

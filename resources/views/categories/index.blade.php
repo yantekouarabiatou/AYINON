@@ -71,8 +71,7 @@
 	</div>
   </td>
   <!--end::Action=-->
-  
-									<!-- Modal de confirmation de suppression -->
+  								<!-- Modal de confirmation de suppression -->
 <div class="modal fade" id="deleteModal{{ $categorie->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $categorie->id }}" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

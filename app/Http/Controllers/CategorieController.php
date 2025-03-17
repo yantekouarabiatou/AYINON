@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categorie;
+use App\Models\TypeFournisseur;
 use App\Models\User;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Container\Attributes\Log;
@@ -42,7 +43,7 @@ class CategorieController extends Controller
         ]);
 
         Categorie::create($validated);
-
+        Alert::success('Succès', 'Catégorie ajouté avec succès.');
         return redirect()->route('categories.index')->with('success', 'Catégorie ajoutée avec succès !');
     }
 
@@ -51,8 +52,8 @@ class CategorieController extends Controller
      */
     public function show($id)
 {
-    $categorie = Categorie::findOrFail($id); // Trouve la catégorie par ID
-    return view('categories.show', compact('categorie'));
+      $categorie = Categorie::findOrFail($id); // Trouve la catégorie par ID
+       return view('categories.show', compact('categorie','Tfournisseur'));
 }
 
     
@@ -81,7 +82,8 @@ class CategorieController extends Controller
         ]);
   
         $categorie->update($validated);
-  
+        Alert::success('Succès', 'Catégorie mis à jour avec succès.');
+
         return redirect()->route('categories.index')->with('success', 'Catégorie mise à jour avec succès !');
     }
   

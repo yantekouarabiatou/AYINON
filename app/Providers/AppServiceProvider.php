@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Produit;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
@@ -28,7 +29,10 @@ class AppServiceProvider extends ServiceProvider
     });
 
        Schema::defaultStringLength(191);
-    
+       View::composer('*', function ($view) {
+        $alertProduits = Produit::where('quantite', '<=', 'stock_alert')->get();
+        $view->with('alertProduits', $alertProduits);
+    });
       
     }
 }

@@ -23,12 +23,12 @@ class Vente_detail extends Model
         
     ];
 
-    public function ventes()
+    public function vente()
     {
         return $this->belongsTo(Vente::class);
     }
 
-    public function produits()
+    public function produit()
     {
         return $this->belongsTo(Produit::class);
     }

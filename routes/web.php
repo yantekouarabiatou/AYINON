@@ -4,11 +4,14 @@ use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\FactureCommandeController;
 use App\Http\Controllers\FournisseurController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TypeFournisseurController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VenteController;
+use App\Http\Controllers\VenteDetailController;
 use App\Models\Produit;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -64,6 +67,7 @@ Route::put('/produit/{produit}', [ProduitController::class, 'update'])->name('pr
 Route::post('/produits/filter', [ProduitController::class, 'filterProduits']);
 Route::delete('/produit/{produit}', [ProduitController::class, 'destroy'])->name('produits.destroy');
 Route::get('/produit/{produit}', [ProduitController::class, 'show'])->name('produits.show');
+Route::get('/layout', [ProduitController::class, 'layout'])->name('produits.layout');
 
 
 Route::get('/Tfournisseurs/create', [TypeFournisseurController::class, 'create'])->name('Tfournisseurs.create'); // Formulaire de création
@@ -113,6 +117,17 @@ Route::put('/ventes/{ventes}', [VenteController::class, 'update'])->name('ventes
 Route::post('/ventes/filter', [VenteController::class, 'filterProduits']);
 Route::delete('/ventes/{ventes}', [VenteController::class, 'destroy'])->name('ventes.destroy');
 Route::get('/ventes/{ventes}', [VenteController::class, 'show'])->name('ventes.show');
+
+Route::get('detailsVentes/{vente_id}/index', [VenteDetailController::class, 'index'])->name('detailsVentes.index');
+Route::get('/detailsVentes/create', [VenteDetailController::class, 'create'])->name('detailsVentes.create'); // Formulaire de création
+Route::post('/detailsVentes', [VenteDetailController::class, 'store'])->name('detailsVentes.store');        // Enregistrer une catégorie
+Route::get('/detailsVentes/{detailsVente}/edit', [VenteDetailController::class, 'edit'])->name('detailsVentes.edit');
+Route::put('/detailsVentes/{detailsVente}', [VenteDetailController::class, 'update'])->name('detailsVentes.update');
+Route::delete('/detailsVentes/{detailsVente}', [VenteDetailController::class, 'destroy'])->name('detailsVentes.destroy');
+Route::get('/detailsVentes/{detailsVente}', [VenteDetailController::class, 'show'])->name('detailsVentes.show');
+Route::get('/ventes/{vente_id}/details', [VenteDetailController::class, 'detailsParVente'])
+    ->name('ventes.details');
+
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('users', UserController::class);
