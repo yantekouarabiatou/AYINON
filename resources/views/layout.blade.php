@@ -115,8 +115,8 @@
                                     </a>
                                 </div>
 
-                                <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion mb-1">
-                                    <span class="menu-link">
+                                	<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+									<span class="menu-link">
                                         <span class="menu-icon">
                                             <!--begin::Svg Icon | path: icons/duotune/general/gen051.svg-->
                                             <span class="svg-icon svg-icon-2">
@@ -130,11 +130,11 @@
                                                         fill="black" />
                                                 </svg>
                                             </span>
-                                            <!--end::Svg Icon-->
-                                        </span>
+											<!--end::Svg Icon-->
+										</span>
                                         <span class="menu-title">Gestion des Utilisateurs</span>
                                         <span class="menu-arrow"></span>
-                                    </span>
+                                       </span>
                                     <div class="menu-sub menu-sub-accordion">
                                         <div data-kt-menu-trigger="click"
                                             class="menu-item here show menu-accordion mb-1">
@@ -202,119 +202,252 @@
                                             </a>
                                         </div>
                                     </div>
+								</div>
 
-                                    <span class="menu-title">Gestion des Produits </span>
-                                        <span class="menu-arrow"></span>
-                                    </span>
-                                    <div class="menu-sub menu-sub-accordion">
-                                        <div data-kt-menu-trigger="click"
-                                            class="menu-item here show menu-accordion mb-1">
-                                            <span class="menu-link">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
-                                                </span>
-                                               
-                                        </div>
                                         <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                             <span class="menu-link">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
+                                                <span class="menu-icon">
+                                                    <!--begin::Svg Icon | path: icons/duotune/ecommerce/ecm001.svg-->
+                                                    <span class="svg-icon svg-icon-2">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                            <path opacity="0.3" d="M18.041 22.041C18.5932 22.041 19.041 21.5932 19.041 21.041C19.041 20.4887 18.5932 20.041 18.041 20.041C17.4887 20.041 17.041 20.4887 17.041 21.041C17.041 21.5932 17.4887 22.041 18.041 22.041Z" fill="black" />
+                                                            <path opacity="0.3" d="M6.04095 22.041C6.59324 22.041 7.04095 21.5932 7.04095 21.041C7.04095 20.4887 6.59324 20.041 6.04095 20.041C5.48867 20.041 5.04095 20.4887 5.04095 21.041C5.04095 21.5932 5.48867 22.041 6.04095 22.041Z" fill="black" />
+                                                            <path opacity="0.3" d="M7.04095 16.041L19.1409 15.1409C19.7409 15.1409 20.141 14.7409 20.341 14.1409L21.7409 8.34094C21.9409 7.64094 21.4409 7.04095 20.7409 7.04095H5.44095L7.04095 16.041Z" fill="black" />
+                                                            <path d="M19.041 20.041H5.04096C4.74096 20.041 4.34095 19.841 4.14095 19.541C3.94095 19.241 3.94095 18.841 4.14095 18.541L6.04096 14.841L4.14095 4.64095L2.54096 3.84096C2.04096 3.64096 1.84095 3.04097 2.14095 2.54097C2.34095 2.04097 2.94096 1.84095 3.44096 2.14095L5.44096 3.14095C5.74096 3.24095 5.94096 3.54096 5.94096 3.84096L7.94096 14.841C7.94096 15.041 7.94095 15.241 7.84095 15.441L6.54096 18.041H19.041C19.641 18.041 20.041 18.441 20.041 19.041C20.041 19.641 19.641 20.041 19.041 20.041Z" fill="black" />
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
                                                 </span>
-                                                <span class="menu-title">Roles</span>
+                                                <span class="menu-title">Gestion des Produits</span>
                                                 <span class="menu-arrow"></span>
                                             </span>
                                             <div class="menu-sub menu-sub-accordion">
-                                                <div class="menu-item">
-                                                    <a class="menu-link" href="{{ route('roles.index') }}">
+                                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                                    <span class="menu-link">
                                                         <span class="menu-bullet">
                                                             <span class="bullet bullet-dot"></span>
                                                         </span>
-                                                        <span class="menu-title">Liste Roles</span>
-                                                    </a>
+                                                        <span class="menu-title">Produits</span>
+                                                        <span class="menu-arrow"></span>
+                                                    </span>
+                                                    <div class="menu-sub menu-sub-accordion">
+                                                        <div class="menu-item">
+                                                            <a class="menu-link" href="{{route('produits.index')}}">
+                                                                <span class="menu-bullet">
+                                                                    <span class="bullet bullet-dot"></span>
+                                                                </span>
+                                                                <span class="menu-title">Liste des Produits</span>
+                                                            </a>
+                                                        </div>
+                                                        <div class="menu-item">
+                                                            <a class="menu-link" href="#">
+                                                                <span class="menu-bullet">
+                                                                    <span class="bullet bullet-dot"></span>
+                                                                </span>
+                                                                <span class="menu-title">Catégories</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="menu-item">
-                                                    @isset($role)
-                                                        <a class="menu-link" href="{{ route('roles.show', $role->id) }}">
-                                                            <span class="menu-bullet">
-                                                                <span class="bullet bullet-dot"></span>
-                                                            </span>
-                                                            <span class="menu-title">Détails roles</span>
-                                                        </a>
-                                                    @endisset
+                                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                                    <span class="menu-link">
+                                                        <span class="menu-bullet">
+                                                            <span class="bullet bullet-dot"></span>
+                                                        </span>
+                                                        <span class="menu-title">Catégories</span>
+                                                        <span class="menu-arrow"></span>
+                                                    </span>
+                                                    <div class="menu-sub menu-sub-accordion">
+                                                        <div class="menu-item">
+                                                            <a class="menu-link" href="{{route('categories.index')}}">
+                                                                <span class="menu-bullet">
+                                                                    <span class="bullet bullet-dot"></span>
+                                                                </span>
+                                                                <span class="menu-title">Liste des Catégories</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                                    <span class="menu-link">
+                                                        <span class="menu-bullet">
+                                                            <span class="bullet bullet-dot"></span>
+                                                        </span>
+                                                        <span class="menu-title">Emballages</span>
+                                                        <span class="menu-arrow"></span>
+                                                    </span>
+                                                    <div class="menu-sub menu-sub-accordion">
+                                                        <div class="menu-item">
+                                                            <a class="menu-link" href="{{route('emballages.index')}}">
+                                                                <span class="menu-bullet">
+                                                                    <span class="bullet bullet-dot"></span>
+                                                                </span>
+                                                                <span class="menu-title">Liste des Emballages</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="menu-item">
-                                            <a class="menu-link" href="{{ route('permissions.index') }}">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
-                                                </span>
-                                                <span class="menu-title">Permissions</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
 
-
-                                <div class="menu-item">
-                                    <div class="menu-content pt-8 pb-2">
-                                        <span class="menu-section text-muted text-uppercase fs-8 ls-1">Crafted</span>
-                                    </div>
-                                </div>
-                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                                    <span class="menu-link">
-                                        <span class="menu-icon">
-                                            <span class="svg-icon svg-icon-2">
-                                                <!-- Svg Icon -->
-                                            </span>
-                                        </span>
-                                        <span class="menu-title">Account</span>
-                                        <span class="menu-arrow"></span>
-                                    </span>
-                                    <div class="menu-sub menu-sub-accordion menu-active-bg">
-                                        <div class="menu-item">
-                                            <a class="menu-link" href="../../demo1/dist/account/overview.html">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
-                                                </span>
-                                                <span class="menu-title">Overview</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                                    <span class="menu-link">
-                                        <span class="menu-icon">
-                                            <span class="svg-icon svg-icon-2">
-                                                <!-- Svg Icon -->
-                                            </span>
-                                        </span>
-                                        <span class="menu-title">Authentication</span>
-                                        <span class="menu-arrow"></span>
-                                    </span>
-                                    <div class="menu-sub menu-sub-accordion menu-active-bg">
                                         <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                             <span class="menu-link">
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
+                                                <span class="menu-icon">
+                                                    <!--begin::Svg Icon | path: icons/duotune/ecommerce/ecm001.svg-->
+                                                    <span class="svg-icon svg-icon-2">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                            <path d="M6 21C6 21.6 6.4 22 7 22H17C17.6 22 18 21.6 18 21V20H6V21Z" fill="black" />
+                                                            <path opacity="0.3" d="M17 2H7C6.4 2 6 2.4 6 3V20H18V3C18 2.4 17.6 2 17 2Z" fill="black" />
+                                                            <path d="M12 4C11.4 4 11 3.6 11 3V2H13V3C13 3.6 12.6 4 12 4Z" fill="black" />
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
                                                 </span>
-                                                <span class="menu-title">Basic Layout</span>
+                                                <span class="menu-title">Gestion Commandes </span>
                                                 <span class="menu-arrow"></span>
                                             </span>
-                                            <div class="menu-sub menu-sub-accordion menu-active-bg">
-                                                <div class="menu-item">
-                                                    <a class="menu-link"
-                                                        href="../../demo1/dist/authentication/layouts/basic/sign-in.html">
+                                            <div class="menu-sub menu-sub-accordion">
+                                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                                    <span class="menu-link">
                                                         <span class="menu-bullet">
                                                             <span class="bullet bullet-dot"></span>
                                                         </span>
-                                                        <span class="menu-title">Sign-in</span>
-                                                    </a>
+                                                        <span class="menu-title"> Produits Commandes</span>
+                                                        <span class="menu-arrow"></span>
+                                                    </span>
+                                                    <div class="menu-sub menu-sub-accordion">
+                                                        <div class="menu-item">
+                                                            <a class="menu-link" href="#">
+                                                                <span class="menu-bullet">
+                                                                    <span class="bullet bullet-dot"></span>
+                                                                </span>
+                                                                <span class="menu-title">Liste Produits Commandes</span>
+                                                            </a>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                                    <span class="menu-link">
+                                                        <span class="menu-bullet">
+                                                            <span class="bullet bullet-dot"></span>
+                                                        </span>
+                                                        <span class="menu-title">Commandes</span>
+                                                        <span class="menu-arrow"></span>
+                                                    </span>
+                                                    <div class="menu-sub menu-sub-accordion">
+                                                        <div class="menu-item">
+                                                            <a class="menu-link" href="{{route('commandes.index')}}">
+                                                                <span class="menu-bullet">
+                                                                    <span class="bullet bullet-dot"></span>
+                                                                </span>
+                                                                <span class="menu-title">Liste des Commande</span>
+                                                            </a>
+                                                        </div>
+
+                                                        <div class="menu-sub menu-sub-accordion">
+                                                            <div class="menu-item">
+                                                                <a class="menu-link" href="{{route('commandes.index')}}">
+                                                                    <span class="menu-bullet">
+                                                                        <span class="bullet bullet-dot"></span>
+                                                                    </span>
+                                                                    <span class="menu-title">Liste Approvisionnements</span>
+                                                                </a>
+                                                            </div>
+                                                 
+                                                        
+                                                    </div>
+                                                </div>
+
+                                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                                    <span class="menu-link">
+                                                        <span class="menu-bullet">
+                                                            <span class="bullet bullet-dot"></span>
+                                                        </span>
+                                                        <span class="menu-title">Emballages</span>
+                                                        <span class="menu-arrow"></span>
+                                                    </span>
+                                                    <div class="menu-sub menu-sub-accordion">
+                                                        <div class="menu-item">
+                                                            <a class="menu-link" href="{{route('emballages.index')}}">
+                                                                <span class="menu-bullet">
+                                                                    <span class="bullet bullet-dot"></span>
+                                                                </span>
+                                                                <span class="menu-title">Liste des Emballages</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                            <span class="menu-link">
+                                                <span class="menu-icon">
+                                                    <!--begin::Svg Icon | path: icons/duotune/ecommerce/ecm001.svg-->
+                                                    <span class="svg-icon svg-icon-2">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                            <path opacity="0.3" d="M18.041 22.041C18.5932 22.041 19.041 21.5932 19.041 21.041C19.041 20.4887 18.5932 20.041 18.041 20.041C17.4887 20.041 17.041 20.4887 17.041 21.041C17.041 21.5932 17.4887 22.041 18.041 22.041Z" fill="black" />
+                                                            <path opacity="0.3" d="M6.04095 22.041C6.59324 22.041 7.04095 21.5932 7.04095 21.041C7.04095 20.4887 6.59324 20.041 6.04095 20.041C5.48867 20.041 5.04095 20.4887 5.04095 21.041C5.04095 21.5932 5.48867 22.041 6.04095 22.041Z" fill="black" />
+                                                            <path opacity="0.3" d="M7.04095 16.041L19.1409 15.1409C19.7409 15.1409 20.141 14.7409 20.341 14.1409L21.7409 8.34094C21.9409 7.64094 21.4409 7.04095 20.7409 7.04095H5.44095L7.04095 16.041Z" fill="black" />
+                                                            <path d="M19.041 20.041H5.04096C4.74096 20.041 4.34095 19.841 4.14095 19.541C3.94095 19.241 3.94095 18.841 4.14095 18.541L6.04096 14.841L4.14095 4.64095L2.54096 3.84096C2.04096 3.64096 1.84095 3.04097 2.14095 2.54097C2.34095 2.04097 2.94096 1.84095 3.44096 2.14095L5.44096 3.14095C5.74096 3.24095 5.94096 3.54096 5.94096 3.84096L7.94096 14.841C7.94096 15.041 7.94095 15.241 7.84095 15.441L6.54096 18.041H19.041C19.641 18.041 20.041 18.441 20.041 19.041C20.041 19.641 19.641 20.041 19.041 20.041Z" fill="black" />
+                                                        </svg>
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </span>
+                                                <span class="menu-title">Gestion des Fournisseurs</span>
+                                                <span class="menu-arrow"></span>
+                                            </span>
+                                            <div class="menu-sub menu-sub-accordion">
+                                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                                    <span class="menu-link">
+                                                        <span class="menu-bullet">
+                                                            <span class="bullet bullet-dot"></span>
+                                                        </span>
+                                                        <span class="menu-title">Types Fournisseurs</span>
+                                                        <span class="menu-arrow"></span>
+                                                    </span>
+                                                    <div class="menu-sub menu-sub-accordion">
+                                                        <div class="menu-item">
+                                                            <a class="menu-link" href="{{route('Tfournisseurs.index')}}">
+                                                                <span class="menu-bullet">
+                                                                    <span class="bullet bullet-dot"></span>
+                                                                </span>
+                                                                <span class="menu-title">Liste des Types Fournisseurs</span>
+                                                            </a>
+                                                        </div>
+                                                        <div class="menu-item">
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                                    <span class="menu-link">
+                                                        <span class="menu-bullet">
+                                                            <span class="bullet bullet-dot"></span>
+                                                        </span>
+                                                        <span class="menu-title">Fournisseurs</span>
+                                                        <span class="menu-arrow"></span>
+                                                    </span>
+                                                    <div class="menu-sub menu-sub-accordion">
+                                                        <div class="menu-item">
+                                                            <a class="menu-link" href="{{route('fournisseurs.index')}}">
+                                                                <span class="menu-bullet">
+                                                                    <span class="bullet bullet-dot"></span>
+                                                                </span>
+                                                                <span class="menu-title">Liste des Fournisseurs</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
+                                
+                               
                             @endif
 
 
