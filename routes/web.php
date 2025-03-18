@@ -119,17 +119,17 @@ Route::post('/ventes/filter', [VenteController::class, 'filterProduits']);
 Route::delete('/ventes/{ventes}', [VenteController::class, 'destroy'])->name('ventes.destroy');
 Route::get('/ventes/{ventes}', [VenteController::class, 'show'])->name('ventes.show');
 
+// Routes pour les détails de vente
 Route::get('detailsVentes/{vente_id}/index', [VenteDetailController::class, 'index'])->name('detailsVentes.index');
-Route::get('/detailsVentes/create', [VenteDetailController::class, 'create'])->name('detailsVentes.create'); // Formulaire de création
-Route::post('/detailsVentes', [VenteDetailController::class, 'store'])->name('detailsVentes.store');        // Enregistrer une catégorie
+Route::get('/detailsVentes/create', [VenteDetailController::class, 'create'])->name('detailsVentes.create');Route::post('/detailsVentes', [VenteDetailController::class, 'store'])->name('detailsVentes.store');
 Route::get('/detailsVentes/{detailsVente}/edit', [VenteDetailController::class, 'edit'])->name('detailsVentes.edit');
 Route::put('/detailsVentes/{detailsVente}', [VenteDetailController::class, 'update'])->name('detailsVentes.update');
 Route::delete('/detailsVentes/{detailsVente}', [VenteDetailController::class, 'destroy'])->name('detailsVentes.destroy');
 Route::get('/detailsVentes/{detailsVente}', [VenteDetailController::class, 'show'])->name('detailsVentes.show');
+
+// Route pour afficher les détails d'une vente spécifique
 Route::get('/ventes/{vente_id}/details', [VenteDetailController::class, 'detailsParVente'])
     ->name('ventes.details');
-
-    
 
 // Routes pour EmballageController
 Route::resource('emballages', EmballageController::class);

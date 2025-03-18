@@ -61,9 +61,10 @@
 
                                 <div class="card-footer">
                                     <!-- Annuler -->
-                                    <a href="{{ route('detailsVentes.index') }}" class="btn btn-danger">
+                                    <a href="{{ route('detailsVentes.index', ['vente_id' => $vente->id]) }}" class="btn btn-danger">
                                         <i class="fa fa-times-circle"></i> Annuler
                                     </a>
+                                    
 
                                     <!-- Ajouter les détails -->
                                     <button type="submit" class="btn btn-primary">
