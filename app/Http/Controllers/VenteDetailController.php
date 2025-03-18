@@ -30,71 +30,74 @@ class VenteDetailController extends Controller
     {
         $ventes = Vente::all();
         $produits = Produit::all();
-        return view('detailsVentes.create', compact('ventes', 'produits'));
+    
+        // Si tu veux que $vente soit un objet spécifique, par exemple la dernière vente
+        $vente = Vente::latest()->first(); // ou une autre logique pour récupérer une vente spécifique
+    
+        return view('detailsVentes.create', compact('ventes', 'produits', 'vente'));
     }
+    
 
     /**
      * Enregistre un nouveau détail de vente.
      */
     public function store(Request $request)
-{
-    // Valider les données du formulaire
-    $request->validate([
-        'produit_id' => 'required|array',
-        'produit_id.*' => 'exists:produits,id',
-        'quantite' => 'required|array',
-        'quantite.*' => 'numeric|min:1',
-    ]);
-
-    // Vérifier que le nombre de produits et de quantités correspondent
-    if (count($request->produit_id) !== count($request->quantite)) {
-        return back()->withErrors(['quantite' => 'Le nombre de produits et de quantités doit correspondre.']);
-    }
-
-    // Création d'une nouvelle vente
-    $vente = Vente::create([
-        'user_id' => auth()->id(),
-        'montant_total' => 0, // Le montant total sera mis à jour après
-    ]);
-
-    // Chargement des produits en une seule requête pour optimiser les performances
-    $produits = Produit::whereIn('id', $request->produit_id)->get()->keyBy('id');
-
-    // Initialisation du montant total
-    $montantTotal = 0;
-
-    // Ajouter les détails de vente
-    foreach ($request->produit_id as $index => $produitId) {
-        // Vérifier si le produit existe
-        if (!isset($produits[$produitId])) {
-            // Si le produit n'existe pas, retourner une erreur
-            return back()->withErrors(['produit_id' => 'Le produit sélectionné n\'existe pas.']);
-        }
-
-        $produit = $produits[$produitId];
-        $quantite = $request->quantite[$index];
-        $montantTotalProduit = $produit->prix * $quantite;
-
-        $vente->vente_details()->create([
-            'produit_id' => $produitId,
-            'quantite' => $quantite,
-            'prix_unitaire' => $produit->prix,
-            'montant_total' => $montantTotalProduit,
+    {
+        // Validation des données du formulaire
+        $request->validate([
+            'produit_id' => 'required|array',
+            'produit_id.*' => 'exists:produits,id',
+            'quantite' => 'required|array',
+            'quantite.*' => 'numeric|min:1',
         ]);
-
-        // Ajout au montant total de la vente
-        $montantTotal += $montantTotalProduit;
+    
+        // Vérification que le nombre de produits et de quantités correspond
+        if (count($request->produit_id) !== count($request->quantite)) {
+            return back()->withErrors(['quantite' => 'Le nombre de produits et de quantités doit correspondre.']);
+        }
+    
+        // Création de la vente
+        $vente = Vente::create([
+            'user_id' => auth()->id(),
+            'montant_total' => 0, // Le montant total sera mis à jour après
+        ]);
+    
+        // Récupération des produits
+        $produits = Produit::whereIn('id', $request->produit_id)->get()->keyBy('id');
+    
+        // Initialisation du montant total
+        $montantTotal = 0;
+    
+        // Ajout des détails de vente
+        foreach ($request->produit_id as $index => $produitId) {
+            $produit = $produits[$produitId];
+            $quantite = $request->quantite[$index];
+            $montantTotalProduit = $produit->prix * $quantite;
+    
+            // Créer le détail de vente
+            $vente->vente_details()->create([
+                'produit_id' => $produitId,
+                'quantite' => $quantite,
+                'prix_unitaire' => $produit->prix,
+                'montant_total' => $montantTotalProduit,
+            ]);
+    
+            // Mise à jour du montant total de la vente
+            $montantTotal += $montantTotalProduit;
+        }
+    
+        // Mise à jour du montant total de la vente
+        $vente->update([
+            'montant_total' => $montantTotal,
+        ]);
+    
+        Alert::success('Succès', 'Détail de vente ajouté avec succès.');
+    
+        // Redirection vers les détails de la vente après la création
+        return redirect()->route('detailsVentes.index', ['vente_id' => $vente->id]);
     }
-
-    // Mise à jour du montant total de la vente
-    $vente->update([
-        'montant_total' => $montantTotal,
-    ]);
-
-    Alert::success('Succès', 'Détail de vente ajouté avec succès.');
-
-    return redirect()->route('detailsVentes.index', ['vente_id' => $vente->id]);
-}
+    
+    
 
     /**
      * Affiche un détail de vente spécifique.
