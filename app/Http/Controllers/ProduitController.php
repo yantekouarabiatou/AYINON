@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Log;
+use App\Models\HistoriqueStock;
+
 
 class ProduitController extends Controller
 {
@@ -54,28 +56,36 @@ class ProduitController extends Controller
      * Enregistrer un nouveau produit.
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-            'categorie_id' => 'required|exists:categories,id',
-            'prix' => 'required|numeric',
-            'quantite' => 'required|numeric',
-            'stock_alert' => 'required|numeric',
-            'photo' => 'nullable|image|mimes:jpg,png,jpeg,gif|max:2048',
-        ]);
+{
+    $request->validate([
+        'name' => 'required',
+        'description' => 'required',
+        'categorie_id' => 'required|exists:categories,id',
+        'prix' => 'required|numeric',
+        'quantite' => 'required|numeric',
+        'stock_alert' => 'required|numeric',
+        'photo' => 'nullable|image|mimes:jpg,png,jpeg,gif|max:2048',
+    ]);
 
-        $produit = Produit::create($request->except('photo'));
+    $produit = Produit::create($request->except('photo'));
 
-        if ($request->hasFile('photo')) {
-            $produit->addMediaFromRequest('photo')
-                ->usingFileName($produit->id . '-' . $request->file('photo')->getClientOriginalName())
-                ->toMediaCollection('produits', 'public');
-        }
+    // Enregistrer l'entrée dans l'historique des stocks
+    HistoriqueStock::create([
+        'produit_id' => $produit->id,
+        'type_mouvement' => 'entrée',
+        'quantite' => $request->quantite,
+        'date_mouvement' => now(),
+    ]);
 
-        Alert::success('Succès', 'Produit ajouté avec succès.');
-        return redirect()->route('produits.index');
+    if ($request->hasFile('photo')) {
+        $produit->addMediaFromRequest('photo')
+            ->usingFileName($produit->id . '-' . $request->file('photo')->getClientOriginalName())
+            ->toMediaCollection('produits', 'public');
     }
+
+    Alert::success('Succès', 'Produit ajouté avec succès.');
+    return redirect()->route('produits.index');
+}
 
     /**
      * Afficher un produit spécifique.

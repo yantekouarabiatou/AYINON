@@ -383,68 +383,41 @@
                                         </div>
 
                                         <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                                            <span class="menu-link">
-                                                <span class="menu-icon">
-                                                    <!--begin::Svg Icon | path: icons/duotune/ecommerce/ecm001.svg-->
-                                                    <span class="svg-icon svg-icon-2">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                            <path opacity="0.3" d="M18.041 22.041C18.5932 22.041 19.041 21.5932 19.041 21.041C19.041 20.4887 18.5932 20.041 18.041 20.041C17.4887 20.041 17.041 20.4887 17.041 21.041C17.041 21.5932 17.4887 22.041 18.041 22.041Z" fill="black" />
-                                                            <path opacity="0.3" d="M6.04095 22.041C6.59324 22.041 7.04095 21.5932 7.04095 21.041C7.04095 20.4887 6.59324 20.041 6.04095 20.041C5.48867 20.041 5.04095 20.4887 5.04095 21.041C5.04095 21.5932 5.48867 22.041 6.04095 22.041Z" fill="black" />
-                                                            <path opacity="0.3" d="M7.04095 16.041L19.1409 15.1409C19.7409 15.1409 20.141 14.7409 20.341 14.1409L21.7409 8.34094C21.9409 7.64094 21.4409 7.04095 20.7409 7.04095H5.44095L7.04095 16.041Z" fill="black" />
-                                                            <path d="M19.041 20.041H5.04096C4.74096 20.041 4.34095 19.841 4.14095 19.541C3.94095 19.241 3.94095 18.841 4.14095 18.541L6.04096 14.841L4.14095 4.64095L2.54096 3.84096C2.04096 3.64096 1.84095 3.04097 2.14095 2.54097C2.34095 2.04097 2.94096 1.84095 3.44096 2.14095L5.44096 3.14095C5.74096 3.24095 5.94096 3.54096 5.94096 3.84096L7.94096 14.841C7.94096 15.041 7.94095 15.241 7.84095 15.441L6.54096 18.041H19.041C19.641 18.041 20.041 18.441 20.041 19.041C20.041 19.641 19.641 20.041 19.041 20.041Z" fill="black" />
-                                                        </svg>
-                                                    </span>
-                                                    <!--end::Svg Icon-->
-                                                </span>
-                                                <span class="menu-title">Gestion des Ventes</span>
-                                                <span class="menu-arrow"></span>
-                                            </span>
-                                            <div class="menu-sub menu-sub-accordion">
-                                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                                                    <span class="menu-link">
-                                                        <span class="menu-bullet">
-                                                            <span class="bullet bullet-dot"></span>
-                                                        </span>
-                                                        <span class="menu-title">Liste Détail Vente</span>
-                                                        <span class="menu-arrow"></span>
-                                                    </span>
-                                                    <div class="menu-sub menu-sub-accordion">
-                                                        <div class="menu-item">
-                                                            <a class="menu-link" href="{{ route('detailsVentes.index', ['vente_id' => $vente->id]) }}">
-                                                                <span class="menu-bullet">
-                                                                    <span class="bullet bullet-dot"></span>
-                                                                </span>
-                                                                <span class="menu-title">Liste Détail Ventes</span>
-                                                            </a>
-                                                            
-                                                        </div>
-                                                        <div class="menu-item">
-                                                            
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                                                    <span class="menu-link">
-                                                        <span class="menu-bullet">
-                                                            <span class="bullet bullet-dot"></span>
-                                                        </span>
-                                                        <span class="menu-title">Ventes</span>
-                                                        <span class="menu-arrow"></span>
-                                                    </span>
-                                                    <div class="menu-sub menu-sub-accordion">
-                                                        <div class="menu-item">
-                                                            <a class="menu-link" href="{{route('ventes.index')}}">
-                                                                <span class="menu-bullet">
-                                                                    <span class="bullet bullet-dot"></span>
-                                                                </span>
-                                                                <span class="menu-title">Liste des ventes</span>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
+									<span class="menu-link">
+										<span class="menu-icon">
+											<!--begin::Svg Icon | path: icons/duotune/communication/com012.svg-->
+											<span class="svg-icon svg-icon-2">
+												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+													<path opacity="0.3" d="M20 3H4C2.89543 3 2 3.89543 2 5V16C2 17.1046 2.89543 18 4 18H4.5C5.05228 18 5.5 18.4477 5.5 19V21.5052C5.5 22.1441 6.21212 22.5253 6.74376 22.1708L11.4885 19.0077C12.4741 18.3506 13.6321 18 14.8167 18H20C21.1046 18 22 17.1046 22 16V5C22 3.89543 21.1046 3 20 3Z" fill="black" />
+													<rect x="6" y="12" width="7" height="2" rx="1" fill="black" />
+													<rect x="6" y="7" width="12" height="2" rx="1" fill="black" />
+												</svg>
+											</span>
+											<!--end::Svg Icon-->
+										</span>
+										<span class="menu-title">Gestion Des Ventes</span>
+										<span class="menu-arrow"></span>
+									</span>
+									<div class="menu-sub menu-sub-accordion">
+										<div class="menu-item">
+											<a class="menu-link" href="{{ route('ventes.index') }}">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+												<span class="menu-title">Ventes</span>
+											</a>
+										</div>
+										<div class="menu-item">
+											<a class="menu-link" href="{{ route('produits.index') }}">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+												<span class="menu-title">Liste</span>
+											</a>
+										</div>
+										
+									</div>
+								</div>
                                         <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                             <span class="menu-link">
                                                 <span class="menu-icon">
@@ -5654,11 +5627,13 @@ $subParentTitle = $breadcrumbs[$routeName]['subparent'] ?? null;
         <script src="assets/js/custom/utilities/modals/create-app.js"></script>
         <script src="assets/js/custom/utilities/modals/users-search.js"></script>
 
+        <script src="assets/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
+        <script src="assets/js/custom/apps/ecommerce/sales/save-order.js"></script>
         <script src="assets/js/custom/apps/user-management/roles/list/add.js"></script>
         <script src="assets/js/custom/apps/user-management/roles/list/update-role.js"></script>
         <script src="assets/js/custom/apps/user-management/roles/view/view.js"></script>
         <script src="assets/js/custom/apps/user-management/roles/view/update-role.js"></script>
-
+        
         <script src="assets/js/custom/apps/user-management/permissions/list.js"></script>
         <script src="assets/js/custom/apps/user-management/permissions/add-permission.js"></script>
         <script src="assets/js/custom/apps/user-management/permissions/update-permission.js"></script>

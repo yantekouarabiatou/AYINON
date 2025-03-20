@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Produit;
-use App\Models\User;
-use App\Models\Vente;
-use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Vente;
+use App\Models\Vente_detail;
+use App\Models\Produit;
+use App\Models\HistoriqueStock;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class VenteController extends Controller
 {
@@ -16,10 +19,11 @@ class VenteController extends Controller
      */
     public function index()
     {
-        // Récupérer uniquement les ventes de l'utilisateur connecté
-       // Dans le contrôleur
-        $ventes = Vente::where('user_id', Auth::id())->with('vente_details')->get(); // Utiliser 'vente_details' ici
-        return view('ventes.index', compact('ventes'));
+        $ventes = Vente::with('vente_details.produit')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+    return view('ventes.index', compact('ventes'));
     }
 
     /**
@@ -27,88 +31,167 @@ class VenteController extends Controller
      */
     public function create()
     {
-        // Pas besoin de récupérer une vente existante ici
-        $produits = Produit::all();  // Récupérer tous les produits
-        
-        return view('ventes.create', compact('produits'));  // Passer les produits à la vue
-    }
-    
+        // Récupérer tous les produits disponibles
+        $produits = Produit::where('quantite', '>', 0)->get();
 
+        // Calculer l'ID de la prochaine vente
+        $nextVenteId = Vente::max('id') + 1;
+
+        return view('ventes.create', compact('produits', 'nextVenteId'));
+    }
 
     /**
      * Enregistrer une nouvelle vente.
      */
     public function store(Request $request)
-    {
-        if (!Auth::check()) {
-            Alert::error('Error', 'Veuillez vous connecter avant de créer une vente.');
-            return redirect()->route('login');
-        }
-    
-        // Validation des données
-        $request->validate([
-            'produit_id' => 'required|exists:produits,id',
-            'quantite' => 'required|numeric|min:1',
-        ]);
-    
-        // Créer la vente initiale
+{
+    Log::info('Début de la création de la vente');
+    Log::info('Données reçues:', $request->all());
+
+    $request->validate([
+        'mode_payement' => 'required|in:cash,cheque',
+        'produits' => 'required|array',
+        'produits.*' => 'exists:produits,id',
+        'quantites' => 'required|array',
+        'quantites.*' => 'numeric|min:1',
+    ]);
+
+    DB::beginTransaction();
+
+    try {
+        Log::info('Création d\'une nouvelle vente initiée.');
+
+        // Créer la vente avec un montant total initial de 0
         $vente = Vente::create([
-            'user_id' => Auth::id(),
-            'montant_total' => 0, // Le total sera mis à jour après l'ajout des détails
+            'user_id' => auth()->id(), // Utilisateur connecté
+            'montant_total' => 0, // Calculé plus tard
+            'mode_payement' => $request->mode_payement,
         ]);
-    
-        // Ajouter le premier détail de la vente
-        $produit = Produit::find($request->produit_id);
-        $montant_total = $produit->prix * $request->quantite;
-    
-        $vente_detail = $vente->vente_details()->create([
-            'produit_id' => $request->produit_id,
-            'quantite' => $request->quantite,
-            'prix_unitaire' => $produit->prix,
-            'montant_total' => $montant_total,
-        ]);
-    
+
+        $montantTotal = 0;
+
+        // Parcourir les produits sélectionnés
+        foreach ($request->produits as $produitId) {
+            $produit = Produit::find($produitId);
+            $quantite = $request->quantites[$produitId];
+
+            // Vérifier si la quantité est disponible
+            $totalQuantiteDisponible = HistoriqueStock::where('produit_id', $produitId)
+                                                      ->where('type_mouvement', 'entrée')
+                                                      ->where('quantite', '>', 0)
+                                                      ->sum('quantite');
+
+            if ($totalQuantiteDisponible < $quantite) {
+                throw new \Exception('Stock insuffisant pour le produit ' . $produit->name);
+            }
+
+            // Appliquer la logique FIFO
+            $quantiteRestante = $quantite;
+            $lots = HistoriqueStock::where('produit_id', $produitId)
+                                    ->where('type_mouvement', 'entrée')
+                                    ->where('quantite', '>', 0)
+                                    ->orderBy('date_mouvement')
+                                    ->get();
+
+            foreach ($lots as $lot) {
+                if ($quantiteRestante <= 0) break;
+
+                if ($lot->quantite >= $quantiteRestante) {
+                    $lot->quantite -= $quantiteRestante;
+                    $quantiteRestante = 0;
+                } else {
+                    $quantiteRestante -= $lot->quantite;
+                    $lot->quantite = 0;
+                }
+
+                $lot->save();
+            }
+
+            // Mettre à jour la quantité totale du produit
+            $produit->quantite -= $quantite;
+            $produit->save();
+
+            // Enregistrer les détails de la vente
+            Vente_detail::create([
+                'vente_id' => $vente->id,
+                'produit_id' => $produitId,
+                'quantite' => $quantite,
+                'prix_unitaire' => $produit->prix,
+                'montant_total' => $quantite * $produit->prix,
+            ]);
+
+            // Enregistrer la sortie dans l'historique des stocks
+            HistoriqueStock::create([
+                'produit_id' => $produitId,
+                'type_mouvement' => 'sortie',
+                'quantite' => $quantite,
+                'date_mouvement' => now(),
+                'vente_id' => $vente->id,
+            ]);
+
+            // Ajouter au montant total
+            $montantTotal += $quantite * $produit->prix;
+        }
+
         // Mettre à jour le montant total de la vente
-        $vente->update([
-            'montant_total' => $vente->vente_details->sum('montant_total'),
+        $vente->update(['montant_total' => $montantTotal]);
+
+        DB::commit();
+        Log::info('Vente créée avec succès.', ['vente_id' => $vente->id, 'montant_vente' => $montantTotal]);
+
+        // Rediriger vers la liste des ventes avec un message de succès
+        return redirect()->route('ventes.create')->with([
+            'success' => 'Vente enregistrée avec succès.',
+            'vente_id' => $vente->id // Passer l'ID de la vente à la vue
         ]);
-    
-        return redirect()->route('ventes.show', $vente)->with('success', 'Vente créée. Ajoutez d\'autres produits.');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        Log::error('Erreur lors de la création de la vente: ' . $e->getMessage());
+        return redirect()->back()->with('error', 'Erreur lors de l\'enregistrement de la vente: ' . $e->getMessage());
     }
+}
+
+    public function genererFacture($venteId)
+    {
+        Log::info('Génération de la facture initiée pour la vente ID: ' . $venteId);
+
+        // Récupérer les informations de la vente
+        $vente = Vente::with('vente_details.produit')->findOrFail($venteId);
+
+        // Récupérer les détails de la vente
+        $venteDetails = $vente->vente_details;
+
+        // Récupérer les informations du client (à adapter selon votre modèle de données)
+        $client = [
+            'nom' => 'Client Nom',
+            'email' => 'client@example.com',
+            'adresse' => 'Adresse du client'
+        ];
+
+        // Récupérer les informations de l'entreprise
+        $entreprise = [
+            'nom' => 'Nom de l\'Entreprise',
+            'adresse' => 'Adresse de l\'Entreprise',
+            'logo' => public_path('path/to/logo.png')
+        ];
+
+        // Générer la facture en PDF
+        $pdf = PDF::loadView('factures.invoice', compact('vente', 'venteDetails', 'client', 'entreprise'));
+
+        // Sauvegarder ou télécharger le PDF
+        return $pdf->stream('invoice_' . $venteId . '.pdf');
+    }
+
     
 
+
+
     /**
-     * Afficher une vente spécifique.
+     * Afficher les détails d'une vente.
      */
     public function show(Vente $vente)
     {
-        $vente->load('user', 'details.produit');
         return view('ventes.show', compact('vente'));
-    }
-
-    /**
-     * Afficher le formulaire d'édition d'une vente.
-     */
-    public function edit(Vente $vente)
-    {
-        return view('ventes.edit', compact('vente'));
-    }
-
-    /**
-     * Mettre à jour une vente.
-     */
-    public function update(Request $request, Vente $vente)
-    {
-        $request->validate([
-            'montant_total' => 'required|numeric',
-        ]);
-
-        $vente->update([
-            'montant_total' => $request->montant_total,
-        ]);
-
-        Alert::success('Succès', 'Vente mise à jour avec succès.');
-        return redirect()->route('ventes.index');
     }
 
     /**
@@ -116,28 +199,95 @@ class VenteController extends Controller
      */
     public function destroy(Vente $vente)
     {
-        if ($vente->user_id !== Auth::id()) {
-            Alert::error('Erreur', 'Vous ne pouvez pas supprimer cette vente.');
-            return redirect()->route('ventes.index');
-        }
+        DB::beginTransaction();
 
-        $vente->delete();
-        Alert::success('Succès', 'Vente supprimée avec succès.');
-        return redirect()->route('ventes.index');
+        try {
+            Log::info('Suppression de la vente initiée.', ['vente_id' => $vente->id]);
+
+            // Restaurer les quantités des produits vendus
+            foreach ($vente->vente_details as $detail) {
+                $produit = Produit::find($detail->produit_id);
+                $produit->quantite += $detail->quantite;
+                $produit->save();
+
+                // Enregistrer l'annulation dans l'historique des stocks
+                HistoriqueStock::create([
+                    'produit_id' => $detail->produit_id,
+                    'type_mouvement' => 'annulation',
+                    'quantite' => $detail->quantite,
+                    'date_mouvement' => now(),
+                    'vente_id' => $vente->id,
+                ]);
+            }
+
+            // Supprimer les détails de la vente
+            $vente->vente_details()->delete();
+
+            // Supprimer la vente
+            $vente->delete();
+
+            DB::commit();
+            Log::info('Vente supprimée avec succès.', ['vente_id' => $vente->id]);
+
+            // Générer la facture
+            // $this->genererFacture($vente->id);
+
+            return redirect()->route('ventes.index')->with('success', 'Vente supprimée avec succès.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Erreur lors de la suppression de la vente: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Erreur lors de la suppression de la vente: ' . $e->getMessage());
+        }
     }
 
-    /**
-     * Filtrer les ventes.
-     */
-    public function filterventes(Request $request)
-    {
-        $query = Vente::where('user_id', Auth::id()); // Sécurisation de l'accès
+    public function enregistrerEntree(Request $request)
+{
+    $request->validate([
+        'produit_id' => 'required|exists:produits,id',
+        'quantite' => 'required|numeric',
+        'date_mouvement' => 'required|date',
+    ]);
 
-        if ($request->has('search') && !empty($request->search)) {
-            $query->where('id', 'like', '%' . $request->search . '%');
-        }
+    // Enregistrer l'entrée dans l'historique des stocks
+    HistoriqueStock::create([
+        'produit_id' => $request->produit_id,
+        'type_mouvement' => 'entrée',
+        'quantite' => $request->quantite,
+        'date_mouvement' => $request->date_mouvement,
+    ]);
 
-        $ventes = $query->with('user')->get();
-        return response()->json($ventes);
-    }
+    // Mettre à jour la quantité totale du produit
+    $produit = Produit::find($request->produit_id);
+    $produit->quantite += $request->quantite;
+    $produit->save();
+
+    return response()->json(['message' => 'Entrée de stock enregistrée avec succès'], 201);
+}
+
+public function showFacture($venteId)
+{
+    Log::info('Affichage de la facture initiée pour la vente ID: ' . $venteId);
+
+    // Récupérer les informations de la vente
+    $vente = Vente::with('vente_details.produit')->findOrFail($venteId);
+
+    // Récupérer les détails de la vente
+    $venteDetails = $vente->vente_details;
+
+    // Récupérer les informations de l'entreprise
+    $entreprise = [
+        'nom' => 'Nom de l\'Entreprise',
+        'adresse' => 'Adresse de l\'Entreprise',
+        'logo' => public_path('path/to/logo.png')
+    ];
+
+    // Calculer le montant total avec la TVA
+    $montantTotalHT = $vente->montant_total;
+    $montantTotalTTC = $montantTotalHT * 1.18;
+
+    // Afficher la vue de la facture
+    return view('factures.show', compact('vente', 'venteDetails', 'entreprise', 'montantTotalHT', 'montantTotalTTC'));
+}
+
 }

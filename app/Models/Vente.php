@@ -15,6 +15,10 @@ class Vente extends Model
         'user_id','montant_total' // L'utilisateur qui effectue la vente
     ];
 
+    public function historiqueStocks()
+{
+    return $this->hasMany(HistoriqueStock::class);
+}
     public function payements(): HasMany
     {
         return $this->hasMany(Payement::class);

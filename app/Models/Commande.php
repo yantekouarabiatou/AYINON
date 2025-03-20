@@ -26,6 +26,12 @@ class commande extends Model
     /**
      * Relation avec la produits.
      */
+
+     public function historiqueStocks()
+{
+    return $this->hasMany(HistoriqueStock::class);
+}
+
     public function produits()
      {
           return $this->belongsToMany(Produit::class, 'produit_commande', 'commande_id', 'produit_id')->withTimestamps();
