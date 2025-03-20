@@ -31,6 +31,10 @@ class Produit extends Model implements HasMedia
             ->nonQueued(); // Exécuter la conversion immédiatement (optionnel)
     }
 
+    public function historiqueStocks()
+{
+    return $this->hasMany(HistoriqueStock::class);
+}
 
     public function categories()
     {

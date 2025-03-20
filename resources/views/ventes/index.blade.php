@@ -17,6 +17,11 @@
                                     </div>
                                 </div>
                                 <div class="card-toolbar">
+                                @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
                                     <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                                         <a href="{{ route('ventes.create') }}" class="btn btn-primary">Ajouter un vente</a>
                                     </div>
@@ -34,15 +39,15 @@
                                                         <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_table_users .form-check-input" value="1" />
                                                     </div>
                                                 </th>
-                                                <th class="min-w-175px">ID de la vente</th>
-                                                <th class="min-w-175px">Image du vendeur</th>
+                                                <th class="min-w-175px">#</th>
+                                                <!-- <th class="min-w-175px">Image du vendeur</th> -->
                                                 <th class="min-w-175px">Nom du vendeur</th>
-                                                <th class="min-w-175px"> Montant Total de la vente</th>
+                                                <th class="min-w-175px"> Montant de la vente</th>
                                                 <th class="min-w-100px text-end">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody class="text-gray-600 fw-bold">
-                                            @foreach($ventes as $vente)
+                                        @foreach($ventes as $index => $vente)
                                             <tr>
 
                                                 <td>
@@ -50,12 +55,12 @@
                                                         <input class="form-check-input" type="checkbox" value="{{ $vente->id }}" />
                                                     </div>
                                                 </td>
-                                                <td>{{ $vente->id }}</td>
+                                                <td>{{ $index + 1 }}</td>
 
-                                                <td>
+                                                <!-- <td>
                                                     <img src="{{ Auth::user()->getFirstMediaUrl('photos', 'photo') }}" 
                                                          alt="Photo de l'utilisateur" width="50">
-                                                </td>                                                
+                                                </td>                                                 -->
                                                 <td>{{ $vente->user->name }}</td>
                                                 <td>{{ $vente->montant_total }}</td>
                                              <!--begin::Action=-->

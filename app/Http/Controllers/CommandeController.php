@@ -44,8 +44,7 @@ class CommandeController extends Controller
              'fournisseur_id' => 'required|exists:fournisseurs,id',
              'quantite' => 'required|integer|min:1',
              'date_entree' => 'required|date',
-             'peremption_date' => 'required|date|after:date_entree',
-             'statut' => 'required|in:Validée,Non validée',
+             
          ]);
      
          $commande = new Commande();
@@ -54,8 +53,6 @@ class CommandeController extends Controller
          $commande->fournisseur_id = $request->fournisseur_id;
          $commande->quantite = $request->quantite;
          $commande->date_entree = $request->date_entree;
-         $commande->peremption_date = $request->peremption_date;
-         $commande->statut = $request->statut;
          $commande->save();
      
          return redirect()->route('commandes.index')->with('success', 'Commande ajoutée avec succès.');
