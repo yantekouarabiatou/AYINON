@@ -46,7 +46,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('permissions', PermissionController::class);
 
 });
-Route::resource('ventes', VenteControllers::class);
+Route::resource('ventes', VenteController::class);
 // Route::get('/factures/{venteId}', [VenteController::class, 'showFacture'])->name('factures.invoice');
 // Route::get('/factures/{venteId}', [VenteController::class, 'genererFacture'])->name('factures.invoice');
 Route::get('/factures/{venteId}/show', [VenteController::class, 'showFacture'])->name('factures.show');
