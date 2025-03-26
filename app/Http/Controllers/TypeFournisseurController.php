@@ -27,7 +27,7 @@ class TypeFournisseurController extends Controller
     { 
         $Tfournisseurs = TypeFournisseur::paginate(10);
         $user=User::all();
-        return view('TypeF.create', compact('Tfournisseurs','user'));
+        return view('typeF.create', compact('Tfournisseurs','user'));
     }
 
     /**
