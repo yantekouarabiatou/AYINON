@@ -13,16 +13,13 @@
     <div class="d-flex flex-column flex-root">
         <div class="d-flex flex-column flex-column-fluid">
             <div class="d-flex flex-center flex-column flex-column-fluid p-10">
-                <a href="#" class="mb-12">
-                    <img alt="Logo" src="{{ asset('assets/media/logos/logo-1.svg') }}" class="h-40px">
-                </a>
+               
                 <div class="w-lg-600px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto">
+                    <a href="#" class="d-flex flex-center flex-column flex-column-fluid">
+                        <img alt="Logo" src="{{ asset('assets/media/logos/LOGO_2.png') }}" class="h-100px" />
+                    </a>
                     <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
-                        @csrf
-                        
-                        <div class="text-center mb-10">
-                            <h1 class="text-dark mb-3">Créer un compte</h1>
-                        </div>
+                        @csrf                
 
                         <div class="row fv-row mb-7">
                             <div class="col-xl-6">

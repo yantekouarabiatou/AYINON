@@ -88,10 +88,10 @@
                                                         <button type="reset"
                                                             class="btn btn-light btn-active-light-primary fw-bold me-2 px-6"
                                                             data-kt-menu-dismiss="true"
-                                                            data-kt-user-table-filter="reset">Reset</button>
+                                                            data-kt-user-table-filter="reset">Annuler</button>
                                                         <button type="submit" class="btn btn-primary fw-bold px-6"
                                                             data-kt-menu-dismiss="true"
-                                                            data-kt-user-table-filter="filter">Apply</button>
+                                                            data-kt-user-table-filter="filter">Appliquer</button>
                                                     </div>
                                                     <!--end::Actions-->
                                                 </div>
@@ -141,7 +141,7 @@
                                             data-kt-user-table-toolbar="selected">
                                             <div class="fw-bolder me-5">
                                                 <span class="me-2"
-                                                    data-kt-user-table-select="selected_count"></span>Selected
+                                                    data-kt-user-table-select="selected_count"></span>Sélectinner
                                             </div>
 
                                             <!-- <form id="delete-form-{{ $user->id }}" action="{{ route('users.destroy', $user->id) }}" method="POST">
@@ -175,7 +175,7 @@
                                                 }
                                             </script> -->
                                             <button type="button" class="btn btn-danger"
-                                                data-kt-user-table-select="delete_selected">Delete Selected</button>
+                                                data-kt-user-table-select="delete_selected">Supprimer Sélectionné</button>
                                         </div>
                                         <!--end::Group actions-->
                                         <!--begin::Modal - Adjust Balance-->
@@ -220,7 +220,7 @@
                                                             <!--begin::Input group-->
                                                             <div class="fv-row mb-10">
                                                                 <!--begin::Label-->
-                                                                <label class="fs-6 fw-bold form-label mb-2">Select
+                                                                <label class="fs-6 fw-bold form-label mb-2">Selectionner
                                                                     Roles:</label>
                                                                 <!--end::Label-->
                                                                 <!--begin::Input-->
@@ -240,8 +240,8 @@
                                                             <!--begin::Input group-->
                                                             <div class="fv-row mb-10">
                                                                 <!--begin::Label-->
-                                                                <label class="required fs-6 fw-bold form-label mb-2">Select
-                                                                    Export Format:</label>
+                                                                <label class="required fs-6 fw-bold form-label mb-2">Selectionner
+                                                                     Format d'Export:</label>
                                                                 <!--end::Label-->
                                                                 <!--begin::Input-->
                                                                 <select name="format" data-control="select2"
@@ -260,11 +260,11 @@
                                                             <!--begin::Actions-->
                                                             <div class="text-center">
                                                                 <button type="reset" class="btn btn-light me-3"
-                                                                    data-kt-users-modal-action="cancel">Discard</button>
+                                                                    data-kt-users-modal-action="cancel">Annuler</button>
                                                                 <button type="submit" class="btn btn-primary"
                                                                     data-kt-users-modal-action="submit">
-                                                                    <span class="indicator-label">Submit</span>
-                                                                    <span class="indicator-progress">Please wait...
+                                                                    <span class="indicator-label">Soummettre</span>
+                                                                    <span class="indicator-progress">Attendez s'il vous plait...
                                                                         <span
                                                                             class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                                                 </button>
@@ -351,175 +351,250 @@
                                     </div>
                                     <!--end::Card toolbar-->
                                 </div>
-                                <!--end::Card header-->
-                                <!--begin::Card body-->
-                                <div class="card-body py-4">
-                                    <!--begin::Table-->
-                                    <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
-                                        <!--begin::Table head-->
-                                        <thead>
-                                            <!--begin::Table row-->
-                                            <tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
-                                                <th class="w-10px pe-2">
-                                                    <div
-                                                        class="form-check form-check-sm form-check-custom form-check-solid me-3">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            data-kt-check="true"
-                                                            data-kt-check-target="#kt_table_users .form-check-input"
-                                                            value="1" />
-                                                    </div>
-                                                </th>
-                                                <th class="min-w-125px">Utilisateurs</th>
-                                                <th class="min-w-125px">Role</th>
-                                                <th class="min-w-125px">Dernière connexion</th>
-                                                <th class="min-w-125px">Contact</th>
-                                                <th class="min-w-125px">Date de creation</th>
-                                                <th class="text-end min-w-100px">Actions</th>
-                                            </tr>
-                                            <!--end::Table row-->
-                                        </thead>
-                                        <!--end::Table head-->
-                                        <!--begin::Table body-->
-                                        <tbody class="text-gray-600 fw-bold">
-                                            <!--begin::Table row-->
-                                            @foreach ($users as $user)
-                                                <tr>
-                                                    <!--begin::Checkbox-->
-                                                    <td>
-                                                        <div
-                                                            class="form-check form-check-sm form-check-custom form-check-solid">
-                                                            <input class="form-check-input" type="checkbox"
-                                                                value="1" />
-                                                        </div>
-                                                    </td>
-                                                    <!--end::Checkbox-->
-                                                    <!--begin::User=-->
-                                                    <td class="d-flex align-items-center">
-                                                        <!--begin:: Avatar -->
-                                                        <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                                            <a href="{{ route('users.show', $user->id) }}">
-                                                                <div class="symbol-label">
+                              <!--end::Card header-->
+<!--begin::Card body-->
+<div class="card-body py-4">
+    <!--begin::Table-->
+    <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
+        <!--begin::Table head-->
+        <thead>
+            <!--begin::Table row-->
+            <tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
+                <th class="w-10px pe-2">
+                    <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
+                        <input class="form-check-input" type="checkbox" data-kt-check="true"
+                            data-kt-check-target="#kt_table_users .form-check-input" value="1" />
+                    </div>
+                </th>
+                <th class="min-w-125px">Utilisateurs</th>
+                <th class="min-w-125px">Role</th>
+                <th class="min-w-125px">Dernière connexion</th>
+                <th class="min-w-125px">Contact</th>
+                <th class="min-w-125px">Date de création</th>
+                <th class="text-end min-w-100px">Actions</th>
+            </tr>
+            <!--end::Table row-->
+        </thead>
+        <!--end::Table head-->
 
-                                                                    @if ($user->photo)
-                                                                        <img src="{{ asset($user->photo) }}"
-                                                                            alt="{{ $user->name }}" class="w-100" />
-                                                                    @else
-                                                                        <img src="{{ asset('assets/media/avatars/blank.png') }}"
-                                                                            alt="{{ $user->name }}" class="w-100" />
-                                                                    @endif
-                                                                </div>
-                                                            </a>
-                                                        </div>
-                                                        <!--end::Avatar-->
-                                                        <!--begin::User details-->
-                                                        <div class="d-flex flex-column">
-                                                            <a href="{{ route('users.show', $user->id) }}"
-                                                                class="text-gray-800 text-hover-primary mb-1">{{ $user->name }}</a>
-                                                            <span>{{ $user->email }}</span>
-                                                        </div>
-                                                        <!--begin::User details-->
-                                                    </td>
-                                                    <!--end::User=-->
-                                                    <!--begin::Role=-->
-                                                    <td>{{ $user->role->name }}</td>
-                                                    <!--end::Role=-->
-                                                    <!--begin::Last login=-->
-                                                    <td>
-                                                        <div class="badge badge-light fw-bolder">
-                                                            {{ $user->last_login_at ? \Carbon\Carbon::parse($user->last_login_at)->locale('fr')->diffForHumans() : 'Jamais connecté' }}
-                                                        </div>
-                                                    </td>
-                                                    <!--end::Last login=-->
-                                                    <!--begin::Two step=-->
-                                                    <td>{{ $user->telephone }}</< /td>
-                                                        <!--end::Two step=-->
-                                                        <!--begin::Joined-->
-                                                    <td>2{{ $user->created_at }}</< /td>
-                                                        <!--begin::Joined-->
-                                                        <!--begin::Action=-->
-                                                    <td class="text-end">
-                                                        <a href="#"
-                                                            class="btn btn-light btn-active-light-primary btn-sm"
-                                                            data-kt-menu-trigger="click"
-                                                            data-kt-menu-placement="bottom-end">Actions
-                                                            <!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
-                                                            <span class="svg-icon svg-icon-5 m-0">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24" fill="none">
-                                                                    <path
-                                                                        d="M11.4343 12.7344L7.25 8.55005C6.83579 8.13583 6.16421 8.13584 5.75 8.55005C5.33579 8.96426 5.33579 9.63583 5.75 10.05L11.2929 15.5929C11.6834 15.9835 12.3166 15.9835 12.7071 15.5929L18.25 10.05C18.6642 9.63584 18.6642 8.96426 18.25 8.55005C17.8358 8.13584 17.1642 8.13584 16.75 8.55005L12.5657 12.7344C12.2533 13.0468 11.7467 13.0468 11.4343 12.7344Z"
-                                                                        fill="black" />
-                                                                </svg>
-                                                            </span>
-                                                            <!--end::Svg Icon--></a>
-                                                        <!--begin::Menu-->
-                                                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4"
-                                                            data-kt-menu="true">
-                                                            <!--begin::Menu item-->
-                                                            <div class="menu-item px-3">
-                                                                <!-- <a href="#" class="menu-link px-3">Edit</a> -->
-                                                                <!-- <a href="{{ route('users.edit', $user->id) }}" class="menu-link px-3">Modifier</a> -->
-                                                                <a href="{{ route('users.show', $user->id) }}"
-                                                                    class="menu-link px-3">Modifier</a>
-                                                            </div>
-                                                            <!--end::Menu item-->
-                                                            <!--begin::Menu item-->
-                                                            <div class="menu-item px-3">
-                                                                <form id="delete-form-{{ $user->id }}"
-                                                                    action="{{ route('users.destroy', $user->id) }}"
-                                                                    method="POST">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="button"
-                                                                        class="menu-link px-3 text-danger border-0 bg-transparent"
-                                                                        onclick="deleteUser({{ $user->id }}, '{{ $user->name }}')">
-                                                                        Supprimer
-                                                                    </button>
-                                                                </form>
-                                                            </div>
-                                                            <script>
-                                                                function deleteUser(userId, userName) { // 🔹 Ajout du paramètre userName
-                                                                    Swal.fire({
-                                                                        text: "Voulez-vous vraiment supprimer l'utilisateur '" + userName + "' ?",
-                                                                        icon: "warning",
-                                                                        showCancelButton: true,
-                                                                        confirmButtonText: "Oui, supprimer",
-                                                                        cancelButtonText: "Annuler",
-                                                                        customClass: {
-                                                                            confirmButton: "btn btn-danger",
-                                                                            cancelButton: "btn btn-secondary"
-                                                                        }
-                                                                    }).then((result) => {
-                                                                        if (result.isConfirmed) {
-                                                                            document.getElementById('delete-form-' + userId).submit();
-                                                                        }
-                                                                    });
-                                                                }
-                                                            </script>
+        <!--begin::Table body-->
+        <tbody class="text-gray-600 fw-bold">
+            @foreach ($users as $user)
+                <tr>
+                    <!--begin::Checkbox-->
+                    <td>
+                        <div class="form-check form-check-sm form-check-custom form-check-solid">
+                            <input class="form-check-input" type="checkbox" value="1" />
+                        </div>
+                    </td>
+                    <!--end::Checkbox-->
 
-
-                                                        </div>
-
-                                                        <!--end::Menu item-->
+                    <!--begin::User-->
+                    <td class="d-flex align-items-center">
+                        <!--begin::Avatar-->
+                        <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
+                            <a href="{{ route('users.show', $user->id) }}">
+                                <div class="symbol-label">
+                                    @if ($user->photo)
+                                        <img src="{{ asset($user->photo) }}" alt="{{ $user->name }}" class="w-100" />
+                                    @else
+                                        <img src="{{ asset('assets/media/avatars/blank.png') }}" alt="{{ $user->name }}" class="w-100" />
+                                    @endif
                                 </div>
-                                <!--end::Menu-->
-                                </td>
-                                <!--end::Action=-->
-                                </tr>
-                                @endforeach
+                            </a>
+                        </div>
+                        <!--end::Avatar-->
 
-                                </tbody>
-                                <!--end::Table body-->
+                        <!--begin::User details-->
+                        <div class="d-flex flex-column">
+                            <a href="{{ route('users.show', $user->id) }}" class="text-gray-800 text-hover-primary mb-1">
+                                {{ $user->name }}
+                            </a>
+                            <span>{{ $user->email }}</span>
+                        </div>
+                        <!--end::User details-->
+                    </td>
+                    <!--end::User-->
+
+                    <!--begin::Role-->
+                    <td>{{ $user->role->name }}</td>
+                    <!--end::Role-->
+
+                    <!--begin::Last login-->
+                    <td>
+                        <div class="badge badge-light fw-bolder">
+                            {{ $user->last_login_at ? \Carbon\Carbon::parse($user->last_login_at)->locale('fr')->diffForHumans() : 'Jamais connecté' }}
+                        </div>
+                    </td>
+                    <!--end::Last login-->
+
+                    <!--begin::Téléphone-->
+                    <td>{{ $user->telephone }}</td>
+                    <!--end::Téléphone-->
+
+                    <!--begin::Date de création-->
+                    <td>{{ $user->created_at->format('d/m/Y') }}</td>
+                    <!--end::Date de création-->
+
+                    <!--begin::Actions-->
+                    <td class="text-end">
+                        <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click"
+                            data-kt-menu-placement="bottom-end">
+                            Actions
+                            <span class="svg-icon svg-icon-5 m-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                    viewBox="0 0 24 24">
+                                    <path d="M11.4343 12.7344L7.25 8.55005C6.83579 8.13583 6.16421 8.13584 5.75 8.55005C5.33579 8.96426 5.33579 9.63583 5.75 10.05L11.2929 15.5929C11.6834 15.9835 12.3166 15.9835 12.7071 15.5929L18.25 10.05C18.6642 9.63584 18.6642 8.96426 18.25 8.55005C17.8358 8.13584 17.1642 8.13584 16.75 8.55005L12.5657 12.7344C12.2533 13.0468 11.7467 13.0468 11.4343 12.7344Z"
+                                        fill="black" />
+                                </svg>
+                            </span>
+                        </a>
+
+                        <!--begin::Dropdown Menu-->
+                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4"
+                            data-kt-menu="true">
+                            <!--begin::Modifier-->
+                            <div class="menu-item px-3">
+                                <a href="{{ route('users.show', $user->id) }}" class="menu-link px-3">Modifier</a>
+                            </div>
+                            <!--end::Modifier-->
+
+                            <!--begin::Supprimer-->
+                            <div class="menu-item px-3">
+                                <form id="delete-form-{{ $user->id }}" action="{{ route('users.destroy', $user->id) }}"
+                                    method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button"
+                                        class="menu-link px-3 text-danger border-0 bg-transparent"
+                                        onclick="deleteUser({{ $user->id }}, '{{ $user->name }}')">
+                                        Supprimer
+                                    </button>
+                                </form>
+                            </div>
+                            <!--end::Supprimer-->
+                        </div>
+                        <!--end::Dropdown Menu-->
+                    </td>
+                    <!--end::Actions-->
+                </tr>
+            @endforeach
+        </tbody>
+        <!--end::Table body-->
+    </table>
+    <!--end::Table-->
+</div>
+<!--end::Card body-->
+
+<script>
+    function deleteUser(userId, userName) {
+        Swal.fire({
+            text: "Voulez-vous vraiment supprimer l'utilisateur '" + userName + "' ?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Oui, supprimer",
+            cancelButtonText: "Annuler",
+            customClass: {
+                confirmButton: "btn btn-danger",
+                cancelButton: "btn btn-secondary"
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + userId).submit();
+            }
+        });
+    }
+</script>
+
                                 </table>
                                 <!--end::Table-->
                             </div>
                             <!--end::Card body-->
-                        </div>
-                        <!--end::Card-->
-                    </div>
-                    <!--end::Container-->
-                </div>
-            </div>
-        </div>
+                        
+                     <!-- Pagination stylisée -->
+<div class="d-flex justify-content-between align-items-center flex-wrap mt-5">
+    <div class="d-flex align-items-center py-3">
+        <span class="text-muted fs-7 fw-bold">
+            Affichage de {{ $users->firstItem() }} à {{ $users->lastItem() }} sur {{ $users->total() }} entrées
+        </span>
     </div>
+    <div class="d-flex flex-wrap py-3">
+        <ul class="pagination">
+            <!-- Premier lien -->
+            <li class="page-item {{ $users->onFirstPage() ? 'disabled' : '' }}">
+                <a href="{{ $users->url(1) }}" class="page-link" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+            </li>
+            <!-- Lien précédent -->
+            <li class="page-item {{ $users->onFirstPage() ? 'disabled' : '' }}">
+                <a href="{{ $users->previousPageUrl() }}" class="page-link" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <!-- Liens des pages -->
+            @foreach ($users->getUrlRange(max(1, $users->currentPage() - 2), min($users->lastPage(), $users->currentPage() + 2)) as $page => $url)
+                <li class="page-item {{ $page == $users->currentPage() ? 'active' : '' }}">
+                    <a href="{{ $url }}" class="page-link">{{ $page }}</a>
+                </li>
+            @endforeach
+            <!-- Lien suivant -->
+            <li class="page-item {{ !$users->hasMorePages() ? 'disabled' : '' }}">
+                <a href="{{ $users->nextPageUrl() }}" class="page-link" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <!-- Dernier lien -->
+            <li class="page-item {{ !$users->hasMorePages() ? 'disabled' : '' }}">
+                <a href="{{ $users->url($users->lastPage()) }}" class="page-link" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+            </li>
+        </ul>
     </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+@push('styles')
+<style>
+/* Style personnalisé pour la pagination */
+.pagination {
+--bs-pagination-color: #5E6278;
+--bs-pagination-bg: #F5F8FA;
+--bs-pagination-border-color: #E4E6EF;
+--bs-pagination-hover-color: #009EF7;
+--bs-pagination-hover-bg: #F1FAFF;
+--bs-pagination-hover-border-color: #E4E6EF;
+--bs-pagination-focus-color: #009EF7;
+--bs-pagination-focus-bg: #F1FAFF;
+--bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(0, 158, 247, 0.25);
+--bs-pagination-active-color: #FFFFFF;
+--bs-pagination-active-bg: #009EF7;
+--bs-pagination-active-border-color: #009EF7;
+--bs-pagination-disabled-color: #B5B5C3;
+--bs-pagination-disabled-bg: #F5F8FA;
+--bs-pagination-disabled-border-color: #E4E6EF;
+border-radius: 0.475rem;
+}
+
+.page-item.active .page-link {
+box-shadow: 0 0 0 2px #F1FAFF;
+}
+
+.page-link {
+padding: 0.5rem 0.75rem;
+min-width: 2.5rem;
+text-align: center;
+margin: 0 2px;
+border-radius: 0.475rem !important;
+}
+</style>
+@endpush

@@ -21,12 +21,19 @@ class UserController extends Controller
     /**
      * Affiche la liste des utilisateurs.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::where('is_active', 1)
-                ->orderBy('created_at', 'desc')
-                ->get();
+        $perPage = $request->input('per_page', 10); // Augmenté à 10 par défaut
+        
+        // Récupération paginée des utilisateurs actifs avec leurs rôles
+        $users = User::with('role') // Chargement eager des relations
+                   ->where('is_active', 1)
+                   ->orderBy('created_at', 'desc')
+                   ->paginate($perPage);
+        
+        // Récupération de tous les rôles (pour formulaire de sélection)
         $roles = Role::all();
+        
         return view('users.index', compact('users', 'roles'));
     }
 
@@ -61,16 +68,14 @@ class UserController extends Controller
         $user->role_id = $request->input('role_id');
 
 
-        // Gestion de l'upload de l'image
         if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->storeAs(
-                'photos', // Dossier dans storage/app/public/photos/
-                time() . '_' . $request->file('photo')->getClientOriginalName(), // Nom unique avec timestamp
-                'public' // Sauvegarde dans storage/app/public
-            );
-            $user->photo = 'storage/' . $photoPath;
+            $user->clearMediaCollection('profile_photos');
+            
+            $user->addMediaFromRequest('photo')
+                 ->usingName('profile_photo')
+                 ->usingFileName($user->id.'_profile.'.$request->file('photo')->extension())
+                 ->toMediaCollection('profile_photos');
         }
-
         $user->save();
 
         return Redirect::route('users.index')->with('success', 'Utilisateur ajouté avec succès.');
@@ -102,8 +107,8 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        \Log::info('Début de la mise à jour pour l\'utilisateur ID: ' . $id);
-        \Log::info('Données reçues: ', $request->all());
+        Log::info('Début de la mise à jour pour l\'utilisateur ID: ' . $id);
+        Log::info('Données reçues: ', $request->all());
     
     try {
         
@@ -120,46 +125,16 @@ class UserController extends Controller
             'telephone' => 'sometimes|string|nullable',
         ]);
 
-        // Mise à jour conditionnelle des champs
-        if ($request->has('name')) {
-            $user->name = $request->input('name');
+       // Vérification si l'utilisateur a bien téléchargé une photo
+       // Dans le contrôleur lors de l'enregistrement de l'image
+            if ($request->hasFile('photo')) {
+      // Enregistrez l'image dans le dossier spécifique à l'utilisateur
+        $user->addMediaFromRequest('photo')
+          ->usingFileName($user->id . '-' . $request->file('photo')->getClientOriginalName())
+          ->toMediaCollection('users/' . $user->id, 'public'); // Assurez-vous que le dossier est 'users/{user_id}'
+          
         }
-        
-        if ($request->has('email')) {
-            $user->email = $request->input('email');
-        }
-
-        // Mise à jour du mot de passe si fourni
-        if ($request->filled('password')) {
-            $user->password = Hash::make($request->input('password'));
-        }
-        // Mise à jour du rôle si fourni
-        if ($request->has('role_id')) {
-            $user->role_id = $request->input('role_id');
-        }
-
-        // Mise à jour du téléphone si fourni
-        if ($request->has('telephone')) {
-            $user->telephone = $request->input('telephone');
-        }
-
-        // Gestion de l'upload de l'image
-        if ($request->hasFile('photo')) {
-            // Supprimer l'ancienne image si elle existe
-            if ($user->photo && Storage::exists('public/' . $user->photo)) {
-                Storage::delete('public/' . $user->photo);
-            }
-        
-            // Générer un nom unique pour l'image avec un timestamp et son nom original
-            $photoPath = $request->file('photo')->storeAs(
-                'photos', // Dossier dans storage/app/public/photos/
-                time() . '_' . $request->file('photo')->getClientOriginalName(), // Nom unique avec timestamp
-                'public' // Sauvegarde dans storage/app/public
-            );
-        
-            // Enregistrer le chemin relatif dans la base de données
-            $user->photo = 'storage/' . $photoPath;
-        }
+      
 
         $user->save();
 

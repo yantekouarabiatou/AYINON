@@ -12,16 +12,13 @@
     <div class="d-flex flex-column flex-root">
         <div class="d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed" style="background-image: url('{{ asset('assets/media/illustrations/sketchy-1/14.png') }}');">
             <div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
-                <a href="#" class="mb-12">
-                    <img alt="Logo" src="{{ asset('assets/media/logos/logo-1.svg') }}" class="h-40px" />
-                </a>
+                
                 <div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto">
+                    <a href="#" class="d-flex flex-center flex-column flex-column-fluid">
+                        <img alt="Logo" src="{{ asset('assets/media/logos/LOGO_2.png') }}" class="h-100px" />
+                    </a>
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
-                        <div class="text-center mb-10">
-                            <h1 class="text-dark mb-3">Se connecter</h1>
-                            
-                        </div>
                         <div class="fv-row mb-10">
                             <label class="form-label fs-6 fw-bolder text-dark">Email</label>
                             <input id="email" class="form-control form-control-lg form-control-solid" type="email" name="email" required autocomplete="email" />

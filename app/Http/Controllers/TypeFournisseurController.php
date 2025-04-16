@@ -13,11 +13,17 @@ class TypeFournisseurController extends Controller
     /**
      * Affiche la liste des catégories.
      */
-    public function index()
-    {
-         $Tfournisseurs = TypeFournisseur::paginate(10);
-         $user=User::all();
-         return view('typeF.index ', compact('Tfournisseurs','user'));
+    public function index(Request $request)
+    {    
+        $perPage = $request->input('per_page', 10); // Augmenté à 10 par défaut pour une meilleure UX
+        
+        // Récupération paginée des types de fournisseurs
+        $Tfournisseurs = TypeFournisseur::paginate($perPage);
+        
+        // Récupération de tous les utilisateurs (non paginé)
+        $users = User::all();
+        
+        return view('typeF.index', compact('Tfournisseurs', 'users'));
     }
 
     /**

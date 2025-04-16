@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Produit;
 use App\Models\Categorie;
+use App\Models\Fournisseur;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\View;
@@ -32,17 +33,16 @@ class ProduitController extends Controller
     /**
      * Afficher la liste des produits.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $produits = Produit::with('categories')->get();
-
-        $produits->each(function ($produit) {
-            $produit->photo = $produit->getFirstMediaUrl('produits');
-        });
-
+        $perPage = $request->input('per_page', 3); 
+    
+        $produits = Produit::with(['categories', 'media'])
+            ->paginate($perPage);
+    
         return view('produits.index', compact('produits'));
     }
-
+    
     /**
      * Afficher le formulaire de création d'un produit.
      */
@@ -79,8 +79,8 @@ class ProduitController extends Controller
 
     if ($request->hasFile('photo')) {
         $produit->addMediaFromRequest('photo')
-            ->usingFileName($produit->id . '-' . $request->file('photo')->getClientOriginalName())
-            ->toMediaCollection('produits', 'public');
+               ->withResponsiveImages()
+               ->toMediaCollection('produits');
     }
 
     Alert::success('Succès', 'Produit ajouté avec succès.');

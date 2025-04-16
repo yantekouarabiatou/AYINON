@@ -13,7 +13,6 @@ class Facture_commande extends Model implements HasMedia
 
     protected $fillable = ['commande_id'];
     
-
      // Ajoute cette fonction pour enregistrer les collections de médias
      public function registerMediaConversions(Media $media = null): void
      {

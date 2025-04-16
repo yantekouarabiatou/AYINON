@@ -27,7 +27,7 @@ class Fournisseur extends Model implements HasMedia
     // Ajoute cette fonction pour enregistrer les collections de médias
     public function registerMediaConversions(Media $media = null): void
     {
-        $this->addMediaConversion('photo') // Nom de la conversion
+        $this->addMediaConversion('logo') // Nom de la conversion
             ->width(100) // Largeur de l'image
             ->height(100) // Hauteur de l'image
             ->nonQueued(); // Exécuter la conversion immédiatement (optionnel)

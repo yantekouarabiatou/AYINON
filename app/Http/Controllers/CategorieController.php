@@ -15,12 +15,15 @@ class CategorieController extends Controller
     /**
      * Affiche la liste des catégories.
      */
-    public function index()
+    public function index(Request $request)
     {
-         $categories = Categorie::paginate(10);
-         $user=User::all();
-         return view('categories.index', compact('categories','user'));
+
+        $perPage = $request->input('per_page', 2); // Valeur par défaut à 10 si non précisé
+        $categories = Categorie::paginate($perPage);       
+         $users = User::all();
+        return view('categories.index', compact('categories', 'users'));
     }
+    
 
     /**
      * Affiche le formulaire pour créer une catégorie.

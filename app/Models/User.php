@@ -76,9 +76,13 @@ class User extends Authenticatable implements HasMedia
 
     use InteractsWithMedia;
 
+    // Dans le modèle User
     public function registerMediaCollections(): void
-    {
-        $this->addMediaCollection('photos')
-             ->useDisk('public'); // Utilise le disque "public"
-    }
+        {
+            $this->addMediaCollection('profile_photos')
+                 ->useDisk('public')
+                 ->singleFile()
+                 ->withResponsiveImages();
+        }
+
 }

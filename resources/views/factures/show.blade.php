@@ -29,7 +29,7 @@
 	<!--end::Head-->
 	<!--begin::Body-->
 	<body id="kt_body" class="print-content-only header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed aside-enabled aside-fixed" style="--kt-toolbar-height:55px;--kt-toolbar-height-tablet-and-mobile:55px">
-        <div class="d-flex flex-column flex-root">
+        <div class="d-flex flex-column flex-root justify-content-center">
             <div class="page d-flex flex-row flex-column-fluid">
                 <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
                     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -48,8 +48,8 @@
                                                             <!--end::Logo-->
                                                             <div class="text-sm-end">
                                                                 <!--begin::Logo-->
-                                                                <a href="#" class="d-block mw-150px ms-sm-auto">
-                                                                    <img alt="Logo" src="assets/media/svg/brand-logos/lloyds-of-london-logo.svg" class="w-100" />
+                                                                <a href="#" class="d-block  ms-sm-auto">
+                                                                    <img alt="Logo" src="{{ asset('assets/media/logos/LOGO_2.png') }}" class="h-100px" />
                                                                 </a>
                                                                 <!--end::Logo-->
                                                                 <!--begin::Text-->
@@ -187,8 +187,9 @@
                                                                 <button type="button" class="btn btn-success my-1 me-12" onclick="window.print();"> Imprimer</button>
                                                                 <!-- end::Pint-->
                                                                 <!-- begin::Download-->
-                                                                <button type="button" class="btn btn-light-success my-1">Télécharger</button>
-                                                                <!-- end::Download-->
+                                                                <a href="{{ route('invoices.download', $vente->id) }}" class="btn btn-light-success my-1">
+                                                                    Télécharger la facture PDF
+                                                                </a>                                                                <!-- end::Download-->
                                                             </div>
                                                             <!-- end::Actions-->
                                                             <!-- begin::Action-->

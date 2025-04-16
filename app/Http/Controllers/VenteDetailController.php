@@ -8,6 +8,9 @@ use App\Models\Produit;
 use App\Models\Vente_detail;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
+use Barryvdh\DomPDF\Facade as PDF;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
 
 class VenteDetailController extends Controller
 {
@@ -165,4 +168,19 @@ class VenteDetailController extends Controller
         $vente = Vente::with('vente_details.produit')->findOrFail($vente_id);
         return view('detailsVentes.show', compact('vente'));
     }
+
+    public function downloadInvoice($venteId)
+{
+    // Récupérer la vente avec ses détails
+    $vente = Vente::with(['venteDetails.produit'])->findOrFail($venteId);
+    
+    // Charger la vue avec les données
+    $pdf = FacadePdf::loadView('factures.invoice', [
+        'vente' => $vente,
+        'venteDetails' => $vente->venteDetails
+    ]);
+    
+    // Télécharger le PDF
+    return $pdf->download('facture_'.$vente->id.'.pdf');
 }
+ }

@@ -13,26 +13,24 @@ class FournisseurController extends Controller
     /**
      * Afficher la liste des fournisseurs.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Récupérer les fournisseurs avec leurs catégories
-        $fournisseurs = Fournisseur::with('typeFournisseur')->get();
-
-        // Transformer la collection pour inclure les URLs des médias
-        $fournisseurs = $fournisseurs->map(function ($fournisseur) {
-            $mediaUrl = $fournisseur->getFirstMediaUrl('fournisseurs'); // Utiliser le nom de la collection 'fournisseurs'
-
-            // Retourner les données transformées
-            return [
-                'id' => $fournisseur->id,
-                'nom' => $fournisseur->nom,
-                'type_id' => $fournisseur->type_id,
-                'reseau' => $fournisseur->reseau,
-                'logo' => $mediaUrl // Assurez-vous que c'est l'URL correcte
-            ];
-        });
-
-        // Passer les fournisseurs à la vue
+        // Récupérer le nombre de résultats par page depuis la requête
+        $perPage = $request->input('per_page', 3); 
+        
+        // Récupérer et paginer les fournisseurs avec leurs catégories
+        $fournisseurs = Fournisseur::with('typeFournisseur')
+            ->paginate($perPage)
+            ->through(function ($fournisseur) {
+                return [
+                    'id' => $fournisseur->id,
+                    'nom' => $fournisseur->nom,
+                    'type_id' => $fournisseur->type_id,
+                    'reseau' => $fournisseur->reseau,
+                    'logo' => $fournisseur->getFirstMediaUrl('fournisseurs') ?: asset('assets/media/logos/LOGO_2.png'),
+                ];
+            });
+        
         return view('fournis.index', compact('fournisseurs'));
     }
 
@@ -65,8 +63,9 @@ class FournisseurController extends Controller
         // Ajouter l'image si elle existe
         if ($request->hasFile('logo')) {
             $fournisseur->addMediaFromRequest('logo')
-                ->usingFileName($fournisseur->id . '-' . $request->file('logo')->getClientOriginalName()) // Nom unique basé sur l'ID du fournisseur
-                ->toMediaCollection('fournisseurs', 'public');
+           ->usingFileName($fournisseur->id . '-' . $request->file('logo')->getClientOriginalName())
+           ->toMediaCollection('fournisseurs', 'public'); // ✅ Collection: 'fournisseurs'
+
         }
 
         // Redirection avec message de succès

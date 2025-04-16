@@ -104,11 +104,90 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!-- Pagination stylisée -->
+<div class="d-flex justify-content-between align-items-center flex-wrap mt-5">
+    <div class="d-flex align-items-center py-3">
+        <span class="text-muted fs-7 fw-bold">
+            Affichage de {{ $emballages->firstItem() }} à {{ $emballages->lastItem() }} sur {{ $emballages->total() }} entrées
+        </span>
+    </div>
+    <div class="d-flex flex-wrap py-3">
+        <ul class="pagination">
+            <!-- Premier lien -->
+            <li class="page-item {{ $emballages->onFirstPage() ? 'disabled' : '' }}">
+                <a href="{{ $emballages->url(1) }}" class="page-link" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+            </li>
+            <!-- Lien précédent -->
+            <li class="page-item {{ $emballages->onFirstPage() ? 'disabled' : '' }}">
+                <a href="{{ $emballages->previousPageUrl() }}" class="page-link" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <!-- Liens des pages -->
+            @foreach ($emballages->getUrlRange(max(1, $emballages->currentPage() - 2), min($emballages->lastPage(), $emballages->currentPage() + 2)) as $page => $url)
+                <li class="page-item {{ $page == $emballages->currentPage() ? 'active' : '' }}">
+                    <a href="{{ $url }}" class="page-link">{{ $page }}</a>
+                </li>
+            @endforeach
+            <!-- Lien suivant -->
+            <li class="page-item {{ !$emballages->hasMorePages() ? 'disabled' : '' }}">
+                <a href="{{ $emballages->nextPageUrl() }}" class="page-link" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <!-- Dernier lien -->
+            <li class="page-item {{ !$emballages->hasMorePages() ? 'disabled' : '' }}">
+                <a href="{{ $emballages->url($emballages->lastPage()) }}" class="page-link" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+            </li>
+        </ul>
     </div>
 </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+@push('styles')
+<style>
+/* Style personnalisé pour la pagination */
+.pagination {
+--bs-pagination-color: #5E6278;
+--bs-pagination-bg: #F5F8FA;
+--bs-pagination-border-color: #E4E6EF;
+--bs-pagination-hover-color: #009EF7;
+--bs-pagination-hover-bg: #F1FAFF;
+--bs-pagination-hover-border-color: #E4E6EF;
+--bs-pagination-focus-color: #009EF7;
+--bs-pagination-focus-bg: #F1FAFF;
+--bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(0, 158, 247, 0.25);
+--bs-pagination-active-color: #FFFFFF;
+--bs-pagination-active-bg: #009EF7;
+--bs-pagination-active-border-color: #009EF7;
+--bs-pagination-disabled-color: #B5B5C3;
+--bs-pagination-disabled-bg: #F5F8FA;
+--bs-pagination-disabled-border-color: #E4E6EF;
+border-radius: 0.475rem;
+}
+
+.page-item.active .page-link {
+box-shadow: 0 0 0 2px #F1FAFF;
+}
+
+.page-link {
+padding: 0.5rem 0.75rem;
+min-width: 2.5rem;
+text-align: center;
+margin: 0 2px;
+border-radius: 0.475rem !important;
+}
+</style>
+@endpush

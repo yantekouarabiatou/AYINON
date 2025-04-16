@@ -10,22 +10,38 @@ use App\Models\HistoriqueStock;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
-
+use Carbon\Carbon;
 
 class VenteController extends Controller
 {
     /**
      * Afficher la liste des ventes.
      */
-    public function index()
-    {
-        $ventes = Vente::with('vente_details.produit')
-            ->orderBy('created_at', 'desc')
-            ->get();
 
-    return view('ventes.index', compact('ventes'));
-    }
-
+         public function index(Request $request)
+         {
+             $perPage = $request->input('per_page', 3);
+             $filtre = $request->input('filtre');
+             $ventes = Vente::query();
+     
+             // Application des filtres
+             if ($filtre === 'jour') {
+                 $ventes->whereDate('created_at', Carbon::today());
+             } elseif ($filtre === 'semaine') {
+                 $ventes->whereBetween('created_at', [
+                     now()->subWeek()->startOfWeek(),
+                     now()->subWeek()->endOfWeek(),
+                 ]);
+             } elseif ($filtre === 'mois') {
+                 $ventes->whereMonth('created_at', now()->subMonth()->month);
+             }
+     
+             // Tri et pagination
+             $ventes = $ventes->with('user')->orderBy('created_at', 'desc')->paginate($perPage);
+     
+             return view('ventes.index', compact('ventes'));
+         }
+     
     /**
      * Afficher le formulaire de création d'une vente.
      */
@@ -289,5 +305,35 @@ public function showFacture($venteId)
     // Afficher la vue de la facture
     return view('factures.show', compact('vente', 'venteDetails', 'entreprise', 'montantTotalHT', 'montantTotalTTC'));
 }
+public function ventesArchives(Request $request)
+{
+    $periode = $request->input('periode', 'mois'); // Par défaut : mois
+
+    $query = Vente::query();
+
+    if ($periode === 'mois') {
+        $query->whereMonth('created_at', '!=', now()->month);
+    } elseif ($periode === 'semaine') {
+        $query->whereBetween('created_at', [
+            now()->subWeek()->startOfWeek(),
+            now()->subWeek()->endOfWeek()
+        ]);
+    }
+
+    $ventes = $query->orderBy('created_at', 'desc')->get();
+
+    return view('ventes.archives', compact('ventes', 'periode'));
+}
+
+
+public function ventesDuJour()
+{
+    $aujourdhui = Carbon::today();
+
+    $ventes = Vente::whereDate('created_at', $aujourdhui)->get();
+
+    return view('ventes.jour', compact('ventes'));
+}
+
 
 }

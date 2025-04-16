@@ -11,11 +11,15 @@ class EmballageController extends Controller
     /**
      * Affiche la liste des emballages.
      */
-    public function index()
+    public function index(Request $request)
     {
         // Récupérer tous les emballages avec leurs produits associés
-        $emballages = Emballage::with('produit')->get();
-
+        $perPage = $request->input('per_page', 10); // Augmenté à 10 par défaut pour une meilleure UX
+        
+        // Récupération paginée des produits commandés avec leurs relations
+        $emballages = Emballage::with(['produit'])
+            ->orderBy('created_at', 'desc') // Tri par date récente
+            ->paginate($perPage);
         // Retourner la vue avec les emballages
         return view('emballages.index', compact('emballages'));
     }

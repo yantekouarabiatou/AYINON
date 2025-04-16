@@ -32,7 +32,7 @@ class commande extends Model
     return $this->hasMany(HistoriqueStock::class);
 }
 
-    public function produits()
+    public function produit()
      {
           return $this->belongsToMany(Produit::class, 'produit_commande', 'commande_id', 'produit_id')->withTimestamps();
      }
@@ -45,5 +45,10 @@ class commande extends Model
     public function fournisseur()
     {
         return $this->belongsTo(Fournisseur::class,'fournisseur_id');
+    }
+
+    public function produits()
+    {
+        return $this->belongsToMany(Produit::class, 'produit_commande', 'commande_id', 'produit_id')->withTimestamps();
     }
 }

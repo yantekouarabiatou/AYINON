@@ -14,23 +14,32 @@ class CommandeController extends Controller
     /**
      * Afficher la liste des commandes.
      */
-    public function index()
-    {
-        $commandes = Commande::with('produit','fournisseur')->get();
-        return view('commandes.index', compact('commandes'));
-    }
+    public function index(Request $request)
+{    $perPage = $request->input('per_page', 3); 
+    
+     $commandes = Commande::with(['produits', 'fournisseur'])
+        ->paginate($perPage);
+   
+    return view('commandes.index', compact('commandes'));
+}
+
 
     /**
      * Afficher le formulaire de création d'une commande.
      */
     public function create()
-    {
-        $produits = Produit::all();
-        $fournisseurs=Fournisseur::all();
-        $generatedReference = 'CMD-' . strtoupper(uniqid());
-        return view('commandes.create', compact('produits','fournisseurs','generatedReference'));
+{
+    // Récupérer tous les produits et fournisseurs
+    $produits = Produit::all();
+    $fournisseurs = Fournisseur::all();
+    
+    // Générer une référence combinée avec la date du jour et un ID temporaire
+    $todayDate = now()->format('Y-m-d');  // Format de la date : année (4 chiffres), mois (2 chiffres), jour (2 chiffres)
+    $generatedReference = $todayDate . '-' . strtoupper(uniqid('', true)); // ID unique généré après la date
+    
+    return view('commandes.create', compact('produits', 'fournisseurs', 'generatedReference'));
+}
 
-    }
 
     /**
      * Enregistrer une nouvelle commande.

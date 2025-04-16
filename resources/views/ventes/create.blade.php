@@ -76,7 +76,7 @@
                                                 </div>
                                                 <!--end::Selected products-->
                                                 <!--begin::Total price-->
-                                                <div class="fw-bolder fs-4">Total Cost: $<span id="kt_ecommerce_edit_order_total_price">0.00</span></div>
+                                                <div class="fw-bolder fs-4">Total du: $<span id="kt_ecommerce_edit_order_total_price">0.00</span></div>
                                                 <!--end::Total price-->
                                                 <!--begin::Table-->
                                                 <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_ecommerce_edit_order_product_table">
@@ -92,34 +92,51 @@
                                                     </thead>
                                                     <!--end::Table head-->
                                                     <!--begin::Table body-->
-                                                    <tbody class="fw-bold text-gray-600">
-                                                        @foreach($produits as $produit)
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                                        <input class="form-check-input product-checkbox" type="checkbox" name="produits[]" value="{{ $produit->id }}" data-price="{{ $produit->prix }}" />
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="d-flex align-items-center">
-                                                                        <a href="#" class="symbol symbol-50px">
-                                                                            <img src="{{ $produit->getFirstMediaUrl('produits') }}" alt="Product Image" style="width:50px;height:50px;">
-                                                                        </a>
-                                                                        <div class="ms-5">
-                                                                            <a href="#" class="text-gray-800 text-hover-primary fs-5 fw-bolder">{{ $produit->name }}</a>
-                                                                            <div class="fw-bold fs-7">Prix: ${{ $produit->prix }}</div>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="text-end pe-5">{{ $produit->quantite }}</td>
-                                                                <td class="text-end pe-5">
-                                                                    <input type="number" name="quantites[{{ $produit->id }}]" class="form-control product-quantity" min="1" max="{{ $produit->quantite }}" value="1" />
-                                                                </td>
-                                                                <td class="text-end pe-5">${{ $produit->prix }}</td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                    <!--end::Table body-->
+<tbody class="fw-bold text-gray-600">
+    @foreach($produits as $produit)
+        <tr>
+            <!-- Checkbox -->
+            <td>
+                <div class="form-check form-check-sm form-check-custom form-check-solid">
+                    <input class="form-check-input product-checkbox" type="checkbox" name="produits[]" value="{{ $produit->id }}" data-price="{{ $produit->prix }}" />
+                </div>
+            </td>
+
+            <!-- Image and Product Details -->
+            <td>
+                <div class="d-flex align-items-center">
+                    <div class="symbol symbol-50px">
+                        <!-- Card with product image -->
+                        <div class="card" style="width: 150px; border: 1px solid #ddd; border-radius: 10px; overflow: hidden;">
+                            <img src="{{ asset('storage/produits/' . $produit->getFirstMediaUrl('produits/' . $produit->id, 'photo')) }}" 
+                                 alt="{{ $produit->name }}" 
+                                 class="card-img-top" 
+                                 style="width: 50%; height: 100px; object-fit: cover; border-bottom: 1px solid #ddd;">
+                        </div>
+                    </div>
+
+                    <div class="ms-5">
+                        <a href="#" class="text-gray-800 text-hover-primary fs-5 fw-bolder">{{ $produit->name }}</a>
+                        <div class="fw-bold fs-7">Prix: ${{ $produit->prix }}</div>
+                    </div>
+                </div>
+            </td>
+
+            <!-- Quantity in Stock -->
+            <td class="text-end pe-5">{{ $produit->quantite }}</td>
+
+            <!-- Quantity Input -->
+            <td class="text-end pe-5">
+                <input type="number" name="quantites[{{ $produit->id }}]" class="form-control product-quantity" min="1" max="{{ $produit->quantite }}" value="1" />
+            </td>
+
+            <!-- Price -->
+            <td class="text-end pe-5">${{ $produit->prix }}</td>
+        </tr>
+    @endforeach
+</tbody>
+<!--end::Table body-->
+
                                                 </table>
                                                 <!--end::Table-->
                                             </div>
